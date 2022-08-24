@@ -1,0 +1,1720 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [
+   <!ENTITY tests SYSTEM "runTests.xml">
+]>
+<project name="deploy" xmlns:sf="antlib:com.salesforce">
+
+
+    <scriptdef language="javascript" name="parseJSON">
+      try {
+        load("nashorn:mozilla_compat.js");
+      }
+      catch (err)
+      { }
+      importClass(java.io.File);
+      importClass(java.io.FileReader);
+      importClass(java.io.BufferedReader);
+
+      echo = project.createTask("echo");
+      echo.setMessage("Parsing properties");
+      echo.perform();
+
+      var file = new File("./lib/resources/properties.json");
+      fr = new FileReader(file);
+      br = new BufferedReader(fr);
+
+      // Read the file.
+      // This assumes the file has no line breaks and is one line.
+      var json = br.readLine();
+
+      // Evaluate the JSON.
+      var struct = eval("(" + json + ")");
+
+      // Set each property in the project environment.
+      if (project.getProperty('sf.versionName') == null){
+      for (i in struct.data) {
+        var namespace = struct.data[i].namespace;
+        var version = struct.data[i].version;
+        var prodNamespace = struct.data[i].namespace;
+        prodNamespace = prodNamespace.replace(project.getProperty('sf.suffix'),'').toLowerCase();
+        prodNamespace = prodNamespace.replace(project.getProperty('config.features.suffix'),'').toLowerCase();
+        prodNamespace = prodNamespace.replace(project.getProperty('config.features6.suffix'),'').toLowerCase();
+
+        if (namespace.indexOf(project.getProperty('sf.suffix')) > -1) {
+         if (project.getProperty('sf.feature') == null || project.getProperty('sf.feature') == 'false') {
+            project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+            project.setProperty(prodNamespace+'.alternate.version',version);
+            project.setProperty(prodNamespace+'.alternate.managed_install_script',struct.data[i].installClass+';');
+          }
+        }
+        else if (namespace.indexOf(project.getProperty('config.features.suffix')) > -1 ) {
+      if (project.getProperty('sf.feature') == 'true') {
+          project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+          project.setProperty(prodNamespace+'.alternate.version',version);
+          project.setProperty(prodNamespace+'.alternate.managed_install_script',struct.data[i].installClass+';');
+         }
+        }
+        else if (namespace.indexOf(project.getProperty('config.features6.suffix')) > -1 ) {
+      if (project.getProperty('sf.feature') == 'true') {
+          project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+          project.setProperty(prodNamespace+'.alternate.version',version);
+          project.setProperty(prodNamespace+'.alternate.managed_install_script',struct.data[i].installClass+';');
+         }
+        }
+        else {
+          project.setProperty(prodNamespace+'.package.namespace',namespace);
+          project.setProperty(prodNamespace+'.package.version',version);
+          project.setProperty(prodNamespace+'.package.install_script',struct.data[i].installClass+';');
+        }
+        project.setProperty(prodNamespace+'.alternate.unmanaged_install_script',struct.data[i].installClass.replace(namespace+'.','')+';');
+
+        var dependencies = '';
+        for (j in struct.data[i].fullDependencies) {
+          var packageName = struct.data[i].fullDependencies[j].namespace;
+          packageName = packageName.replace(project.getProperty('sf.suffix'),'');
+          packageName = packageName.replace(project.getProperty('config.features.suffix'),'');
+          packageName = packageName.replace(project.getProperty('config.features6.suffix'),'');
+          packageName= packageName.toLowerCase();
+
+          if (dependencies.length == 0) {
+            dependencies = packageName;
+          }
+          else {
+            dependencies += ','+packageName;
+          }
+        }
+        project.setProperty(prodNamespace.toLowerCase()+'.package.dependencies',dependencies);
+      }
+      }
+      else{
+      for (i in struct) {
+        var namespace = struct[i].namespace;
+        var version = struct[i].version;
+        var prodNamespace = struct[i].namespace;
+        prodNamespace = prodNamespace.replace(project.getProperty('sf.suffix'),'').toLowerCase();
+        prodNamespace = prodNamespace.replace(project.getProperty('config.features.suffix'),'').toLowerCase();
+        prodNamespace = prodNamespace.replace(project.getProperty('config.features6.suffix'),'').toLowerCase();
+
+        if (namespace.indexOf(project.getProperty('sf.suffix')) > -1) {
+         if (project.getProperty('sf.feature') == null || project.getProperty('sf.feature') == 'false') {
+            project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+            project.setProperty(prodNamespace+'.alternate.version',version);
+            project.setProperty(prodNamespace+'.alternate.managed_install_script',struct[i].installClass+';');
+          }
+        }
+        else if (namespace.indexOf(project.getProperty('config.features.suffix')) > -1 ) {
+      if (project.getProperty('sf.feature') == 'true') {
+          project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+          project.setProperty(prodNamespace+'.alternate.version',version);
+          project.setProperty(prodNamespace+'.alternate.managed_install_script',struct[i].installClass+';');
+         }
+        }
+        else if (namespace.indexOf(project.getProperty('config.features6.suffix')) > -1 ) {
+      if (project.getProperty('sf.feature') == 'true') {
+          project.setProperty(prodNamespace+'.alternate.namespace',namespace);
+          project.setProperty(prodNamespace+'.alternate.version',version);
+          project.setProperty(prodNamespace+'.alternate.managed_install_script',struct[i].installClass+';');
+         }
+        }
+        else {
+          project.setProperty(prodNamespace+'.package.namespace',namespace);
+          project.setProperty(prodNamespace+'.package.version',version);
+          project.setProperty(prodNamespace+'.package.install_script',struct[i].installClass+';');
+        }
+        project.setProperty(prodNamespace+'.alternate.unmanaged_install_script',struct[i].installClass.replace(namespace+'.','')+';');
+
+        var dependencies = '';
+        for (j in struct[i].fullDependencies) {
+          var packageName = struct[i].fullDependencies[j].namespace;
+          packageName = packageName.replace(project.getProperty('sf.suffix'),'');
+          packageName = packageName.replace(project.getProperty('config.features.suffix'),'');
+          packageName = packageName.replace(project.getProperty('config.features6.suffix'),'');
+          packageName= packageName.toLowerCase();
+
+          if (dependencies.length == 0) {
+            dependencies = packageName;
+          }
+          else {
+            dependencies += ','+packageName;
+          }
+        }
+        project.setProperty(prodNamespace.toLowerCase()+'.package.dependencies',dependencies);
+      }
+      }
+    </scriptdef>
+
+  <target name="getPackages">
+    <get src="https://fonteva-marketplace.herokuapp.com/api/packages?all=true" dest="./lib/resources/properties.json"/>
+    <parseJSON/>
+  </target>
+
+  <target name="getPackages_stg">
+    <get src="https://fonteva-marketplace-automation.herokuapp.com/api/packages?all=true" dest="./lib/resources/properties.json"/>
+    <parseJSON/>
+  </target>
+ <target name="getPackages_rc">
+    <get src="https://fonteva-marketplace-stg.herokuapp.com/api/packages?all=true" dest="./lib/resources/properties.json"/>
+    <parseJSON/>
+  </target>
+  <target name="getPackages_patch">
+    <get src="https://fonteva-marketplace.herokuapp.com/api/package/patch_packages?version=${sf.versionName}" dest="./lib/resources/properties.json"/>
+    <parseJSON/>
+  </target>
+
+  <xmlproperty file="../src/package.xml"/>
+
+  <scriptdef language="javascript" name="lower">
+      <attribute name="string" />
+      <attribute name="to" />
+
+      project.setProperty( attributes.get( "to" ),
+                           attributes.get( "string" ).toLowerCase() );
+  </scriptdef>
+
+  <scriptdef language="javascript" name="fdsversion">
+      <attribute name="string" />
+      <attribute name="version" />
+      if (attributes.get( "string").indexOf('FDS') > -1){
+      project.setProperty( attributes.get( "version" ),
+                           attributes.get( "string" ).split('FDS')[1] );
+                           }
+     else if (attributes.get( "string").indexOf('fds') > -1){
+     project.setProperty( attributes.get( "version" ),
+                          attributes.get( "string" ).split('fds')[1] );
+     }
+  </scriptdef>
+
+  <target name="install" description="Installs a managed package">
+    <installPackage namespace="${package_namespace}"
+      version="${package_version}"
+      username="${sf.username}"
+      password="${sf.password}"/>
+  </target>
+
+  <target name="install_dependent_packages" depends="setProps_stg">
+    <for list="${altPkgNames}" param="proj">
+      <sequential>
+      <antcall target="install">
+        <param name="package_namespace" value="${@{proj}.alternate.namespace}"/>
+        <param name="package_version" value="${@{proj}.alternate.version}"/>
+      </antcall>
+      <antcall target="ExecAnon">
+        <param name="what" value="${@{proj}.alternate.managed_install_script}"/>
+      </antcall>
+    </sequential>
+    </for>
+  </target>
+
+    <target name="install_dependent_packages_prod" depends="setProps_stg">
+         <echo message="${altPkgNames}" />
+   <for list="${altPkgNames}" param="package">
+
+     <sequential>
+       <antcall target="install">
+       <param name="package_namespace" value="${@{package}.package.namespace}"/>
+       <param name="package_version" value="${@{package}.package.version}"/>
+     </antcall>
+       <if>
+       <not>
+         <equals arg1="@{package}" arg2="keystore"/>
+       </not>
+       <then>
+         <if>
+         <not>
+           <equals arg1="@{package}" arg2="fds19r1"/>
+         </not>
+         <then>
+          <if>
+         <not>
+           <equals arg1="@{package}" arg2="fds19r2"/>
+         </not>
+         <then>
+     <antcall target="ExecAnon">
+       <param name="what" value="${@{package}.package.install_script}"/>
+     </antcall>
+   </then>
+  </if>
+</then>
+</if>
+</then>
+</if>
+   </sequential>
+ </for>
+ </target>
+
+ <target name="install_dependent_packages_patch" depends="setProps_patch">
+      <echo message="${altPkgNames}" />
+<for list="${altPkgNames}" param="package">
+  <sequential>
+    <antcall target="install">
+    <param name="package_namespace" value="${@{package}.package.namespace}"/>
+    <param name="package_version" value="${@{package}.package.version}"/>
+  </antcall>
+    <if>
+    <not>
+      <equals arg1="@{package}" arg2="keystore"/>
+    </not>
+    <then>
+      <if>
+      <not>
+        <equals arg1="@{package}" arg2="fds19r1"/>
+      </not>
+      <then>
+        <if>
+        <not>
+          <equals arg1="@{package}" arg2="fds18r2"/>
+        </not>
+        <then>
+        <if>
+        <not>
+          <equals arg1="@{package}" arg2="fds19r2"/>
+        </not>
+        <then>
+  <antcall target="ExecAnon">
+    <param name="what" value="${@{package}.package.install_script}"/>
+  </antcall>
+</then>
+</if>
+</then>
+</if>
+</then>
+</if>
+</then>
+</if>
+</sequential>
+</for>
+</target>
+
+  <target name="install_all_dev_packages" depends="setProps">
+    <for list="${config.allPackages}" param="package">
+      <sequential>
+        <antcall target="install">
+        <param name="package_namespace" value="${@{package}.alternate.namespace}"/>
+        <param name="package_version" value="${@{package}.alternate.version}"/>
+      </antcall>
+      <antcall target="ExecAnon">
+        <param name="what" value="${@{package}.alternate.managed_install_script}"/>
+      </antcall>
+    </sequential>
+  </for>
+  </target>
+
+
+  <target name="install_all_prod_packages" depends="setProps">
+    <for list="${config.allPackages}" param="package">
+      <sequential>
+        <antcall target="install">
+        <param name="package_namespace" value="${@{package}.package.namespace}"/>
+        <param name="package_version" value="${@{package}.package.version}"/>
+      </antcall>
+      <antcall target="ExecAnon">
+        <param name="what" value="${@{package}.package.install_script}"/>
+      </antcall>
+    </sequential>
+  </for>
+  </target>
+   <target name="install_all_prod_packages_rc" depends="setProps_rc">
+    <for list="${config.allPackages}" param="package">
+      <sequential>
+        <antcall target="install">
+        <param name="package_namespace" value="${@{package}.package.namespace}"/>
+        <param name="package_version" value="${@{package}.package.version}"/>
+      </antcall>
+      <if>
+        <not>
+          <equals arg1="@{package}" arg2="fonteva1"/>
+        </not>
+        <then>
+        <if>
+        <not>
+          <equals arg1="@{package}" arg2="keystore"/>
+        </not>
+        <then>
+          <if>
+          <not>
+            <equals arg1="@{package}" arg2="fontevacom"/>
+          </not>
+          <then>
+            <if>
+            <not>
+              <equals arg1="@{package}" arg2="fds19r1"/>
+            </not>
+            <then>
+            <if>
+            <not>
+              <equals arg1="@{package}" arg2="fds19r2"/>
+            </not>
+            <then>
+      <antcall target="ExecAnon">
+        <param name="what" value="${@{package}.package.install_script}"/>
+      </antcall>
+    </then>
+  </if>
+  </then>
+  </if>
+    </then>
+  </if>
+</then>
+  </if>
+</then>
+</if>
+    </sequential>
+  </for>
+  </target>
+
+  <target name="install_all_prod_packages_stg" depends="setProps_stg">
+    <for list="${config.allPackages}" param="package">
+      <sequential>
+        <antcall target="install">
+        <param name="package_namespace" value="${@{package}.package.namespace}"/>
+        <param name="package_version" value="${@{package}.package.version}"/>
+      </antcall>
+      <if>
+        <not>
+          <equals arg1="@{package}" arg2="fonteva1"/>
+        </not>
+        <then>
+        <if>
+        <not>
+          <equals arg1="@{package}" arg2="keystore"/>
+        </not>
+        <then>
+          <if>
+          <not>
+            <equals arg1="@{package}" arg2="fontevacom"/>
+          </not>
+          <then>
+            <if>
+            <not>
+              <equals arg1="@{package}" arg2="fds19r1"/>
+            </not>
+            <then>
+            <if>
+            <not>
+              <equals arg1="@{package}" arg2="fds19r2"/>
+            </not>
+            <then>
+      <antcall target="ExecAnon">
+        <param name="what" value="${@{package}.package.install_script}"/>
+      </antcall>
+    </then>
+  </if>
+  </then>
+  </if>
+    </then>
+  </if>
+</then>
+  </if>
+</then>
+</if>
+    </sequential>
+  </for>
+  </target>
+
+  <target name="unmanaged_install_script" depends="setProps">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <if>
+    <not>
+      <equals arg1="${lowerCasePackageName}" arg2="fds19r1"/>
+    </not>
+    <then>
+    <if>
+    <not>
+      <equals arg1="${lowerCasePackageName}" arg2="fds19r2"/>
+    </not>
+    <then>
+    <antcall target="ExecAnon">
+      <param name="what" value="${unmanaged_script}"/>
+    </antcall>
+  </then>
+</if>
+</then>
+</if>
+  </target>
+
+  <target name="unmanaged_install_script_patch" depends="setProps_patch">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <if>
+    <not>
+      <equals arg1="${lowerCasePackageName}" arg2="fds19r1"/>
+    </not>
+    <then>
+    <if>
+    <not>
+      <equals arg1="${lowerCasePackageName}" arg2="fds19r2"/>
+    </not>
+    <then>
+    <antcall target="ExecAnon">
+      <param name="what" value="${unmanaged_script}"/>
+    </antcall>
+  </then>
+</if>
+</then>
+</if>
+  </target>
+
+	<target name="package_deploy_only" depends="copy_to_deploy_target,swapTests,update_aura,update_package_name,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}" />
+  </target>
+
+  <target name="patch_package_deploy_only" depends="copy_to_deploy_target,update_aura,update_package_name,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+               password="${sf.password}"
+               serverurl="${sf.server}"
+               zipFile="deploy.zip"
+               maxPoll="${config.maxPoll}"
+               pollWaitMillis="${config.pollWaitMillis}"
+               rollbackOnError="${config.rollbackOnError}"
+               singlePackage="${config.singlePkg}"
+               allowMissingFiles="${config.allowMissingFiles}" />
+  </target>
+
+  <target name="package_test_deploy_only" depends="copy_to_deploy_target,update_aura,update_package_name,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      singlePackage="${config.singlePkg}"
+      checkOnly="true"
+      allowMissingFiles="${config.allowMissingFiles}"
+      testLevel="RunLocalTests">
+  </sf:deploy>
+    <antcall target="cleanup_deploy_files"/>
+  </target>
+
+    <target name="unmanaged_package_deploy_only" depends="makePackage">
+        <sf:deploy username="${sf.username}"
+        password="${sf.password}"
+        serverurl="${sf.server}"
+        zipFile="deploy.zip"
+        maxPoll="${config.maxPoll}"
+        pollWaitMillis="${config.pollWaitMillis}"
+        rollbackOnError="${config.rollbackOnError}"
+        singlePackage="${config.singlePkg}"
+        allowMissingFiles="${config.allowMissingFiles}"
+        testLevel="RunLocalTests">
+      </sf:deploy>
+    </target>
+
+    <target name="unmanaged_package_deploy_simple" depends="makePackage">
+        <sf:deploy username="${sf.username}"
+        password="${sf.password}"
+        serverurl="${sf.server}"
+        zipFile="deploy.zip"
+        maxPoll="${config.maxPoll}"
+        pollWaitMillis="${config.pollWaitMillis}"
+        rollbackOnError="${config.rollbackOnError}"
+        singlePackage="${config.singlePkg}"
+        allowMissingFiles="${config.allowMissingFiles}">
+      </sf:deploy>
+    </target>
+
+    <target name="dev_layouts_deploy" depends="swap_namespace_layout,create_deploy_zip">
+        <sf:deploy username="${sf.username}"
+        password="${sf.password}"
+        serverurl="${sf.server}"
+        zipFile="deploy.zip"
+        maxPoll="${config.maxPoll}"
+        pollWaitMillis="${config.pollWaitMillis}"
+        rollbackOnError="${config.rollbackOnError}"
+        singlePackage="${config.singlePkg}"
+        allowMissingFiles="${config.allowMissingFiles}">
+      </sf:deploy>
+    </target>
+
+    <target name="dev_layouts_deploy_prod" depends="copy_to_deploy_target,setProps_stg,swap_namespace_custommetadata,create_deploy_zip">
+        <sf:deploy username="${sf.username}"
+        password="${sf.password}"
+        serverurl="${sf.server}"
+        zipFile="deploy.zip"
+        maxPoll="${config.maxPoll}"
+        pollWaitMillis="${config.pollWaitMillis}"
+        rollbackOnError="${config.rollbackOnError}"
+        singlePackage="${config.singlePkg}"
+        allowMissingFiles="${config.allowMissingFiles}">
+      </sf:deploy>
+    </target>
+
+  <target name="swapTests">
+    <lower string="${sf.namespace}" to="lowerCaseNameSpace"/>
+    <if>
+      <or>
+        <equals arg1="${lowerCaseNameSpace}" arg2="eventapi" />
+        <equals arg1="${lowerCaseNameSpace}" arg2="roeapi" />
+        <equals arg1="${lowerCaseNameSpace}" arg2="cpbase" />
+        <equals arg1="${lowerCaseNameSpace}" arg2="lte" />
+        <equals arg1="${lowerCaseNameSpace}" arg2="ddapi" />
+      </or>
+      <then>
+        <replaceregexp match="@istest[\s]*static"
+                       replace="static"
+                       flags="gis">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+      </then>
+    </if>
+  </target>
+    <target name="swap_namespace_custommetadata">
+      <lower string="${packageName}" to="lowerCasePackageName"/>
+      <if>
+      <equals arg1="${lowerCasePackageName}" arg2="eventapi" />
+      <then>
+      <echo message="${lowerCasePackageName}" />
+      <replaceregexp match="EventApi"
+        replace="${sf.namespace}"
+        flags="g">
+        <fileset dir="deploy/src/customMetadata"/>
+      </replaceregexp>
+      <if>
+      <available file="deploy/src/customMetadata" type="dir"/>
+      <then>
+      <move todir="deploy/src/customMetadata">
+        <fileset dir="deploy/src/customMetadata">
+          <include name="**"/>
+        </fileset>
+        <mapper type="glob" from="EventApi__*" to="${sf.namespace}__*"/>
+      </move>
+      </then>
+      </if>
+      </then>
+      </if>
+  </target>
+
+    <target name="swap_namespace_layout" depends="copy_to_deploy_target,setProps_stg">
+    <for list="${altPkgNames}" param="proj">
+      <sequential>
+          <echo message="${altPkgNames}" />
+        <replaceregexp match="${@{proj}.package.namespace}(?!/)"
+          replace="${@{proj}.alternate.namespace}"
+          flags="g">
+          <fileset dir="deploy/src"/>
+        </replaceregexp>
+    <if>
+    <available file="deploy/src/layouts" type="dir"/>
+      <then>
+        <echo message="${@{proj}.package.namespace}"/>
+        <echo message="${@{proj}.alternate.namespace}"/>
+        <!-- rename package layouts files to their alt namespaces -->
+        <move todir="deploy/src/layouts">
+          <fileset dir="deploy/src/layouts">
+            <include name="**"/>
+          </fileset>
+          <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+        </move>
+      </then>
+    </if>
+    <if>
+    <available file="deploy/src/quickActions" type="dir"/>
+      <then>
+        <echo message="${@{proj}.package.namespace}"/>
+        <echo message="${@{proj}.alternate.namespace}"/>
+        <!-- rename package layouts files to their alt namespaces -->
+        <move todir="deploy/src/quickActions">
+          <fileset dir="deploy/src/quickActions">
+            <include name="**"/>
+          </fileset>
+          <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+        </move>
+      </then>
+    </if>
+    </sequential>
+  </for>
+  <antcall target="swap_namespace_profile"/>
+  </target>
+
+  <target name="swap_namespace_profile">
+  <if>
+    <available file="deploy/src/profiles" type="dir"/>
+    <then>
+      <replaceregexp match="\&lt;layout\&gt;"
+                     replace="\&lt;layout\&gt;${sf.namespace}__"
+                     flags="g">
+        <fileset dir="deploy/src/profiles"/>
+      </replaceregexp>
+    </then>
+    </if>
+    <antcall target="swap_namespace_profile_dep"/>
+  </target>
+
+  <target name="swap_namespace_profile_dep">
+  <for list="${altPkgNames}" param="proj">
+  <sequential>
+  <if>
+    <available file="deploy/src/profiles" type="dir"/>
+    <then>
+      <replaceregexp match="\&lt;layout\&gt;${sf.namespace}__${@{proj}.alternate.namespace}"
+                     replace="\&lt;layout\&gt;${@{proj}.alternate.namespace}"
+                     flags="g">
+        <fileset dir="deploy/src/profiles"/>
+      </replaceregexp>
+    </then>
+    </if>
+  </sequential>
+</for>
+</target>
+
+<target name="swap_namespace_TDM">
+  <lower string="${packageName}" to="lowerCasePackageName"/>
+  <if>
+    <available file="deploy/src" type="dir"/>
+    <then>
+      <replaceregexp match="TDM:"
+                     replace="${sf.namespace}:"
+                     flags="g">
+        <fileset dir="deploy/src"/>
+      </replaceregexp>
+    </then>
+    </if>
+    <if>
+    <equals arg1="${lowerCasePackageName}" arg2="orderapi" />
+    <then>
+      <replaceregexp match="OrderApi__"
+                     replace="${sf.namespace}__"
+                     flags="g">
+        <fileset dir="deploy/src"/>
+      </replaceregexp>
+    </then>
+  </if>
+  <if>
+    <equals arg1="${lowerCasePackageName}" arg2="eventapi" />
+    <then>
+      <replaceregexp match="EventApi__"
+                     replace="${sf.namespace}__"
+                     flags="g">
+        <fileset dir="deploy/src"/>
+      </replaceregexp>
+    </then>
+  </if>
+  <if>
+    <equals arg1="${lowerCasePackageName}" arg2="lte" />
+    <then>
+      <replaceregexp match="LTE__"
+                     replace="${sf.namespace}__"
+                     flags="g">
+        <fileset dir="deploy/src"/>
+      </replaceregexp>
+    </then>
+  </if>
+  <if>
+  <equals arg1="${lowerCasePackageName}" arg2="cpbase" />
+  <then>
+    <replaceregexp match="CPBase__"
+                   replace="${sf.namespace}__"
+                   flags="g">
+      <fileset dir="deploy/src"/>
+    </replaceregexp>
+  </then>
+</if>
+<if>
+  <equals arg1="${lowerCasePackageName}" arg2="cpbase" />
+  <then>
+    <replaceregexp match="CPBase."
+                   replace="${sf.namespace}."
+                   flags="g">
+      <fileset dir="deploy/src"/>
+    </replaceregexp>
+  </then>
+</if>
+  </target>
+
+  	<target name="TDM_package_deploy_only" depends="copy_to_deploy_target,swap_namespace_TDM,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}" />
+  </target>
+
+	<target name="package_deploy" depends="double_check,makePackage">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}">
+      &tests;
+    </sf:deploy>
+  </target>
+
+	<target name="package_test_deploy" depends="double_check,makePackage">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      checkOnly="true"
+      allowMissingFiles="${config.allowMissingFiles}">
+      &tests;
+    </sf:deploy>
+  </target>
+
+  <target name="double_check">
+    <if>
+     <equals arg1="${sf.skipCheck}" arg2="true"/>
+     <then>
+         <echo message="Skipping Check"/>
+     </then>
+     <else>
+        <echo message="You are about to overwrite code in the PACKAGE ORG!!! You better be 1000% sure you know what you're doing..."/>
+        <input
+            message="Are you absolutely sure you want to deploy to THE package org??"
+            validargs="isweariwontscrewthisup" />
+    </else>
+    </if>
+  </target>
+
+	<target name="destroy" depends="create_destroy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      runAllTests="false" />
+    <antcall target="cleanup_deploy_files"/>
+  </target>
+
+
+  <target name="setProps" depends="getPackages">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <testInstall packageName="${lowerCasePackageName}"/>
+  </target>
+
+  <target name="setProps_stg" depends="getPackages_stg">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <testInstall packageName="${lowerCasePackageName}"/>
+  </target>
+  <target name="setProps_rc" depends="getPackages_rc">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <testInstall packageName="${lowerCasePackageName}"/>
+  </target>
+
+  <target name="setProps_patch" depends="getPackages_patch">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <condition property="sf.versionName.set" else="false">
+      <isset property="sf.versionName"/>
+    </condition>
+    <fail unless="${sf.versionName.set}" message="Please provide a versionName for the patch"/>
+    <testInstall packageName="${lowerCasePackageName}"/>
+  </target>
+
+
+    <macrodef name="testInstall">
+      <attribute name= "packageName" />
+      <sequential>
+        <echo message="${packageName}"/>
+        <property name="altPkgNames" value="${@{packageName}.package.dependencies}" />
+        <property name="unmanaged_script" value="${@{packageName}.alternate.unmanaged_install_script}" />
+        <fail message= "The package name is invalid or does not exist" >
+          <condition>
+            <contains string="${unmanaged_script}" substring="alternate.unmanaged_install_script"/>
+            </condition>
+          </fail>
+          <echo message="${unmanaged_script}"/>
+        </sequential>
+        </macrodef>
+
+
+	<target name="deploy" depends="install_dependent_packages,copy_to_deploy_target,setProps_stg,swap_namespace,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}"
+      testLevel="RunLocalTests">
+    </sf:deploy>
+    <antcall target="cleanup_deploy_files"/>
+    <antcall target="unmanaged_install_script"/>
+  </target>
+
+  <target name="labs_deploy" depends="install_dependent_packages_prod,copy_to_deploy_target,setProps,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,fdsversion_substitution,create_deploy_zip">
+  <sf:deploy username="${sf.username}"
+    password="${sf.password}"
+    serverurl="${sf.server}"
+    zipFile="deploy.zip"
+    maxPoll="${config.maxPoll}"
+    pollWaitMillis="${config.pollWaitMillis}"
+    rollbackOnError="${config.rollbackOnError}"
+    singlePackage="${config.singlePkg}"
+    allowMissingFiles="${config.allowMissingFiles}"
+    testLevel="RunLocalTests">
+  </sf:deploy>
+  <antcall target="cleanup_deploy_files"/>
+  <antcall target="unmanaged_install_script"/>
+</target>
+
+    <target name="dev_deploy"
+            depends="install_dependent_packages_prod,copy_to_deploy_target,setProps,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,update_staticresource,create_deploy_zip">
+        <sf:deploy username="${sf.username}"
+                   password="${sf.password}"
+                   serverurl="${sf.server}"
+                   zipFile="deploy.zip"
+                   maxPoll="${config.maxPoll}"
+                   pollWaitMillis="${config.pollWaitMillis}"
+                   rollbackOnError="${config.rollbackOnError}"
+                   singlePackage="${config.singlePkg}"
+                   allowMissingFiles="${config.allowMissingFiles}">
+        </sf:deploy>
+        <antcall target="cleanup_deploy_files"/>
+        <antcall target="unmanaged_install_script"/>
+    </target>
+
+    <target name="dev_deploy_patch"
+            depends="install_dependent_packages_patch,copy_to_deploy_target,setProps_patch,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,update_staticresource,create_deploy_zip">
+        <sf:deploy username="${sf.username}"
+                   password="${sf.password}"
+                   serverurl="${sf.server}"
+                   zipFile="deploy.zip"
+                   maxPoll="${config.maxPoll}"
+                   pollWaitMillis="${config.pollWaitMillis}"
+                   rollbackOnError="${config.rollbackOnError}"
+                   singlePackage="${config.singlePkg}"
+                   allowMissingFiles="${config.allowMissingFiles}">
+        </sf:deploy>
+        <antcall target="cleanup_deploy_files"/>
+        <antcall target="unmanaged_install_script_patch"/>
+    </target>
+
+    <target name="labs_deploy_only" depends="copy_to_deploy_target,setProps_stg,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,update_staticresource,create_deploy_zip">
+  <description>
+    Only deploys.  Does not run unit tests - does not install production packages.
+  </description>
+<sf:deploy username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.server}"
+  zipFile="deploy.zip"
+  maxPoll="${config.maxPoll}"
+  pollWaitMillis="${config.pollWaitMillis}"
+  rollbackOnError="${config.rollbackOnError}"
+  singlePackage="${config.singlePkg}"
+  allowMissingFiles="${config.allowMissingFiles}">
+</sf:deploy>
+<antcall target="cleanup_deploy_files"/>
+<antcall target="unmanaged_install_script"/>
+</target>
+
+  <target name="labs_deploy_only_with_test" depends="copy_to_deploy_target,setProps_stg,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,update_staticresource,create_deploy_zip">
+  <description>
+     deploys and runs unit tests - does not install production packages.
+  </description>
+<sf:deploy username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.server}"
+  zipFile="deploy.zip"
+  maxPoll="${config.maxPoll}"
+  pollWaitMillis="${config.pollWaitMillis}"
+  rollbackOnError="${config.rollbackOnError}"
+  singlePackage="${config.singlePkg}"
+  allowMissingFiles="${config.allowMissingFiles}"
+  testLevel="RunLocalTests">
+</sf:deploy>
+<antcall target="cleanup_deploy_files"/>
+<antcall target="unmanaged_install_script"/>
+</target>
+
+<target name="labs_deploy_unmanaged" depends="copy_to_deploy_target,setProps,update_aura_unmanaged,swapPackageUtils,swapPackageXmlNames,remove_install_classes,create_deploy_zip">
+  <description>
+    Only deploys.  Does not run unit tests - does not install production packages.updates the aura for unmanaged.
+  </description>
+<sf:deploy username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.server}"
+  zipFile="deploy.zip"
+  maxPoll="${config.maxPoll}"
+  pollWaitMillis="${config.pollWaitMillis}"
+  rollbackOnError="${config.rollbackOnError}"
+  singlePackage="${config.singlePkg}"
+  allowMissingFiles="${config.allowMissingFiles}">
+</sf:deploy>
+<antcall target="cleanup_deploy_files"/>
+<antcall target="unmanaged_install_script"/>
+</target>
+
+<target name="installSinglePackage" description="Installs the given managed package">
+    <delete dir="./installdeploy"/>
+    <mkdir dir="./installdeploy"/>
+    <mkdir dir="./installdeploy/installedPackages"/>
+    <echo file="./installdeploy/package.xml"><![CDATA[<Package xmlns="http://soap.sforce.com/2006/04/metadata"><types><members>${sf.namespace}</members><name>InstalledPackage</name></types><version>42.0</version></Package>]]></echo>
+    <echo file="./installdeploy/installedPackages/${sf.namespace}.installedPackage"><![CDATA[<InstalledPackage xmlns="http://soap.sforce.com/2006/04/metadata"><versionNumber>${sf.version}</versionNumber></InstalledPackage>]]></echo>
+    <sf:deploy deployRoot="./installdeploy" username="${sf.username}" password="${sf.password}" serverurl="${sf.server}"/>
+</target>
+
+  <target name="deploy_only" depends="install_dependent_packages,copy_to_deploy_target,remove_install_classes,setProps_stg,swap_namespace,update_staticresource,create_deploy_zip">
+    <description>
+      Only deploys.  Does not run unit tests.
+    </description>
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}" />
+    <antcall target="cleanup_deploy_files"/>
+    <antcall target="unmanaged_install_script"/>
+  </target>
+
+  <target name="deploy_simple" depends="copy_to_deploy_target,remove_install_classes,setProps_stg,swap_namespace,update_staticresource,create_deploy_zip">
+    <description>
+      Only deploys.  Does not run unit tests - does not install dependent packages.
+    </description>
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}" />
+    <antcall target="cleanup_deploy_files"/>
+    <antcall target="unmanaged_install_script"/>
+  </target>
+
+	<target name="test_deploy" depends="copy_to_deploy_target,setProps,swap_namespace,remove_install_classes,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      singlePackage="${config.singlePkg}"
+      checkOnly="true"
+      allowMissingFiles="${config.allowMissingFiles}"
+      testLevel="RunLocalTests">
+  </sf:deploy>
+    <antcall target="cleanup_deploy_files"/>
+  </target>
+
+	<target name="patch_test_deploy" depends="copy_to_deploy_target,setProps_stg,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,fdsversion_substitution,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}"
+      testLevel="RunLocalTests">
+  </sf:deploy>
+    <antcall target="cleanup_deploy_files"/>
+  </target>
+
+  <target name="labs_test_deploy" depends="copy_to_deploy_target,setProps_stg,update_aura,update_classes,swapPackageUtils,swapPackageXmlNames,create_deploy_zip">
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      singlePackage="${config.singlePkg}"
+      checkOnly="true"
+      allowMissingFiles="${config.allowMissingFiles}"
+      testLevel="RunLocalTests">
+  </sf:deploy>
+    <antcall target="cleanup_deploy_files"/>
+  </target>
+
+  <target name="copy_to_deploy_target" depends="cleanup_deploy_files">
+    <delete dir="deploy" failonerror="true"/>
+    <mkdir dir="deploy"/>
+    <mkdir dir="deploy/src"/>
+    <copy todir="deploy/src">
+      <fileset dir="../src"/>
+    </copy>
+  </target>
+
+  <target name="remove_install_classes">
+    <replaceregexp file="deploy/src/package.xml"
+           byline="true">
+      <regexp pattern=".*(postInstallClass|uninstallClass).*"/>
+      <substitution expression=""/>
+    </replaceregexp>
+  </target>
+
+  <target name="runfls">
+  <exec dir="scripts" executable="/bin/bash" failonerror="true">
+  <arg line="runfls.sh ${sf.username} ${sf.password}" />
+  </exec>
+</target>
+
+<target name="build_and_fls" depends="deploy_only,runfls">
+</target>
+
+  <target name="dump_props" depends="setProps">
+    <echoproperties destfile="dump.properties"/>
+  </target>
+
+  <target name="update_classes" depends="removeDeprecation">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="pagesapi" />
+          <then>
+            <replaceregexp match="PagesApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/classes" excludes="PackageUtils.cls"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="orderapi" />
+          <then>
+            <replaceregexp match="OrderApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/classes" excludes="PackageUtils.cls"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="eventapi" />
+          <then>
+            <replaceregexp match="EventApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/classes" excludes="PackageUtils.cls"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+        <equals arg1="${lowerCasePackageName}" arg2="drcts" />
+        <then>
+          <replaceregexp match="DRCTS__"
+                         replace="${sf.namespace}__"
+                         flags="g">
+            <fileset dir="deploy/src" excludes="PackageUtils.cls"/>
+          </replaceregexp>
+        </then>
+      </if>
+  </target>
+
+  <target name="update_aura" depends="removeDeprecation">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <if>
+      <available file="deploy/src/aura" type="dir"/>
+      <then>
+        <replaceregexp match="c:"
+                       replace="${sf.namespace}:"
+                       flags="g">
+          <fileset dir="deploy/src/aura"/>
+        </replaceregexp>
+        <replaceregexp match="__${sf.namespace}:"
+                       replace="__c:"
+                       flags="g">
+          <fileset dir="deploy/src/aura"/>
+        </replaceregexp>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="framework" />
+          <then>
+            <replaceregexp match="Framework__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="roeapi" />
+          <then>
+            <replaceregexp match="ROEApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+            <replaceregexp match="ROEApi__"
+               replace="${sf.namespace}__"
+               flags="g">
+                <fileset dir="deploy/src/objects"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="pagesapi" />
+          <then>
+            <replaceregexp match="PagesApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="orderapi" />
+          <then>
+            <replaceregexp match="OrderApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="eventapi" />
+          <then>
+            <replaceregexp match="EventApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="lte" />
+          <then>
+            <replaceregexp match="LTE__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="drcts" />
+          <then>
+            <replaceregexp match="DRCTS__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="ddapi" />
+          <then>
+            <replaceregexp match="DDApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+        <equals arg1="${lowerCasePackageName}" arg2="directoryapi" />
+        <then>
+          <replaceregexp match="DirectoryApi__"
+                         replace="${sf.namespace}__"
+                         flags="g">
+            <fileset dir="deploy/src/aura"/>
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+      <equals arg1="${lowerCasePackageName}" arg2="joinapi" />
+      <then>
+        <replaceregexp match="joinapi__"
+                       replace="${sf.namespace}__"
+                       flags="g">
+          <fileset dir="deploy/src/aura"/>
+        </replaceregexp>
+      </then>
+    </if>
+    <if>
+    <equals arg1="${lowerCasePackageName}" arg2="orderapi" />
+    <then>
+      <replaceregexp match="OrderApi:"
+                     replace="${sf.namespace}:"
+                     flags="g">
+        <fileset dir="deploy/src/aura"/>
+      </replaceregexp>
+    </then>
+    </if>
+        <replaceregexp match="Label\.c\."
+                       replace="Label.${sf.namespace}."
+                       flags="g">
+          <fileset dir="deploy/src/aura"/>
+        </replaceregexp>
+      </then>
+    </if>
+  </target>
+
+  <target name="update_aura_unmanaged">
+    <lower string="${packageName}" to="lowerCasePackageName"/>
+    <echo message="${packageName}" />
+    <if>
+      <available file="deploy/src/aura" type="dir"/>
+      <then>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="framework" />
+          <then>
+            <replaceregexp match="Framework__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="orderapi" />
+          <then>
+            <replaceregexp match="OrderApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="roeapi" />
+          <then>
+            <replaceregexp match="ROEApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+            <replaceregexp match="ROEApi__"
+               replace="${sf.namespace}__"
+               flags="g">
+                <fileset dir="deploy/src/objects"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="pagesapi" />
+          <then>
+            <replaceregexp match="PagesApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+          <equals arg1="${lowerCasePackageName}" arg2="eventapi" />
+          <then>
+            <replaceregexp match="EventApi__"
+                           replace="${sf.namespace}__"
+                           flags="g">
+              <fileset dir="deploy/src/aura"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+        <equals arg1="${lowerCasePackageName}" arg2="directories" />
+        <then>
+          <replaceregexp match="DirectoryApi__"
+                         replace="${sf.namespace}__"
+                         flags="g">
+            <fileset dir="deploy/src/aura"/>
+          </replaceregexp>
+        </then>
+      </if>
+      </then>
+    </if>
+  </target>
+
+<target name="update_staticresource">
+  <lower string="${packageName}" to="lowerCasePackageName"/>
+  <if>
+  <not>
+    <equals arg1="${lowerCasePackageName}" arg2="fds19r1"/>
+  </not>
+  <then>
+  <if>
+  <not>
+    <equals arg1="${lowerCasePackageName}" arg2="fds19r2"/>
+  </not>
+  <then>
+<if>
+  <available file="deploy/src/staticresources/CustomFieldUtils.resource" property="CustomFieldUtils.present"/>
+  <then>
+    <replaceregexp file="deploy/src/staticresources/CustomFieldUtils.resource"
+                       match="EventApi__"
+                       replace="${sf.namespace}__">
+        </replaceregexp>
+  </then>
+</if>
+  <replaceregexp match="LTE:"
+                 replace="${sf.namespace}:"
+                 flags="g">
+    <fileset file="deploy/src/staticresources/FontevaHelper.resource"/>
+  </replaceregexp>
+</then>
+</if>
+</then>
+</if>
+</target>
+
+<target name="fdsversion_substitution">
+  <lower string="${packageName}" to="lowerCasePackageName"/>
+  <fdsversion string="${sf.namespace}" version="versionName"/>
+  <echo message="${packageName}" />
+  <echo message="${versionName}" />
+<if>
+  <available file="deploy/src/classes" type="dir"/>
+  <then>
+    <if>
+     <contains string="${lowerCasePackageName}" substring="fds19r1" />
+      <then>
+        <replaceregexp match="19R1"
+                       replace="${versionName}"
+                       flags="g">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+      </then>
+    </if>
+     <if>
+     <contains string="${lowerCasePackageName}" substring="fds19r2" />
+      <then>
+        <replaceregexp match="19R2"
+                       replace="${versionName}"
+                       flags="g">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+      </then>
+    </if>
+    <if>
+     <contains string="${lowerCasePackageName}" substring="fds18r2" />
+      <then>
+        <replaceregexp match="18R2"
+                       replace="${versionName}"
+                       flags="g">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+      </then>
+    </if>
+  </then>
+</if>
+</target>
+
+  <target name="update_package_name">
+  <lower string="${sf.namespace}" to="lowerCaseNamespace"/>
+  <echo message="${sf.namespace}" />
+  <if>
+    <available file="deploy/src/package.xml"/>
+    <then>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="framework" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;Framework"
+                         replace="\&lt;fullName\&gt;Spark"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="pagesapi" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;PagesApi"
+                         replace="\&lt;fullName\&gt;Engage"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="orderapi" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;OrderApi"
+                         replace="\&lt;fullName\&gt;Charge"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="eventapi" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;EventApi"
+                         replace="\&lt;fullName\&gt;Assemble"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="roeapi" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;ROEApi"
+                         replace="\&lt;fullName\&gt;Rapid Order Entry"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+      <if>
+        <equals arg1="${lowerCaseNamespace}" arg2="cpbase" />
+        <then>
+          <replaceregexp match="\&lt;fullName\&gt;CPBase"
+                         replace="\&lt;fullName\&gt;Engage - Member Community"
+                         flags="g"
+                         file="deploy/src/package.xml">
+          </replaceregexp>
+        </then>
+      </if>
+    </then>
+    </if>
+</target>
+
+  <target name="removeDeprecation">
+    <if>
+      <isset property="sf.removeDeprecation"/>
+      <then>
+        <replaceregexp match="@deprecated"
+                       replace=""
+                       flags="gi">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+        <replaceregexp match="@Deprecated"
+                       replace=""
+                       flags="gi">
+          <fileset dir="deploy/src/classes"/>
+        </replaceregexp>
+      </then>
+    </if>
+  </target>
+  <target name="swap_namespace" depends="update_aura">
+    <description>
+      This task swaps the namespaces in the unmanaged code being deployed.  Dependencies on
+      FF packages must match namspaces.  For instance: "Framework" is a package namespace,
+      and code, in other repos (e.g. OrderApi) that depends on Framework, references the
+      "Framework" namespace.  However, in integration and staging orgs, the namespace of
+      dependant packages will be alternate int/staging namespaces (e.g. FrameInt1).  This replacement
+      takes place in the for loop.  Below, we are replacing the target orgs NS in 2 files.
+    </description>
+    <condition property="sf.namespace.set" else="false">
+      <isset property="sf.namespace"/>
+    </condition>
+    <fail unless="${sf.namespace.set}" message="Please provide a namespace (sf.namespace) for the target org"/>
+    <for list="${altPkgNames}" param="proj">
+      <sequential>
+        <replaceregexp match="${@{proj}.package.namespace}(?!/)"
+          replace="${@{proj}.alternate.namespace}"
+          flags="g">
+          <fileset dir="deploy/src"/>
+        </replaceregexp>
+        <if>
+          <isset property="sf.removeDeprecation"/>
+          <then>
+            <replaceregexp match="@deprecated"
+                           replace=""
+                           flags="gi">
+              <fileset dir="deploy/src/classes"/>
+            </replaceregexp>
+            <replaceregexp match="@Deprecated"
+                           replace=""
+                           flags="gi">
+              <fileset dir="deploy/src/classes"/>
+            </replaceregexp>
+          </then>
+        </if>
+        <if>
+        <available file="deploy/src/customMetadata" type="dir"/>
+          <then>
+            <!-- rename package object files to their alt namespaces -->
+            <move todir="deploy/src/customMetadata">
+              <fileset dir="deploy/src/customMetadata">
+                <include name="**"/>
+              </fileset>
+              <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+            </move>
+          </then>
+        </if>
+        <if>
+        <available file="deploy/src/objects" type="dir"/>
+          <then>
+            <!-- rename package object files to their alt namespaces -->
+            <move todir="deploy/src/objects">
+              <fileset dir="deploy/src/objects">
+                <include name="**"/>
+              </fileset>
+              <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+            </move>
+          </then>
+        </if>
+        <if>
+        <available file="deploy/src/objects" type="dir"/>
+          <then>
+            <!-- rename package layouts files to their alt namespaces -->
+            <move todir="deploy/src/layouts">
+              <fileset dir="deploy/src/layouts">
+                <include name="**"/>
+              </fileset>
+              <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+            </move>
+          </then>
+        </if>
+        <if>
+        <available file="deploy/src/workflows" type="dir"/>
+          <then>
+            <!-- rename package layouts files to their alt namespaces -->
+            <move todir="deploy/src/workflows">
+              <fileset dir="deploy/src/workflows">
+                <include name="**"/>
+              </fileset>
+              <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+            </move>
+          </then>
+        </if>
+        <!-- swap versions defined in git to QA version numbers -->
+        <!--<replaceregexp match="[0-9](?=&lt;/majorNumber&gt;\n.*\n *&lt;namespace&gt;${@{proj}.alternate.namespace})"
+          replace="${@{proj}.alternate.majorVersion}"
+          flags="g">
+          <fileset dir="deploy/src"/>
+        </replaceregexp>
+        <replaceregexp match="[0-9]{1,2}(?=&lt;/minorNumber&gt;\n *&lt;namespace&gt;${@{proj}.alternate.namespace})"
+          replace="${@{proj}.alternate.minorVersion}"
+          flags="g">
+          <fileset dir="deploy/src"/>
+        </replaceregexp>-->
+      </sequential>
+    </for>
+    <antcall target="swapPackageUtils"/>
+    <antcall target="swapPackageXmlNames"/>
+  </target>
+
+  <target name="dev_swap_namespace">
+    <description>
+      This task swaps the namespaces in the unmanaged code being deployed.
+    </description>
+    <condition property="sf.namespace.set" else="false">
+      <isset property="sf.namespace"/>
+    </condition>
+    <fail unless="${sf.namespace.set}" message="Please provide a namespace (sf.namespace) for the target org"/>
+    <antcall target="swapPackageUtils"/>
+    <antcall target="swapPackageFilenames"/>
+  </target>
+
+  <target name="swapPackageFilenames" depends="checkObjectsDir" if="ObjectsDir.present">
+    <!-- rename package files to their alt namespaces -->
+    <move todir="deploy/src/objects">
+      <fileset dir="deploy/src/objects">
+        <include name="**"/>
+      </fileset>
+      <mapper type="glob" from="${@{proj}.package.namespace}*" to="${@{proj}.alternate.namespace}*"/>
+    </move>
+  </target>
+
+  <target name="swapPackageVersions">
+    <!-- swap versions defined in git to QA version numbers -->
+   <!-- <replaceregexp match="[0-9](?=&lt;/majorNumber&gt;\n.*\n *&lt;namespace&gt;${@{proj}.package.namespace})"
+      replace="${@{proj}.alternate.majorVersion}"
+      flags="g">
+      <fileset dir="deploy/src"/>
+    </replaceregexp>
+    <replaceregexp match="[0-9](?=&lt;/minorNumber&gt;\n *&lt;namespace&gt;${@{proj}.package.namespace})"
+      replace="${@{proj}.alternate.minorVersion}"
+      flags="g">
+      <fileset dir="deploy/src"/>
+    </replaceregexp>-->
+  </target>
+
+  <target name="swapPackageXmlNames">
+    <replaceregexp match="${Package.namespacePrefix}(?=&lt;)(?!&lt;/members)"
+          replace="${sf.namespace}"
+          flags="g"
+          file="deploy/src/package.xml">
+        </replaceregexp>
+  </target>
+
+  <target name="checkObjectsDir">
+    <available file="deploy/src/objects" type="dir" property="${proj}.ObjectsDir.present"/>
+  </target>
+
+  <target name="checkPackageUtils">
+    <available file="deploy/src/classes/PackageUtils.cls" property="PackageUtils.present"/>
+  </target>
+
+  <target name="swapPackageUtils" depends="checkPackageUtils" if="PackageUtils.present">
+    <replace file="deploy/src/classes/PackageUtils.cls" token="${Package.namespacePrefix}" value="${sf.namespace}"/>
+  </target>
+
+	<target name="cleanup_deploy_files">
+	  <delete file="deploy.zip" failonerror="false"/>
+    <delete dir="deploy/" failonerror="false"/>
+  </target>
+
+  <target name="create_deploy_zip">
+    <zip destfile="deploy.zip" update="true">
+      <fileset dir="deploy/src/" includes="*,*/*,*/*/*" excludes=".git/"/>
+    </zip>
+  </target>
+
+  <target name="create_destroy_zip">
+    <zip destfile="deploy.zip" update="false">
+      <fileset dir="destroy" includes="*,*/*,*/*/*" excludes=".git/"/>
+    </zip>
+  </target>
+
+	<target name="makePackage" description="Creates a deploy.zip files for the package org" depends="cleanup_deploy_files">
+	  <zip destfile="deploy.zip" update="true">
+      <fileset dir="../src/" includes="*,*/*,*/*/*" excludes=".git/"/>
+	  </zip>
+  </target>
+
+  <target name="removeOldLayouts" description="Removes all page layouts except the specified version (e.g. 340)">
+    <delete dir="tmp"/>
+    <mkdir dir="tmp"/>
+    <sf:retrieve username="${sf.username}"
+                   password="${sf.password}"
+                   serverurl="${sf.server}"
+                   maxPoll="${config.maxPoll}"
+                   retrieveTarget="tmp"
+                   packageNames="${sf.namespace}"/>
+    <fileset dir="tmp"/>
+    <exec dir="scripts" executable="python" failonerror="true">
+      <arg line="layouts_destructive.py ${layout.version} ../tmp/package.xml" />
+    </exec>
+  </target>
+
+
+   <target name="buildTestFile">
+     <echo file="./lib/runTests.xml" append="false"/>
+     <foreach target="writeRunTest" param="theFile">
+          <fileset dir="../src/classes" id="test.files">
+              <include name="Test_*.cls"/>
+          </fileset>
+      </foreach>
+    </target>
+
+    <target name="writeRunTest">
+      <propertyregex property="newFile"
+                 input="${theFile}"
+                 regexp=".*\/"
+                 replace=""
+                 global="true" />
+      <propertyregex property="finalFile"
+                 input="${newFile}"
+                 regexp="\.cls"
+                 replace=""
+                 global="true" />
+      <echo file="./lib/runTests.xml" append="true">
+        &lt;runTest&gt;${finalFile}&lt;/runTest&gt;
+      </echo>
+    </target>
+</project>

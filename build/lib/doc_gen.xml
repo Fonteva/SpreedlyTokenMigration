@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project name="generate_docs">
+
+<target name="generate_docs">
+  <java fork="true" jar="lib/SfApexDoc.jar" failonerror="true">
+    <arg line="-s ../src/classes -t docs -a lib/resources/author.txt -h lib/resources/home.txt -p global" />
+  </java> 
+  <delete file="SfApexDocLog.txt" failonerror="false"/>
+  <copy file="lib/resources/rocket.gif" todir="docs/SfApexDocs"/>
+</target>
+
+</project>

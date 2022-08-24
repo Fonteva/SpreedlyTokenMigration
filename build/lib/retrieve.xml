@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project name="retrieve" xmlns:sf="antlib:com.salesforce">
+
+  <property name="retrieve.dir" value="retrieved"/>
+
+  <target name="retrieve">
+    <delete dir="${retrieve.dir}"/>
+    <mkdir dir="${retrieve.dir}"/>
+    <sf:retrieve username="${sf.username}"
+                 password="${sf.password}"
+                 serverurl="${sf.server}"
+                 maxPoll="${config.maxPoll}"
+                 retrieveTarget="${retrieve.dir}"
+                 packageNames="${pkg.name}"/>
+      <fileset dir="${retrieve.dir}"/>
+  </target>
+
+  <target name="retrieve_standard">
+    <delete dir="${retrieve.dir}"/>
+    <mkdir dir="${retrieve.dir}"/>
+    <sf:retrieve username="${sf.username}"
+                 password="${sf.password}"
+                 serverurl="${sf.server}"
+                 maxPoll="${config.maxPoll}"
+                 retrieveTarget="${retrieve.dir}"
+                 unpackaged="lib/retrieve_standard.xml"/>
+      <fileset dir="${retrieve.dir}"/>
+  </target>
+
+</project>

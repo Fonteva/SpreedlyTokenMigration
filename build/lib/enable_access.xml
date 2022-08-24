@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project name="enableAccess" xmlns:sf="antlib:com.salesforce">
+
+<target name="enableAccess">
+
+ <property name="stage.dir" value="stage"/>
+
+   <delete dir="${stage.dir}" /> 
+   <mkdir dir="${stage.dir}" /> 
+   <mkdir dir="${stage.dir}/deploy" /> 
+   <mkdir dir="${stage.dir}/deploy/settings" /> 
+   <antcall target="generatePackageXml"/>
+   <antcall target="generateSecuritySettings"/>
+
+    <zip destfile="deploy.zip" update="true">
+      <fileset dir="stage/deploy/" includes="*,*/*,*/*/*" excludes=".git/"/>
+    </zip>
+
+    <sf:deploy username="${sf.username}"
+      password="${sf.password}"
+      serverurl="${sf.server}"
+      zipFile="deploy.zip"
+      maxPoll="${config.maxPoll}"
+      pollWaitMillis="${config.pollWaitMillis}"
+      rollbackOnError="${config.rollbackOnError}"
+      singlePackage="${config.singlePkg}"
+      allowMissingFiles="${config.allowMissingFiles}" />
+
+    <delete file="deploy.zip" failonerror="false"/>
+    <delete dir="stage/" failonerror="false"/>
+
+</target>
+
+<target name="generatePackageXml">
+  <echo file="${stage.dir}/deploy/package.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+        <members>Security</members>
+        <name>Settings</name>
+    </types>
+    <version>30.0</version>
+</Package>]]></echo>
+</target>
+
+<target name="generateSecuritySettings">
+  <echo file="${stage.dir}/deploy/settings/Security.settings"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <networkAccess>
+        <ipRanges>
+            <end>${ip}</end>
+            <start>${ip}</start>
+        </ipRanges>
+    </networkAccess>
+</SecuritySettings>]]></echo>
+</target>
+
+
+</project>

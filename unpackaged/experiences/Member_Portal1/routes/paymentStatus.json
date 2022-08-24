@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "8991839a-42fd-41bf-8884-6105d9e9840a",
+  "appPageId" : "3447d8ad-199b-48d4-b807-5f73af4f771a",
+  "configurationTags" : [ ],
+  "id" : "d5ea54be-cd02-4e83-9e2b-1c06606027a2",
+  "label" : "Payment Status",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-paymentstatus",
+  "type" : "route",
+  "urlPrefix" : "paymentstatus"
+}

@@ -1,0 +1,302 @@
+minimum_cumulusci_version: '3.23.0'
+project:
+  name: FontevaPayments
+  package:
+    name: FontevaPayments
+    namespace: FontevaPay
+    api_version: '51.0'
+
+  git:
+    default_branch: 'develop'
+  source_format: sfdx
+  dependencies:
+        - namespace: Framework
+          version: 128.4.39
+        - namespace: PagesApi
+          version: 121.7.1
+        - namespace: OrderApi
+          version: 128.1.206
+        - namespace: EventApi
+          version: 122.9
+        - namespace: FDService
+          version: 128.6.11
+        - namespace: FDSSPR20
+          version: 7.8.149
+        - namespace: LTE
+          version: 136.5.227
+        - namespace: KEYSTORE
+          version: 120.6
+
+sources:
+  mocks:
+      github: https://github.com/Fonteva/ApexMocks
+      tag: /1.0
+
+  dal:
+      github: https://github.com/Fonteva/Data-Access-Library
+      tag: /1.3
+
+orgs:
+  scratch:
+    develop:
+      config_file: orgs/dev.json
+      days: 30
+      namespaced: True
+
+tasks:
+  # run_tests:
+  #   options:
+  #     required_org_code_coverage_percent: 90
+  #     managed: True
+  #     test_name_match: "%TEST%"
+  #     retry_failures:
+  #       - "unable to obtain exclusive access to this record"
+  #       - "UNABLE_TO_LOCK_ROW"
+  #       - "connection was cancelled here"
+  #     retry_always: True
+  #     verbose: True
+
+  run_apex_tests:
+    description: Run Apex tests
+    class_path: build.tasks.testrunner.RunApexTests
+    options:
+      required_org_code_coverage_percent: 90
+      managed: True
+      test_name_match: "%TEST%"
+      retry_failures:
+        - "unable to obtain exclusive access to this record"
+        - "UNABLE_TO_LOCK_ROW"
+        - "connection was cancelled here"
+      retry_always: True
+      verbose: True
+
+  dx_push:
+    description: Run sfdx source push
+    class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+    options:
+      command: force:source:push -f
+
+  source_deploy:
+    description: Run source deploy
+    class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+    options:
+      command: force:source:deploy -p force-app
+
+  abort_running_tests:
+    description: Aborts any unit tests currently running to prevent build failures when run_tests is executed
+    class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+    options:
+        path: scripts/apex/abort_tests.cls
+
+  referenced_dal_cleanup:
+    description: Cleans up the local dal library files downloaded from github
+    class_path: scripts.python.dalcleanup.cleanUp
+
+  deploy_layouts:
+    description: Apply Layouts
+    class_path: cumulusci.tasks.salesforce.Deploy
+    options:
+        path: "unpackaged/layouts/src"
+
+  wait_for_site_service:
+        description: Waits for site service queuable job to run
+        class_path: cumulusci.tasks.apex.batch.BatchApexWait
+        options:
+            class_name: 'SiteService'
+
+  create_community_site_record:
+        description: Creates LTCommunitySite record
+        class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+        options:
+            path: scripts/apex/create_community_site.cls
+
+  run_org_setup:
+      description: Runs the Org setup button from OrgSetupButton_VF.page
+      class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+      options:
+          path: scripts/apex/run_org_init.cls
+
+  open_org:
+      description: Runs the Org setup button
+      class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+      options:
+          command: force:org:open
+
+  load_dataset:
+      description: Load Dataset
+      options:
+          sql_path: datasets/sample.sql
+          mapping: datasets/mapping.yml
+
+  cleanup:
+      description: Delete the tmp directory
+      class_path: build.tasks.cleanup.cleanUp
+
+  disable_triggers:
+        description: Disable the triggers for the dataload
+        class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+        options:
+            path: scripts/apex/update_trigger.cls
+            param1: 'false'
+
+  enable_triggers:
+      description: Enable the triggers after the dataload
+      class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+      options:
+          path: scripts/apex/update_trigger.cls
+          param1: 'true'
+
+  fls_run:
+        description: Run FLS for Admin, Fonteva Customer Community Login User and Member Portal profiles
+        class_path: build.tasks.fls.UpdateProfile
+        options:
+            package_xml: config/admin_profile.xml
+
+  create_community:
+      description: Create Member Portal Community
+      options:
+          name: Member Portal
+          template: Build Your Own
+          skip_existing: true
+
+  publish_community:
+      description: Publish Community
+      options:
+          name: Member Portal
+
+  deploy_community:
+      description: Deploy Community for scratch org
+      class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+      options:
+          command: force:source:deploy -p unpackaged/community/src
+
+  set_user_role_to_ceo:
+      description: Sets the CEO User Role to current User
+      class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+      options:
+          path: scripts/apex/set_user_role_to_ceo.cls
+
+  load_currencies:
+      description: Creates Salesforce managed currency and Currency Conversion Table records
+      class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+      options:
+          path: scripts/apex/load_salesforce_currencies.cls
+
+  activate_fonmulticurrency:
+      description: Enables enables Fonteva's multi-currency functionality update
+      class_path: cumulusci.tasks.apex.anon.AnonymousApexTask
+      options:
+          path: scripts/apex/activate_critical_update.cls
+          param1: "FonMultiCurrency"
+
+
+flows:
+  build_scratch_org:
+    description: Build local scratch org
+    steps:
+      1:
+        task: update_dependencies
+      2:
+        flow: deploy_dal
+      3:
+        task: dx_push
+      4:
+        task: update_admin_profile
+      5:
+        task: deploy_layouts
+
+  build_scratch_org_with_data:
+    description: Build a scratch org with data
+    steps:
+      1:
+          task: update_dependencies
+      2:
+          flow: deploy_dal
+      3:
+          task: dx_push
+      4:
+          task: update_admin_profile
+      5:
+          task: create_community
+      6:
+          task: deploy_community
+      7:
+          task: publish_community
+      8:
+          task: deploy_layouts
+      9:
+          task: fls_run
+      10:
+          task: disable_triggers
+      11:
+          task: load_dataset
+      12:
+          task: enable_triggers
+      13:
+          task: set_user_role_to_ceo
+      14:
+          task: create_community_site_record
+      16:
+          task: cleanup
+      17:
+          task: run_org_setup
+      18:
+          task: open_org
+
+  deploy_dal:
+    description: Deploys the fonteva Data Access Library to the org
+    steps:
+      1:
+          task: mocks:deploy
+      2:
+          task: dal:deploy
+      3:
+          task: referenced_dal_cleanup
+
+  build_run_pr:
+    description: Build a Scratch org and run PR
+    steps:
+      1:
+          task: update_dependencies
+      2:
+          flow: deploy_dal
+      3:
+          task: dx_push
+      4:
+          task: update_admin_profile
+      5:
+          task: abort_running_tests
+      6:
+          task: run_apex_tests
+
+  build_run_integration:
+    description: Build a Scratch org and run Build integration
+    steps:
+      1:
+          task: update_dependencies
+      2:
+          flow: deploy_dal
+      3:
+          task: dx_push
+      4:
+          task: update_admin_profile
+      5:
+          task: run_apex_tests
+
+  deploy_to_packaging_org:
+    description: Deploys all the metadata to the packaging org prior to uploading package.
+    steps:
+      1:
+          flow: deploy_dal
+      2:
+          task: source_deploy
+      3:
+          task: update_admin_profile
+
+  fonteva_multicurrency:
+    description: Creates Salesforce currency values, enables Fonteva update, creates currency conversion records, updates Fondation Fonteva_Supported_Currencies_CSV field
+    steps:
+      1:
+          task: activate_fonmulticurrency
+      2:
+          task: load_currencies

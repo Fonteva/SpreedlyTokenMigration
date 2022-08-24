@@ -1,0 +1,10 @@
+.DS_Store
+thumbs.db
+ghostdriver.log
+RunTest.log
+*.pyc
+docs/
+deploy/
+deploy.zip
+lib/runTests.xml
+lib/resources/properties.json

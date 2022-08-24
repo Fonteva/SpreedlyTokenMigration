@@ -1,0 +1,1 @@
+projectName = Fonteva Framework Code Library author = Fonteva <a href="mailto:framework@fonteva.com?Subject=Fonteva%20Framework%20Apex%20Documentation"> (framework@fonteva.com)</a>

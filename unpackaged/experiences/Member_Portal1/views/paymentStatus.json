@@ -1,0 +1,45 @@
+{
+  "appPageId" : "3447d8ad-199b-48d4-b807-5f73af4f771a",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "8991839a-42fd-41bf-8884-6105d9e9840a",
+  "label" : "Payment Status",
+  "regions" : [ {
+    "id" : "40ff7a9c-4c1c-4f9c-9249-53da18937063",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "FontevaPay:stripeOnlinePayment",
+      "id" : "8e905ece-7af5-452c-93f2-afb9909ac6af",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "359fbcf9-3723-4bd3-a451-a81deca5427a",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "ce9cbd95-e5da-4aaf-9084-2d7bba422abb",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Payment Status"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "254f5b3f-813c-456f-9382-7dd742f336f6",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ee26f603-b29a-4115-951d-902bf9ebc463",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-paymentstatus"
+}

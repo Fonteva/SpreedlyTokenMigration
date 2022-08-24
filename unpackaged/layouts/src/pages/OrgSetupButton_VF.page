@@ -1,0 +1,36 @@
+<apex:page controller="OrgSetupButton_Ctrl" sidebar="false">
+    <apex:messages />
+    <style type="text/css">
+        h1 { color: #00asa; }
+        p { font-style: italic; }
+    </style>
+
+    <h2 style="color:navy;font-size:20px;"> Press the button below to complete setup for the Scratch Org</h2> <br/>
+    <ul>
+        <li>fix the URL fields on the Site record as well as the related Navigations (Page, Menu Item etc)</li>
+        <li>Run LTE install scripts</li>
+        <li>Set the default community site</li>
+        <li>Update store.New_User_Profile_ID__c, store.OrderApi__New_Contact_Account_Owner__c, &amp; store.New_Contact_Fieldset_CSV__c to valid values</li>
+        <li>Notify you if the OrderApi install scripts failed</li>
+    </ul>
+   <apex:outputPanel id="displayButtonPanel">
+        <apex:outputPanel rendered="{!NOT(setupComplete)}">
+            <apex:form >
+                <apex:commandButton style="height:30px" action="{!runReplace}"
+                                    status="replaceStatus"
+                                    rerender="displayButtonPanel,successpnl,orderApiPnl"
+                                    value="Complete Setup" />
+            </apex:form>
+        </apex:outputPanel>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="successpnl" style="color:green;font-size:20px;font-weight: bold">
+        <apex:outputText rendered="{!setupComplete}"> You are all set! </apex:outputText>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="orderApiPnl" style="color:red;font-size:40px;font-weight: bold">
+        <apex:outputText rendered="{!orderApiInstallScripts}"> OrderApi install scripts have not been run! Please run them from Spark Admin! </apex:outputText>
+    </apex:outputPanel>
+
+    <apex:actionStatus startText="Please wait...." stopText="" id="replaceStatus"/>
+</apex:page>

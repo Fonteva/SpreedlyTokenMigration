@@ -1,0 +1,19 @@
+{
+  "orgName": "Fonteva Payments",
+  "edition": "Developer",
+  "features": ["Communities"],
+  "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled": true
+    },
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    },
+    "apexSettings": {
+      "enableDisableParallelApexTesting": true
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>AdSettingService</members>
+        <members>AdSettings</members>
+        <members>Test_AdSettings</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>AdSettingTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Ad_Setting__c.Ad_Publisher_Requirement__c</members>
+        <members>Ad_Setting__c.Ad_Setting_Name__c</members>
+        <members>Ad_Setting__c.Ad_Setting_Value__c</members>
+        <members>Ad_Setting__c.Api_Name__c</members>
+        <members>Ad_Setting__c.Api_Value__c</members>
+        <members>Ad_Setting__c.Data_Load_Key__c</members>
+        <members>Ad_Setting__c.Messaging_Campaign__c</members>
+        <members>Ad_Setting__c.Setting_Name__c</members>
+        <members>Ad_Setting__c.Setting_Value__c</members>
+        <members>Ad_Setting__c.Target_Audience__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Ad_Setting__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Ad_Setting__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Ad_Setting__c-Ad Setting Layout</members>
+        <members>Ad_Setting__c-Setting Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Ad_Setting__c.All</members>
+        <name>ListView</name>
+    </types>
+</Package>

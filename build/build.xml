@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+ <!--
+ * Copyright (c) 2012, FinancialForce.com, inc
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * - Neither the name of the FinancialForce.com, inc nor the names of its contributors
+ * may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<project name="buildSystem" default="deploy" xmlns:sf="antlib:com.salesforce">
+
+	<taskdef uri="antlib:com.salesforce"
+			 resource="com/salesforce/antlib.xml"
+			 classpath="lib/ant-salesforce.jar"/>
+
+	<property name="props" value="build.properties"/>
+	<property file="local.properties"/>
+  <property file="${props}"/>
+	<property environment="env"/>
+
+	<import file="lib/ant-salesforce.xml"/>
+	<import file="lib/exec_anon.xml"/>
+	<import file="lib/deploy.xml"/>
+	<import file="lib/undeploy.xml"/>
+	<import file="lib/enable_access.xml"/>
+	<import file="lib/run_tests.xml"/>
+  <import file="lib/retrieve.xml"/>
+  <import file="lib/doc_gen.xml"/>
+
+<target name="listMetadata">
+  <sf:listMetadata
+  username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.serverurl}"
+  metadataType="Settings"
+  resultFilePath="list.log"/>
+</target>
+
+<target name="describeMetadata">
+  <sf:describeMetadata
+  username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.serverurl}"
+  resultFilePath="describe.log"/>
+</target>
+
+<target name="bulkRetrieve">
+  <sf:bulkRetrieve
+  username="${sf.username}"
+  password="${sf.password}"
+  serverurl="${sf.serverurl}"
+  metadataType="Settings"
+  retrieveTarget="retrieveUnpackaged"/>
+</target>
+
+<path id="ant.additions.classpath">
+	<fileset dir="junitlib"/>
+</path>
+<target name="test_deploy_with_testreport" depends="copy_to_deploy_target,setProps,swap_namespace,create_deploy_zip">
+	<taskdef
+		name="sfdeploy"
+		classname="com.claimvantage.force.ant.DeployWithXmlReportTask"
+		classpathref="ant.additions.classpath"/>
+		<delete dir="test-reports" quiet="true"/>
+		<sfdeploy
+			username="${sf.username}"
+			password="${sf.password}"
+			serverurl="${sf.server}"
+			zipFile="deploy.zip"
+			maxPoll="${config.maxPoll}"
+			pollWaitMillis="${config.pollWaitMillis}"
+			singlePackage="${config.singlePkg}"
+			checkOnly="true"
+			allowMissingFiles="${config.allowMissingFiles}"
+			junitreportdir="test-reports">
+			<batchtest>
+				<fileset dir="deploy/src/classes">
+				<include name="Test*.cls"/>
+				</fileset>
+			</batchtest>
+		</sfdeploy>
+ 	<antcall target="cleanup_deploy_files"/>
+</target>
+
+<target name="test_deploy_with_testreport_prod" depends="copy_to_deploy_target,setProps_stg,update_aura,swapPackageUtils,swapPackageXmlNames,create_deploy_zip">
+	<taskdef
+		name="sfdeploy"
+		classname="com.claimvantage.force.ant.DeployWithXmlReportTask"
+		classpathref="ant.additions.classpath"/>
+		<delete dir="test-reports" quiet="true"/>
+		<sfdeploy
+			username="${sf.username}"
+			password="${sf.password}"
+			serverurl="${sf.server}"
+			zipFile="deploy.zip"
+			maxPoll="${config.maxPoll}"
+			pollWaitMillis="${config.pollWaitMillis}"
+			singlePackage="${config.singlePkg}"
+			checkOnly="true"
+			allowMissingFiles="${config.allowMissingFiles}"
+			junitreportdir="test-reports">
+			<batchtest>
+				<fileset dir="deploy/src/classes">
+				<include name="Test*.cls"/>
+				</fileset>
+			</batchtest>
+		</sfdeploy>
+ 	<antcall target="cleanup_deploy_files"/>
+</target>
+
+<target name="junitxmltohtml">
+	<junitreport todir="test-reports">
+			 <fileset dir="test-reports">
+					 <include name="TEST-*.xml"/>
+			 </fileset>
+			 <report format="frames" todir="test-reports/html/"/>
+	 </junitreport>
+</target>
+
+<!-- Commented out until officially supported by Framework
+	<target name="LoadCustomSettings">
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/customSettings.txt" />
+	  </antcall>
+	</target>
+
+	<target name="LoadBasicDataset">
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/basic.txt" />
+	  </antcall>
+	</target>
+
+	<target name="LoadVolumeDataset">
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/volumeTest.txt" />
+	  </antcall>
+	</target>
+
+	<target name="CleanUp">
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/cleanup.txt" />
+	  </antcall>
+	</target>
+
+	<target name="RunEverything">
+	  <antcall target="undeploy"/>
+	  <antcall target="deploy"/>
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/cleanup.txt" />
+	  </antcall>
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/customSettings.txt" />
+	  </antcall>
+	  <antcall target="ExecAnonScript">
+		<param name="what" value="datasets/volumeTest.txt" />
+	  </antcall>
+	  <antcall target="RunTests"/>
+	</target>
+-->
+</project>

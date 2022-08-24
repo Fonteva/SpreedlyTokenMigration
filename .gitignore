@@ -1,0 +1,30 @@
+# Salesforce / SFDX / CCI
+.cci
+.sfdx
+
+# Python
+*.pyc
+__pycache__
+
+# Editors
+*.sublime-project
+*.sublime-workspace
+.vscode
+.idea
+.project
+.settings
+IlluminatedCloud
+*.iml
+.idea/
+
+# Misc
+.DS_Store
+/test_results.json
+/test_results.xml
+/node_modules/
+package-lock.json
+.localdevserver/
+
+Framework__Registry.runOnce*
+.history/
+.sf/

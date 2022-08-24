@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecuritySettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <passwordPolicies>
+        <complexity>SpecialCharacters</complexity>
+        <expiration>Never</expiration>
+        <historyRestriction>3</historyRestriction>
+        <lockoutInterval>ThirtyMinutes</lockoutInterval>
+        <maxLoginAttempts>ThreeAttempts</maxLoginAttempts>
+        <minimumPasswordLength>8</minimumPasswordLength>
+        <questionRestriction>None</questionRestriction>
+    </passwordPolicies>
+</SecuritySettings>

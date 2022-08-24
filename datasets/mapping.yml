@@ -1,0 +1,3339 @@
+Insert EventApi__Event_Page__c:
+  sf_object: EventApi__Event_Page__c
+  fields:
+  - EventApi__Navigation_Label__c
+  - EventApi__Page_Name__c
+Insert EventApi__Ticket_Block__c:
+  sf_object: EventApi__Ticket_Block__c
+  fields:
+  - EventApi__Number_Of_Available_Tickets__c
+  - EventApi__Ticket_Block_Name__c
+Insert Framework__Fonteva_Language__c:
+  sf_object: Framework__Fonteva_Language__c
+  fields:
+  - Framework__Display_Name__c
+  - Framework__Display_Order__c
+  - Framework__Is_Active__c
+  - Framework__Language_Code__c
+  - Name
+Insert OrderApi__Badge_Type__c:
+  sf_object: OrderApi__Badge_Type__c
+  fields:
+  - Name
+  - OrderApi__Description__c
+  - OrderApi__Enable_Badge_Flow_down__c
+  - OrderApi__Engagement_Score__c
+  - OrderApi__Icon_Location__c
+  - OrderApi__Image_Location__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Published__c
+  - OrderApi__Public_Description__c
+  - OrderApi__Short_Description__c
+Insert OrderApi__Shipping_Region__c:
+  sf_object: OrderApi__Shipping_Region__c
+  fields:
+  - Name
+  - OrderApi__Address_Field_Values_CSV__c
+  - OrderApi__Address__c
+  - OrderApi__Description__c
+  - OrderApi__Display_Name__c
+  - OrderApi__Is_Default_Region__c
+  - OrderApi__Will_Not_Ship_Message__c
+  - OrderApi__Will_Not_Ship__c
+Insert PagesApi__Form__c:
+  sf_object: PagesApi__Form__c
+  fields:
+  - Name
+  - PagesApi__Description__c
+  - PagesApi__Display_Style__c
+  - PagesApi__Submit_Style__c
+  - PagesApi__Submit_Value__c
+  - PagesApi__User_Instructions__c
+  - PagesApi__Wizard_Review_Instructions__c
+Insert PagesApi__Theme__c:
+  sf_object: PagesApi__Theme__c
+  fields:
+  - Name
+  - PagesApi__Body_Background_Color__c
+  - PagesApi__Brand_Primary__c
+  - PagesApi__Brand_Secondary__c
+  - PagesApi__Community_Styles__c
+  - PagesApi__Custom_CSS__c
+  - PagesApi__Custom_Print_Stylesheet_URL__c
+  - PagesApi__Custom_Stylesheet_URL__c
+  - PagesApi__Description__c
+  - PagesApi__Favicon_Image__c
+  - PagesApi__Footer__c
+  - PagesApi__HTML_Head__c
+  - PagesApi__Header__c
+  - PagesApi__Lightning_Community_Styles__c
+  - PagesApi__Link_Color__c
+  - PagesApi__Logo_Image__c
+  - PagesApi__Logo_Text__c
+  - PagesApi__Logo_URL__c
+  - PagesApi__Navbar_Background_Color__c
+  - PagesApi__Navbar_Link_Color__c
+  - PagesApi__Supernav_Background_Color__c
+  - PagesApi__Supernav_HTML_Position_1__c
+  - PagesApi__Supernav_HTML_Position_2__c
+  - PagesApi__Supernav_HTML_Position_3__c
+  - PagesApi__Supernav_Link_Color__c
+  - PagesApi__Supernav_Text_Color__c
+  - PagesApi__Text_Color__c
+Insert EventApi__Event_Page_Component__c:
+  sf_object: EventApi__Event_Page_Component__c
+  fields:
+  - EventApi__Component_Name__c
+  - EventApi__Config__c
+  - EventApi__HTML__c
+  - EventApi__Order__c
+  - EventApi__Title__c
+  lookups:
+    EventApi__Event_Page__c:
+      table: EventApi__Event_Page__c
+Insert PagesApi__Field_Group__c:
+  sf_object: PagesApi__Field_Group__c
+  fields:
+  - Name
+  - PagesApi__Allow_Users_to_Delete_Mapped_Records__c
+  - PagesApi__DML_Operation__c
+  - PagesApi__Instructions__c
+  - PagesApi__Is_Multiple__c
+  - PagesApi__Mapped_Object__c
+  - PagesApi__Mapped_Relationship_Field__c
+  - PagesApi__Order__c
+  - PagesApi__SOQL_Filter__c
+  lookups:
+    PagesApi__Form__c:
+      table: PagesApi__Form__c
+    PagesApi__Parent_Field_Group__c:
+      table: PagesApi__Field_Group__c
+      after: Insert PagesApi__Field_Group__c
+Insert PagesApi__Field__c:
+  sf_object: PagesApi__Field__c
+  fields:
+  - Name
+  - PagesApi__Dependent_Picklist_Field__c
+  - PagesApi__Dependent_Picklist_Object__c
+  - PagesApi__Help_Text__c
+  - PagesApi__Hidden_Field_Value__c
+  - PagesApi__Is_Hidden__c
+  - PagesApi__Is_Required__c
+  - PagesApi__Mapped_Field__c
+  - PagesApi__Options__c
+  - PagesApi__Order__c
+  - PagesApi__Type__c
+  lookups:
+    PagesApi__Field_Group__c:
+      table: PagesApi__Field_Group__c
+    PagesApi__Field__c:
+      table: PagesApi__Field__c
+      after: Insert PagesApi__Field__c
+    PagesApi__Form__c:
+      table: PagesApi__Form__c
+Insert PagesApi__Skip_Logic_Rule__c:
+  sf_object: PagesApi__Skip_Logic_Rule__c
+  fields:
+  - PagesApi__Answer__c
+  - PagesApi__Destination__c
+  lookups:
+    PagesApi__Field__c:
+      table: PagesApi__Field__c
+Insert Account:
+  sf_object: Account
+  fields:
+  - Name
+  - OrderApi__Account_Email__c
+  - OrderApi__Annual_Engagement_Score__c
+  - OrderApi__Disable_Badge_Flow_down__c
+  - OrderApi__Lifetime_Engagement_Score__c
+  - OrderApi__Outstanding_Credits__c
+  - OrderApi__Price_Rules_Usages__c
+  - OrderApi__Privacy_Settings__c
+  - OrderApi__Restrict_Assignment_Visibility__c
+  lookups:
+    OrderApi__Primary_Contact__c:
+      table: Contact
+      after: Insert Contact
+    ParentId:
+      table: Account
+      after: Insert Account
+Insert OrderApi__AccountDomain__c:
+  sf_object: OrderApi__AccountDomain__c
+  fields:
+  - OrderApi__Value__c
+  lookups:
+    OrderApi__Company__c:
+      table: Account
+Insert Contact:
+  sf_object: Contact
+  fields:
+  - DoNotCall
+  - FirstName
+  - HasOptedOutOfEmail
+  - HasOptedOutOfFax
+  - LastName
+  - OrderApi__Annual_Engagement_Score__c
+  - OrderApi__Assistant_Do_Not_Call__c
+  - OrderApi__Assistant_Email_Opt_Out__c
+  - OrderApi__Assistant_Email__c
+  - OrderApi__Badges__c
+  - OrderApi__Edit_Community_Company_Info__c
+  - OrderApi__Home_Do_Not_Call__c
+  - OrderApi__Lifetime_Engagement_Score__c
+  - OrderApi__Mobile_Do_Not_Call__c
+  - OrderApi__Other_Do_Not_Call__c
+  - OrderApi__Other_Email_Opt_Out__c
+  - OrderApi__Other_Email__c
+  - OrderApi__Outstanding_Credits__c
+  - OrderApi__Personal_Email_Opt_Out__c
+  - OrderApi__Personal_Email__c
+  - OrderApi__Potential_Duplicate_Contacts__c
+  - OrderApi__Preferred_Currency__c
+  - OrderApi__Preferred_Email_Type__c
+  - OrderApi__Preferred_Language__c
+  - OrderApi__Preferred_Phone_Type__c
+  - OrderApi__Price_Rules_Usages__c
+  - OrderApi__Privacy_Settings__c
+  - OrderApi__Sync_Address_Billing__c
+  - OrderApi__Sync_Address_Shipping__c
+  - OrderApi__Sync_Email__c
+  - OrderApi__Sync_Phone__c
+  - OrderApi__Work_Do_Not_Call__c
+  - OrderApi__Work_Email_Opt_Out__c
+  - OrderApi__Work_Email__c
+  - OrderApi__Work_Phone__c
+  - PagesApi__Cookie_Usage_Accepted__c
+  lookups:
+    AccountId:
+      table: Account
+    PagesApi__Site__c:
+      table: PagesApi__Site__c
+      after: Insert PagesApi__Site__c
+    ReportsToId:
+      table: Contact
+      after: Insert Contact
+Insert OrderApi__Known_Address__c:
+  sf_object: OrderApi__Known_Address__c
+  fields:
+  - OrderApi__Additional_Details__c
+  - OrderApi__City__c
+  - OrderApi__Country__c
+  - OrderApi__Is_Default__c
+  - OrderApi__Name__c
+  - OrderApi__Postal_Code__c
+  - OrderApi__Province__c
+  - OrderApi__Street__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Contact__c:
+      table: Contact
+Insert OrderApi__Order_Summary__c:
+  sf_object: OrderApi__Order_Summary__c
+  fields:
+  - OrderApi__Address_To__c
+  - OrderApi__Date__c
+  - OrderApi__Encrypted_Id__c
+  - OrderApi__Entity__c
+  - OrderApi__Filter_Criteria__c
+  - OrderApi__Memo__c
+  - OrderApi__Order_Summary_URL__c
+  - OrderApi__PDF_URL__c
+  - OrderApi__Show_Outstanding_Credits__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Contact__c:
+      table: Contact
+Insert EventApi__Attendee__c:
+  sf_object: EventApi__Attendee__c
+  fields:
+  - EventApi__Contact_Created_by_System__c
+  - EventApi__Email__c
+  - EventApi__First_Name__c
+  - EventApi__Full_Name__c
+  - EventApi__Invitation_Source__c
+  - EventApi__Invitation_Status__c
+  - EventApi__Is_Checked_In__c
+  - EventApi__Is_Invitation_Accepted__c
+  - EventApi__Is_Invitation_Declined__c
+  - EventApi__Is_Invitation_Not_Sent__c
+  - EventApi__Is_Invitation_Sent__c
+  - EventApi__Is_Registered__c
+  - EventApi__Last_Invitation_Email_Sent__c
+  - EventApi__Last_Name__c
+  - EventApi__Max_Guests_Allowed__c
+  - EventApi__Preferred_Email__c
+  - EventApi__Refund_Requested__c
+  - EventApi__Registration_Date__c
+  - EventApi__Registration_Site_Url__c
+  - EventApi__Send_Invitation_Email__c
+  - EventApi__Send_Notification__c
+  - EventApi__Status__c
+  lookups:
+    EventApi__Account__c:
+      table: Account
+    EventApi__Assigned_Guest_Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+      after: Insert EventApi__Ticket_Type__c
+    EventApi__Assignment__c:
+      table: OrderApi__Assignment__c
+      after: Insert OrderApi__Assignment__c
+    EventApi__Attendee_Event__c:
+      table: EventApi__Event__c
+      after: Insert EventApi__Event__c
+    EventApi__Contact__c:
+      table: Contact
+    EventApi__Registration_Group__c:
+      table: EventApi__Registration_Group__c
+      after: Insert EventApi__Registration_Group__c
+    EventApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    EventApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+    EventApi__Seat__c:
+      table: EventApi__Seat__c
+      after: Insert EventApi__Seat__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+      after: Insert EventApi__Ticket_Type__c
+Insert EventApi__Event_Category__c:
+  sf_object: EventApi__Event_Category__c
+  fields:
+  - EventApi__Calendar_Reminder_Text__c
+  - EventApi__Capacity__c
+  - EventApi__Description__c
+  - EventApi__Email_Notification_Text__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Enable_Registration_Groups__c
+  - EventApi__Enable_Schedule_Items__c
+  - EventApi__Enable_Sponsors__c
+  - EventApi__Enable_Waitlist__c
+  - EventApi__Registration_Instructions__c
+  - EventApi__Registration_Style__c
+  - Name
+  lookups:
+    EventApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    EventApi__Media_Asset_Collection__c:
+      table: PagesApi__Media_Asset_Collection__c
+      after: Insert PagesApi__Media_Asset_Collection__c
+Insert EventApi__Event__c:
+  sf_object: EventApi__Event__c
+  fields:
+  - EventApi__Agenda_HTML__c
+  - EventApi__Agenda_Instructions_HTML__c
+  - EventApi__Attendee_Modal_Instructions__c
+  - EventApi__Attendee_Selection_Instructions_HTML__c
+  - EventApi__Attendees__c
+  - EventApi__Auto_Sellout_Event__c
+  - EventApi__Body_Background_Color__c
+  - EventApi__Calendar_Reminder_Text__c
+  - EventApi__Capacity__c
+  - EventApi__Chatter_Group_Ids__c
+  - EventApi__Contact_Search_Result_Fields_CSV__c
+  - EventApi__Create_Contacts_for_Attendees__c
+  - EventApi__Custom_CSS__c
+  - EventApi__Description__c
+  - EventApi__Disable_Attendee_Assignment__c
+  - EventApi__Disable_Guest_Checkout__c
+  - EventApi__Disable_Login__c
+  - EventApi__Display_Name__c
+  - EventApi__ETicket_Label_Color__c
+  - EventApi__ETicket_Value_Color__c
+  - EventApi__Email_Notification_Text__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Enable_Assigned_Seating__c
+  - EventApi__Enable_Contact_Restriction__c
+  - EventApi__Enable_Contact_Search__c
+  - EventApi__Enable_Event_Display_Name_Date_Time__c
+  - EventApi__Enable_QR_Event_Pass__c
+  - EventApi__Enable_Registration_Groups__c
+  - EventApi__Enable_Registration_Updates__c
+  - EventApi__Enable_Schedule_Items__c
+  - EventApi__Enable_Sponsors__c
+  - EventApi__Enable_Waitlist__c
+  - EventApi__End_Date_Time__c
+  - EventApi__End_Date__c
+  - EventApi__End_Time__c
+  - EventApi__Event_Key__c
+  - EventApi__Event_Pass_Image_URL__c
+  - EventApi__Featured_Event__c
+  - EventApi__Free_Event__c
+  - EventApi__Group_Manager_HTML__c
+  - EventApi__Guest_Email_Optional__c
+  - EventApi__Guest_Registrant_FieldSet_CSV__c
+  - EventApi__Heading_Color__c
+  - EventApi__Hero_Button_Background_Color__c
+  - EventApi__Hero_Button_Text_Color__c
+  - EventApi__Hero_Text_Color__c
+  - EventApi__Image_URL__c
+  - EventApi__Individual_Pages__c
+  - EventApi__Invitation_Only__c
+  - EventApi__Is_Active__c
+  - EventApi__Is_Closed__c
+  - EventApi__Is_Published__c
+  - EventApi__Lightning_Event_Style__c
+  - EventApi__Link_Color__c
+  - EventApi__Location_And_Date_Text__c
+  - EventApi__Logo_Image__c
+  - EventApi__Navbar_Background_Color__c
+  - EventApi__Navbar_Text_Color__c
+  - EventApi__One_Form_Per_Order__c
+  - EventApi__Overview_HTML__c
+  - EventApi__Primary_Button_Background_Color__c
+  - EventApi__Primary_Button_Text_Color__c
+  - EventApi__Process_Bar_Color__c
+  - EventApi__Process_Bar_Foreground_Color__c
+  - EventApi__Quantity_Sold__c
+  - EventApi__Register_Now_Accept_Override_URL__c
+  - EventApi__Registration_Instructions__c
+  - EventApi__Registration_Style__c
+  - EventApi__Registration_Timer__c
+  - EventApi__Registration_URL__c
+  - EventApi__Schedule_Item_Display_Name__c
+  - EventApi__Search_All_Contacts__c
+  - EventApi__Session_Shopping_Cart_Instructions__c
+  - EventApi__Session_Shopping_Cart_Label__c
+  - EventApi__Sold_Out__c
+  - EventApi__Speakers_HTML__c
+  - EventApi__Sponsors_HTML__c
+  - EventApi__Start_Date_Time__c
+  - EventApi__Start_Date__c
+  - EventApi__Start_Time__c
+  - EventApi__Status__c
+  - EventApi__Text_Color__c
+  - EventApi__Thumbnail_Image_URL__c
+  - EventApi__Ticket_Sales_Start_Date__c
+  - EventApi__Ticket_Type_Sort_Field__c
+  - EventApi__Ticket_Type_Sort_Order__c
+  - EventApi__Time_Zone__c
+  - EventApi__Total_Event_Capacity__c
+  - EventApi__Venue_HTML__c
+  - EventApi__Waitlist_Entries__c
+  - EventApi__When_and_Where_Summary__c
+  - Name
+  lookups:
+    EventApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    EventApi__Community_Group__c:
+      table: PagesApi__Community_Group__c
+      after: Insert PagesApi__Community_Group__c
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Form__c:
+      table: PagesApi__Form__c
+    EventApi__Schedule_Item_Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Sponsor_Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Ticket_Type_Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+Insert EventApi__Event_Chatter_Groups__c:
+  sf_object: EventApi__Event_Chatter_Groups__c
+  fields:
+  - EventApi__Collaboration_Group_Id__c
+  - EventApi__Group_Name__c
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Event_Status__c:
+  sf_object: EventApi__Event_Status__c
+  fields:
+  - EventApi__Closed_Status_Text__c
+  - EventApi__Enable_Transition_for_Status__c
+  - EventApi__Filter_Transition_Criteria__c
+  - EventApi__Is_Current_Status_for_Event__c
+  - EventApi__Is_Event_Active__c
+  - EventApi__Is_Event_Published__c
+  - EventApi__Order__c
+  - EventApi__Status_Transition_Criteria__c
+  - Name
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Section__c:
+  sf_object: EventApi__Section__c
+  fields:
+  - EventApi__Description__c
+  - EventApi__Display_Order__c
+  - EventApi__Image__c
+  - Name
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Speaker__c:
+  sf_object: EventApi__Speaker__c
+  fields:
+  - EventApi__Bio__c
+  - EventApi__Company_Name__c
+  - EventApi__Display_Order__c
+  - EventApi__Email__c
+  - EventApi__Is_Featured__c
+  - EventApi__Large_Profile_Photo_URL__c
+  - EventApi__Other_Phone__c
+  - EventApi__Phone__c
+  - EventApi__Special_Requests__c
+  - EventApi__Status__c
+  - EventApi__Title__c
+  - LTE__Facebook_URL__c
+  - LTE__Is_Featured__c
+  - LTE__LinkedIn_URL__c
+  - LTE__Twitter_URL__c
+  - Name
+  lookups:
+    EventApi__Contact__c:
+      table: Contact
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Track__c:
+  sf_object: EventApi__Track__c
+  fields:
+  - EventApi__Track_Color__c
+  - Name
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Vendor__c:
+  sf_object: EventApi__Vendor__c
+  fields:
+  - EventApi__Airports__c
+  - EventApi__Ameneties__c
+  - EventApi__City__c
+  - EventApi__Concierge_Phone__c
+  - EventApi__Contact_Email__c
+  - EventApi__Contact_Name__c
+  - EventApi__Contact_Phone__c
+  - EventApi__Contact_Title__c
+  - EventApi__Country__c
+  - EventApi__Description__c
+  - EventApi__Double_Room_Rate__c
+  - EventApi__Executive_Suite_Rate__c
+  - EventApi__Family_Room_Rate__c
+  - EventApi__Front_Desk_Phone__c
+  - EventApi__Hotel_Ameneties_Description__c
+  - EventApi__Hotel_Cancellation_Policy__c
+  - EventApi__Hotel_Type__c
+  - EventApi__Is_Published__c
+  - EventApi__Local_Attractions__c
+  - EventApi__Logo_Image_URL__c
+  - EventApi__Number_of_Rooms__c
+  - EventApi__Phone__c
+  - EventApi__Postal_Code__c
+  - EventApi__Preferred_Vendor__c
+  - EventApi__Room_Rates_Description__c
+  - EventApi__Single_Room_Rate__c
+  - EventApi__Special_Discount_Information__c
+  - EventApi__Standard_Suite_Rate__c
+  - EventApi__State__c
+  - EventApi__Street__c
+  - EventApi__Type__c
+  - EventApi__Vendor_Number__c
+  - EventApi__Walking_Distance_Event__c
+  - Name
+  lookups:
+    EventApi__Account__c:
+      table: Account
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Venue__c:
+  sf_object: EventApi__Venue__c
+  fields:
+  - EventApi__City__c
+  - EventApi__Country__c
+  - EventApi__Description__c
+  - EventApi__Display_Map__c
+  - EventApi__HTML_Description__c
+  - EventApi__Image_URL__c
+  - EventApi__Is_Primary_Venue__c
+  - EventApi__Phone__c
+  - EventApi__Postal_Code__c
+  - EventApi__State__c
+  - EventApi__Street__c
+  - EventApi__Website__c
+  - Name
+  lookups:
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+Insert EventApi__Event_Status_Page__c:
+  sf_object: EventApi__Event_Status_Page__c
+  fields:
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Is_Published__c
+  - EventApi__Order__c
+  - EventApi__Required_Ticket_Types__c
+  lookups:
+    EventApi__Event_Page__c:
+      table: EventApi__Event_Page__c
+    EventApi__Event_Status__c:
+      table: EventApi__Event_Status__c
+Insert EventApi__Room__c:
+  sf_object: EventApi__Room__c
+  fields:
+  - EventApi__Capacity__c
+  - EventApi__Description__c
+  - EventApi__Disabled_Access__c
+  - EventApi__Drops__c
+  - EventApi__Layout__c
+  - EventApi__Location_Description__c
+  - EventApi__Location_Name__c
+  - EventApi__Minimum_Rental_Fee__c
+  - EventApi__Podium__c
+  - EventApi__Power_Outlets__c
+  - EventApi__Rental_Rate_Basis__c
+  - EventApi__Rental_Rate__c
+  - EventApi__Square_Feet__c
+  - EventApi__Stage__c
+  - EventApi__Target_Capacity__c
+  - EventApi__Wireless_Internet__c
+  - Name
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Venue__c:
+      table: EventApi__Venue__c
+Insert EventApi__Seat__c:
+  sf_object: EventApi__Seat__c
+  fields:
+  - EventApi__Is_Assigned__c
+  - EventApi__Seat_Number__c
+  lookups:
+    EventApi__Section__c:
+      table: EventApi__Section__c
+Insert EventApi__Registration_Group__c:
+  sf_object: EventApi__Registration_Group__c
+  fields:
+  - EventApi__Create_Contacts__c
+  - EventApi__Create_Standing_Sales_Order__c
+  - EventApi__Description__c
+  - EventApi__Display_Registered_Members__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Group_Logo_URL__c
+  - EventApi__Invitation_Email_Body__c
+  - EventApi__Invoice_Date__c
+  - EventApi__Limit_Registrations__c
+  - EventApi__Payment_Status__c
+  - EventApi__Payment_Type__c
+  - EventApi__Posting_Entity__c
+  - EventApi__Register_Site_Url__c
+  - EventApi__Registered_Attendees__c
+  - EventApi__Registration_Instructions__c
+  - EventApi__Registration_Limit__c
+  - EventApi__Registration_Page_Header__c
+  - Name
+  lookups:
+    EventApi__Account__c:
+      table: Account
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+      after: Insert OrderApi__Payment_Method__c
+    EventApi__Payment_Terms__c:
+      table: OrderApi__Payment_Terms__c
+      after: Insert OrderApi__Payment_Terms__c
+    EventApi__Primary_Contact__c:
+      table: Contact
+    LTE__Invited_Attendee__c:
+      table: EventApi__Attendee__c
+Insert EventApi__Registration_Item__c:
+  sf_object: EventApi__Registration_Item__c
+  fields:
+  - EventApi__Is_Checked_In__c
+  - EventApi__Line_Description__c
+  - EventApi__Price_Override__c
+  - EventApi__Quantity__c
+  - EventApi__Sale_Price__c
+  - EventApi__Status__c
+  - EventApi__Total__c
+  - EventApi__Transfer_Contact_Email__c
+  - EventApi__Transfer_Contact_Name__c
+  - EventApi__Transfer_Fee__c
+  - EventApi__Transfer__c
+  - LTE__Primary_Group_Ticket_Registration_Item__c
+  lookups:
+    EventApi__Attendee__c:
+      table: EventApi__Attendee__c
+    EventApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    EventApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    EventApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+      after: Insert OrderApi__Price_Rule__c
+    EventApi__Registration_Item__c:
+      table: EventApi__Registration_Item__c
+      after: Insert EventApi__Registration_Item__c
+    EventApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    EventApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+      after: Insert EventApi__Schedule_Item__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+      after: Insert EventApi__Ticket_Type__c
+Insert EventApi__Schedule_Item__c:
+  sf_object: EventApi__Schedule_Item__c
+  fields:
+  - EventApi__Allow_Conflicts__c
+  - EventApi__Assignments_Display_Label__c
+  - EventApi__Capacity__c
+  - EventApi__Cost__c
+  - EventApi__Defer_Revenue__c
+  - EventApi__Deferred_Revenue_Term__c
+  - EventApi__Description__c
+  - EventApi__Disable_Registration__c
+  - EventApi__Display_Name__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Enable_Assignments__c
+  - EventApi__Enable_Waitlist__c
+  - EventApi__End_Date_Time__c
+  - EventApi__End_Date__c
+  - EventApi__Flex_Day_of_the_Month__c
+  - EventApi__Hide_During_Registration__c
+  - EventApi__Image_Path__c
+  - EventApi__Image_URL__c
+  - EventApi__Interview_Form_Display_Label__c
+  - EventApi__Invoice_Payment_Priority__c
+  - EventApi__Is_Active__c
+  - EventApi__Is_Automatically_Added__c
+  - EventApi__Is_Contribution__c
+  - EventApi__Is_Tax_Deductible__c
+  - EventApi__Is_Taxable__c
+  - EventApi__Line_Description__c
+  - EventApi__Maximum_Number_of_Assignments__c
+  - EventApi__Price__c
+  - EventApi__Quantity_Available__c
+  - EventApi__Quantity_Sold__c
+  - EventApi__Require_Assignments__c
+  - EventApi__Required_for_Registration__c
+  - EventApi__Restrict_Number_of_Assignments__c
+  - EventApi__Revenue_Recognition_Date__c
+  - EventApi__Revenue_Recognition_Rule__c
+  - EventApi__Revenue_Recognition_Term_Rule__c
+  - EventApi__SKU__c
+  - EventApi__Session_End_Time__c
+  - EventApi__Session_Start_Time__c
+  - EventApi__Start_Date_Time__c
+  - EventApi__Start_Date__c
+  - Name
+  lookups:
+    EventApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Adjustment_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    EventApi__Deferred_Revenue_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Discount_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Form__c:
+      table: PagesApi__Form__c
+    EventApi__Income_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    EventApi__Refund_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Room__c:
+      table: EventApi__Room__c
+    EventApi__Tax_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+Insert EventApi__Speaker_Schedule_Item__c:
+  sf_object: EventApi__Speaker_Schedule_Item__c
+  fields:
+  - EventApi__Is_Primary__c
+  - EventApi__Role__c
+  - Name
+  lookups:
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Speaker__c:
+      table: EventApi__Speaker__c
+Insert EventApi__Track_Schedule_Item__c:
+  sf_object: EventApi__Track_Schedule_Item__c
+  fields:
+  lookups:
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Track__c:
+      table: EventApi__Track__c
+Insert EventApi__Sponsor_Package__c:
+  sf_object: EventApi__Sponsor_Package__c
+  fields:
+  - EventApi__Assignments_Display_Label__c
+  - EventApi__Cost__c
+  - EventApi__Defer_Revenue__c
+  - EventApi__Deferred_Revenue_Term__c
+  - EventApi__Description__c
+  - EventApi__Display_Name__c
+  - EventApi__Display_Order__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Enable_Assignments__c
+  - EventApi__Flex_Day_of_the_Month__c
+  - EventApi__Image_Path__c
+  - EventApi__Image_URL__c
+  - EventApi__Interview_Form_Display_Label__c
+  - EventApi__Invoice_Payment_Priority__c
+  - EventApi__Is_Active__c
+  - EventApi__Is_Contribution__c
+  - EventApi__Is_Tax_Deductible__c
+  - EventApi__Is_Taxable__c
+  - EventApi__Line_Description__c
+  - EventApi__Maximum_Number_of_Assignments__c
+  - EventApi__Price__c
+  - EventApi__Quantity_Available__c
+  - EventApi__Quantity_Sold__c
+  - EventApi__Require_Assignments__c
+  - EventApi__Restrict_Number_of_Assignments__c
+  - EventApi__Revenue_Recognition_Date__c
+  - EventApi__Revenue_Recognition_Rule__c
+  - EventApi__Revenue_Recognition_Term_Rule__c
+  - EventApi__SKU__c
+  - Name
+  lookups:
+    EventApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Adjustment_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    EventApi__Deferred_Revenue_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Discount_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Form__c:
+      table: PagesApi__Form__c
+    EventApi__Income_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    EventApi__Refund_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Tax_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+Insert EventApi__Sponsor__c:
+  sf_object: EventApi__Sponsor__c
+  fields:
+  - EventApi__Description__c
+  - EventApi__Image_URL__c
+  - EventApi__Is_Featured__c
+  - EventApi__Sponsor_Hyperlink__c
+  - LTE__Is_Featured__c
+  - Name
+  lookups:
+    EventApi__Account__c:
+      table: Account
+    EventApi__Contact__c:
+      table: Contact
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Sponsor_Package__c:
+      table: EventApi__Sponsor_Package__c
+Insert EventApi__Ticket_Type__c:
+  sf_object: EventApi__Ticket_Type__c
+  fields:
+  - EventApi__Cost__c
+  - EventApi__Defer_Revenue__c
+  - EventApi__Deferred_Revenue_Term__c
+  - EventApi__Description__c
+  - EventApi__Display_Available_Inventory__c
+  - EventApi__Early_Bird_End_Date__c
+  - EventApi__Early_Bird_Price__c
+  - EventApi__Enable_Access_Permissions__c
+  - EventApi__Enable_Assignments__c
+  - EventApi__Enable_Early_Bird_Price__c
+  - EventApi__Enable_Onsite_Price__c
+  - EventApi__Enable_Refund_Request__c
+  - EventApi__Enable_Waitlist__c
+  - EventApi__Flex_Day_of_the_Month__c
+  - EventApi__Group_Type__c
+  - EventApi__Image_Path__c
+  - EventApi__Interview_Form_Display_Label__c
+  - EventApi__Inventory_Status__c
+  - EventApi__Invoice_Payment_Priority__c
+  - EventApi__Is_Active__c
+  - EventApi__Is_Contribution__c
+  - EventApi__Is_Group_Ticket_Type__c
+  - EventApi__Is_Published__c
+  - EventApi__Is_Tax_Deductible__c
+  - EventApi__Is_Taxable__c
+  - EventApi__Item_Cost__c
+  - EventApi__Line_Description__c
+  - EventApi__Manage_Agenda_by_Ticket_Type__c
+  - EventApi__Maximum_Number_of_Assignments__c
+  - EventApi__Maximum_Sales_Quantity__c
+  - EventApi__Min_Sales_Quantity__c
+  - EventApi__Minimum_Sales_Quantity__c
+  - EventApi__Onsite_Price__c
+  - EventApi__Price__c
+  - EventApi__Quantity_Available__c
+  - EventApi__Quantity_Sold__c
+  - EventApi__Refund_Request_Policy__c
+  - EventApi__Require_Assignments__c
+  - EventApi__Require_Minimum_Quantity__c
+  - EventApi__Restrict_Maximum_Sales_Quantity__c
+  - EventApi__Restrict_Number_of_Assignments__c
+  - EventApi__Revenue_Recognition_Date__c
+  - EventApi__Revenue_Recognition_Rule__c
+  - EventApi__Revenue_Recognition_Term_Rule__c
+  - EventApi__SKU__c
+  - EventApi__Ticket_Information__c
+  - EventApi__UOM__c
+  - Name
+  lookups:
+    EventApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Adjustment_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Deferred_Revenue_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Discount_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Form__c:
+      table: PagesApi__Form__c
+    EventApi__Income_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    EventApi__Refund_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    EventApi__Tax_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    EventApi__Ticket_Block__c:
+      table: EventApi__Ticket_Block__c
+Insert EventApi__Section_Ticket__c:
+  sf_object: EventApi__Section_Ticket__c
+  fields:
+  lookups:
+    EventApi__Section__c:
+      table: EventApi__Section__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+Insert EventApi__Ticket_Schedule_Item__c:
+  sf_object: EventApi__Ticket_Schedule_Item__c
+  fields:
+  - EventApi__Disable_Registration__c
+  - EventApi__Hide_During_Registration__c
+  - EventApi__Required_for_Registration__c
+  lookups:
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+Insert EventApi__Waitlist_Entry__c:
+  sf_object: EventApi__Waitlist_Entry__c
+  fields:
+  - EventApi__Date_Added__c
+  - EventApi__Email__c
+  - EventApi__Full_Name__c
+  - EventApi__Is_Registered__c
+  - EventApi__Message__c
+  - EventApi__Notification_Sent__c
+  - EventApi__Notified_Date_Time__c
+  - EventApi__Other_Phone__c
+  - EventApi__Phone__c
+  - EventApi__Priority__c
+  - EventApi__Quantity_Requested__c
+  - EventApi__Status__c
+  - LTE__Free_Event_Order_Number__c
+  lookups:
+    EventApi__Contact__c:
+      table: Contact
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    LTE__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+Insert LTE__Menu_Item__c:
+  sf_object: LTE__Menu_Item__c
+  fields:
+  - LTE__Default_List_View__c
+  - LTE__Display_Order__c
+  - LTE__Enable_Access_Permissions__c
+  - LTE__Is_Profile_Menu_Item__c
+  - LTE__Object_Type__c
+  - LTE__Open_Link_in_New_Tab__c
+  - LTE__Profile_Menu_Item_Component__c
+  - LTE__Publicly_Available__c
+  - LTE__Type__c
+  - LTE__URL__c
+  - Name
+  lookups:
+    LTE__Parent_Menu_Item__c:
+      table: LTE__Menu_Item__c
+      after: Insert LTE__Menu_Item__c
+    LTE__Site__c:
+      table: LTE__Site__c
+      after: Insert LTE__Site__c
+Insert LTE__Site__c:
+  sf_object: LTE__Site__c
+  fields:
+  - LTE__Address_Book_Instructions__c
+  - LTE__Assign_Members_Contact_Field_Set__c
+  - LTE__Badges_Instructions__c
+  - LTE__Captcha_Lightning_Component__c
+  - LTE__Community_ID__c
+  - LTE__Community_Name__c
+  - LTE__Cookie_Decline_Redirect_URL__c
+  - LTE__Create_Account_Override_URL__c
+  - LTE__Credit_Note_Header__c
+  - LTE__Credit_Note_Invoice_Line_Table__c
+  - LTE__Default_Event_Listing__c
+  - LTE__Disable_Next_Upcoming_Order_Quick_Pay__c
+  - LTE__Disable_Open_Orders_Quick_Pay__c
+  - LTE__Disable_Past_Due_Quick_Pay__c
+  - LTE__Display_Enhanced_List_View__c
+  - LTE__Display_Geo_Location__c
+  - LTE__Display_Large_Tile_View__c
+  - LTE__Display_Small_Tile_View__c
+  - LTE__Enable_Access_Permissions__c
+  - LTE__Enable_Captcha__c
+  - LTE__Enable_Cookie_Prompt__c
+  - LTE__Enable_Event_Listing_Filter__c
+  - LTE__Event_Listing_Filters__c
+  - LTE__Event_Sort_Fields__c
+  - LTE__Featured_Event_Carousel_Timer__c
+  - LTE__Geo_Location_Radius_Filter_Values_CSV__c
+  - LTE__Invoice_Customer_Info__c
+  - LTE__Invoice_Header__c
+  - LTE__Invoice_Line_Table__c
+  - LTE__Invoices_Instructions__c
+  - LTE__Is_Default__c
+  - LTE__Is_Published__c
+  - LTE__Login_Override_URL__c
+  - LTE__Logo_Image__c
+  - LTE__Logo_Target_URL__c
+  - LTE__Manage_Subscription_Instructions__c
+  - LTE__My_Company_Info_Instructions__c
+  - LTE__My_Info_Instructions__c
+  - LTE__Order_Customer_Info__c
+  - LTE__Order_Header__c
+  - LTE__Order_Summary_Customer_Info__c
+  - LTE__Order_Summary_Header__c
+  - LTE__PDF_Print_Format__c
+  - LTE__Payment_Method_Instructions__c
+  - LTE__Payments_Page_Instructions__c
+  - LTE__Profile_Account_Fieldset_CSV__c
+  - LTE__Profile_Contact_Fieldset_CSV__c
+  - LTE__Receipt_Customer_Info__c
+  - LTE__Receipt_Summary__c
+  - LTE__Refund_Customer_Info__c
+  - LTE__Refund_Summary__c
+  - LTE__Sales_Order_Customer_Info_Invoice__c
+  - LTE__Sales_Order_Header_Invoice__c
+  - LTE__Sales_Order_Line_Table_Credit_Note__c
+  - LTE__Sales_Order_Line_Table_Invoice__c
+  - LTE__Sales_Order_Line_Table__c
+  - LTE__Site_URL__c
+  - Name
+  lookups:
+    LTE__Store__c:
+      table: OrderApi__Store__c
+      after: Insert OrderApi__Store__c
+Insert LTE__Site_Event__c:
+  sf_object: LTE__Site_Event__c
+  fields:
+  - Name
+  lookups:
+    LTE__Event__c:
+      table: EventApi__Event__c
+    LTE__Site__c:
+      table: LTE__Site__c
+Insert OrderApi__Access_Permission__c:
+  sf_object: OrderApi__Access_Permission__c
+  fields:
+  lookups:
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Event_Status_Page__c:
+      table: EventApi__Event_Status_Page__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Registration_Group__c:
+      table: EventApi__Registration_Group__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Sponsor_Package__c:
+      table: EventApi__Sponsor_Package__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    LTE__Menu_Item__c:
+      table: LTE__Menu_Item__c
+    LTE__Site__c:
+      table: LTE__Site__c
+    OrderApi__Badge_Type__c:
+      table: OrderApi__Badge_Type__c
+    OrderApi__Catalog__c:
+      table: OrderApi__Catalog__c
+      after: Insert OrderApi__Catalog__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    OrderApi__Page__c:
+      table: PagesApi__Page__c
+      after: Insert PagesApi__Page__c
+    OrderApi__Site__c:
+      table: PagesApi__Site__c
+      after: Insert PagesApi__Site__c
+    OrderApi__Store__c:
+      table: OrderApi__Store__c
+      after: Insert OrderApi__Store__c
+Insert OrderApi__Assignment_Role__c:
+  sf_object: OrderApi__Assignment_Role__c
+  fields:
+  - Name
+  - OrderApi__Description__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Default__c
+  - OrderApi__Is_Primary__c
+  - OrderApi__Receives_Email_Notifications__c
+  lookups:
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+Insert OrderApi__Assignment__c:
+  sf_object: OrderApi__Assignment__c
+  fields:
+  - EventApi__Contact_Created_By_System__c
+  - EventApi__Other_Information__c
+  - EventApi__Register_Site_Url__c
+  - OrderApi__Assigned_Date__c
+  - OrderApi__Company_Name__c
+  - OrderApi__Description__c
+  - OrderApi__Email__c
+  - OrderApi__First_Name__c
+  - OrderApi__Full_Name__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Primary__c
+  - OrderApi__Is_Unassigned__c
+  - OrderApi__Last_Name__c
+  - OrderApi__Mailing_City__c
+  - OrderApi__Mailing_Country__c
+  - OrderApi__Mailing_Postal_Code__c
+  - OrderApi__Mailing_State__c
+  - OrderApi__Mailing_Street__c
+  - OrderApi__Phone__c
+  - OrderApi__Receives_Email_Notifications__c
+  - OrderApi__Title__c
+  - OrderApi__Unassigned_Date__c
+  lookups:
+    EventApi__Registration_Group__c:
+      table: EventApi__Registration_Group__c
+    EventApi__Seat__c:
+      table: EventApi__Seat__c
+    OrderApi__Assignment_Role__c:
+      table: OrderApi__Assignment_Role__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Subscription_Line__c:
+      table: OrderApi__Subscription_Line__c
+      after: Insert OrderApi__Subscription_Line__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+      after: Insert OrderApi__Renewal__c
+Insert OrderApi__Badge_Workflow__c:
+  sf_object: OrderApi__Badge_Workflow__c
+  fields:
+  - Name
+  - OrderApi__Assigned_Contacts__c
+  - OrderApi__Auto_Expire__c
+  - OrderApi__Line_Account__c
+  - OrderApi__Line_Contact__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Badge_Type__c:
+      table: OrderApi__Badge_Type__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+Insert OrderApi__Badge__c:
+  sf_object: OrderApi__Badge__c
+  fields:
+  - OrderApi__Awarded_Date__c
+  - OrderApi__Engagement_Score__c
+  - OrderApi__Expired_Date__c
+  - OrderApi__Is_Active__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Assignment__c:
+      table: OrderApi__Assignment__c
+    OrderApi__Badge_Type__c:
+      table: OrderApi__Badge_Type__c
+    OrderApi__Badge_Workflow__c:
+      table: OrderApi__Badge_Workflow__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+      after: Insert OrderApi__Renewal__c
+Insert OrderApi__Batch__c:
+  sf_object: OrderApi__Batch__c
+  fields:
+  - Name
+  - OrderApi__Actual_Amount__c
+  - OrderApi__Actual_Count__c
+  - OrderApi__Closed_Date__c
+  - OrderApi__Date__c
+  - OrderApi__Entity__c
+  - OrderApi__Expected_Amount__c
+  - OrderApi__Expected_Count__c
+  - OrderApi__Is_Closed__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Opened_Date__c
+  - OrderApi__Payment_Type__c
+  - OrderApi__Posted_Date__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    OrderApi__Deposit_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+      after: Insert OrderApi__Payment_Gateway__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+      after: Insert OrderApi__Source_Code__c
+Insert OrderApi__Business_Group__c:
+  sf_object: OrderApi__Business_Group__c
+  fields:
+  - Name
+  - OrderApi__Business_Entity_Type__c
+  - OrderApi__Calculate_Sales_Tax__c
+  - OrderApi__Customer_Support_URL__c
+  - OrderApi__Description__c
+  - OrderApi__Display_Name__c
+  - OrderApi__Email__c
+  - OrderApi__Enable_Shipping_By_Order_Total__c
+  - OrderApi__Homepage_URL__c
+  - OrderApi__Invoice_Footer_HTML__c
+  - OrderApi__Invoice_Footer__c
+  - OrderApi__Invoice_Header_Fieldset_CSV__c
+  - OrderApi__Invoice_Header_HTML__c
+  - OrderApi__Invoice_Header__c
+  - OrderApi__Invoice_Lines_Fieldset__c
+  - OrderApi__Invoice_OverPayment_Credit_Memo_Limit__c
+  - OrderApi__Invoice_Page_Override__c
+  - OrderApi__Invoice_Write_off_Limit__c
+  - OrderApi__Is_Master__c
+  - OrderApi__Mailing_Address__c
+  - OrderApi__Merchant_Location__c
+  - OrderApi__Merchant_Name__c
+  - OrderApi__Phone__c
+  - OrderApi__Proforma_Invoice_Authentication_Required__c
+  - OrderApi__Proforma_Invoice_Email_Body__c
+  - OrderApi__Proforma_Invoice_Email_From_Address__c
+  - OrderApi__Proforma_Invoice_Email_From_Name__c
+  - OrderApi__Proforma_Invoice_Email_Subject__c
+  - OrderApi__Proforma_Invoice_Footer__c
+  - OrderApi__Proforma_Invoice_Header__c
+  - OrderApi__Receipt_Footer_HTML__c
+  - OrderApi__Receipt_Header_Fieldset_CSV__c
+  - OrderApi__Receipt_Header_HTML__c
+  - OrderApi__Receipt_Lines_Fieldset__c
+  - OrderApi__Receipt_Page_Override__c
+  - OrderApi__Required_Tax_Fields_CSV__c
+  - OrderApi__Shipping_Rate_Basis__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Credit_Memo_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Default_Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+      after: Insert OrderApi__Payment_Gateway__c
+    OrderApi__Deposit_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Invoice_Write_off_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Parent_Business_Group__c:
+      table: OrderApi__Business_Group__c
+      after: Insert OrderApi__Business_Group__c
+    OrderApi__Theme__c:
+      table: PagesApi__Theme__c
+    OrderApi__Transfers_Payable_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+    OrderApi__Transfers_Receivable_Account__c:
+      table: OrderApi__GL_Account__c
+      after: Insert OrderApi__GL_Account__c
+Insert OrderApi__GL_Account__c:
+  sf_object: OrderApi__GL_Account__c
+  fields:
+  - Name
+  - OrderApi__Detail__c
+  - OrderApi__Report_Category__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+Insert OrderApi__Payment_Terms__c:
+  sf_object: OrderApi__Payment_Terms__c
+  fields:
+  - Name
+  - OrderApi__Display_Message__c
+  - OrderApi__Display_Name__c
+  - OrderApi__Variable__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+Insert OrderApi__Receipt_R__c:
+  sf_object: OrderApi__Receipt_R__c
+  fields:
+  - OrderApi__Is_Payment__c
+  - OrderApi__Is_Refund__c
+  - OrderApi__Receipt_Reference__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+Insert OrderApi__Sales_Order_R__c:
+  sf_object: OrderApi__Sales_Order_R__c
+  fields:
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Conversion_Gain_Loss__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Credits_and_Adjustments__c
+  - OrderApi__Is_Invoiced__c
+  - OrderApi__Overall_Total__c
+  - OrderApi__Sales_Order_Reference__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+Insert OrderApi__Source_Code__c:
+  sf_object: OrderApi__Source_Code__c
+  fields:
+  - Name
+  - OrderApi__Active__c
+  - OrderApi__Channel__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+Insert OrderApi__Item_Class__c:
+  sf_object: OrderApi__Item_Class__c
+  fields:
+  - EventApi__Is_Event_Session__c
+  - EventApi__Is_Schedule_Item_Class__c
+  - EventApi__Is_Sponsor_Class__c
+  - EventApi__Is_Ticket_Type_Class__c
+  - Name
+  - OrderApi__Active_Assignments__c
+  - OrderApi__Assign_to_Item__c
+  - OrderApi__Assignment_Inventory__c
+  - OrderApi__Assignment_SObject__c
+  - OrderApi__Assignments_Display_Label__c
+  - OrderApi__Available_Inventory__c
+  - OrderApi__Defer_Revenue__c
+  - OrderApi__Deferred_Revenue_Term__c
+  - OrderApi__Description__c
+  - OrderApi__Disable_Scheduling__c
+  - OrderApi__Enable_Assignment_Inventory__c
+  - OrderApi__Enable_Assignments__c
+  - OrderApi__Enable_Item_Class_Inventory__c
+  - OrderApi__Flex_Day_of_the_Month__c
+  - OrderApi__Interview_Form_Display_Label__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Contribution__c
+  - OrderApi__Is_Downloadable__c
+  - OrderApi__Is_Event__c
+  - OrderApi__Is_Inventoried__c
+  - OrderApi__Is_Publication__c
+  - OrderApi__Is_Service__c
+  - OrderApi__Is_Shipping_Carrier__c
+  - OrderApi__Is_Subscription__c
+  - OrderApi__Is_Tax_Deductible__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Is_Taxable__c
+  - OrderApi__Refresh__c
+  - OrderApi__Require_Assignments__c
+  - OrderApi__Require_Shipping__c
+  - OrderApi__Revenue_Recognition_Date__c
+  - OrderApi__Revenue_Recognition_Rule__c
+  - OrderApi__Revenue_Recognition_Term_Rule__c
+  - OrderApi__Sold_Inventory__c
+  - OrderApi__Subscription_Plan_Display_Label__c
+  - OrderApi__Use_Default_Tax_Rate__c
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Deferred_Revenue_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Shipping_GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Tax_Class__c:
+      table: OrderApi__Item_Class__c
+      after: Insert OrderApi__Item_Class__c
+Insert OrderApi__Payment_Gateway__c:
+  sf_object: OrderApi__Payment_Gateway__c
+  fields:
+  - Name
+  - OrderApi__AVS_Configuration__c
+  - OrderApi__Attempt_3DS__c
+  - OrderApi__Company_Name__c
+  - OrderApi__Gateway_Specific_Fields__c
+  - OrderApi__Gateway_Type__c
+  - OrderApi__Homepage__c
+  - OrderApi__Is_Enabled__c
+  - OrderApi__Is_Offsite__c
+  - OrderApi__Is_Test__c
+  - OrderApi__Post_Orders_in_Procesing__c
+  - OrderApi__Pre_Authorization_Purchases__c
+  - OrderApi__Require_CVV__c
+  - OrderApi__Require_Email__c
+  - OrderApi__Require_Phone__c
+  - OrderApi__State__c
+  - OrderApi__Supported_Countries__c
+  - OrderApi__Supported_Credit_Cards_Image__c
+  - OrderApi__Supported_Regions__c
+  - OrderApi__Supports_3DS_Purchase__c
+  - OrderApi__Supports_Authorize__c
+  - OrderApi__Supports_Capture__c
+  - OrderApi__Supports_Credit_Card__c
+  - OrderApi__Supports_Credit__c
+  - OrderApi__Supports_EFT__c
+  - OrderApi__Supports_Offsite_Authorize__c
+  - OrderApi__Supports_Verify__c
+  - OrderApi__Supports_Void__c
+  - OrderApi__Supports_eCheck__c
+  - OrderApi__Token__c
+  - OrderApi__Use_Offsite__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Deposit_Account__c:
+      table: OrderApi__GL_Account__c
+Insert OrderApi__Sales_Order_Line_R__c:
+  sf_object: OrderApi__Sales_Order_Line_R__c
+  fields:
+  - OrderApi__Adjustments__c
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Balance_Due__c
+  - OrderApi__Conversion_Gain_Loss__c
+  - OrderApi__Conversion_Rate__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Is_Adjustment__c
+  - OrderApi__Overall_Total__c
+  - OrderApi__Sales_Order_Line_Reference__c
+  lookups:
+    OrderApi__Sales_Order_Line_R__c:
+      table: OrderApi__Sales_Order_Line_R__c
+      after: Insert OrderApi__Sales_Order_Line_R__c
+    OrderApi__Sales_Order_R__c:
+      table: OrderApi__Sales_Order_R__c
+Insert OrderApi__Tax_Locale__c:
+  sf_object: OrderApi__Tax_Locale__c
+  fields:
+  - Name
+  - OrderApi__Locale_Values_CSV__c
+  - OrderApi__Tax_Locale_Field__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Tax_GL_Account__c:
+      table: OrderApi__GL_Account__c
+Insert OrderApi__Receipt_Line_R__c:
+  sf_object: OrderApi__Receipt_Line_R__c
+  fields:
+  - OrderApi__Conversion_Gain_Loss__c
+  - OrderApi__Conversion_Rate__c
+  - OrderApi__Receipt_Line_Reference__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Receipt_Line_R__c:
+      table: OrderApi__Receipt_Line_R__c
+      after: Insert OrderApi__Receipt_Line_R__c
+    OrderApi__Receipt_R__c:
+      table: OrderApi__Receipt_R__c
+    OrderApi__Sales_Order_Line_R__c:
+      table: OrderApi__Sales_Order_Line_R__c
+    OrderApi__Sales_Order_R__c:
+      table: OrderApi__Sales_Order_R__c
+Insert OrderApi__Shipping_Method__c:
+  sf_object: OrderApi__Shipping_Method__c
+  fields:
+  - Name
+  - OrderApi__Description__c
+  - OrderApi__Display_Name__c
+  - OrderApi__Is_Default__c
+  lookups:
+    OrderApi__Shipping_Carrier_Item_Class__c:
+      table: OrderApi__Item_Class__c
+Insert OrderApi__Store__c:
+  sf_object: OrderApi__Store__c
+  fields:
+  - LTE__Enable_Partial_Payments_for_Invoices__c
+  - Name
+  - OrderApi__Account_Match_Criteria__c
+  - OrderApi__Account_Search_Result_Fields_CSV__c
+  - OrderApi__Additional_Contact_Match_Emails__c
+  - OrderApi__Additional_Payment_Types__c
+  - OrderApi__Contact_Match_Custom_Field__c
+  - OrderApi__Contact_Match_Rule__c
+  - OrderApi__Default_Checkout__c
+  - OrderApi__Default_Store_Listing__c
+  - OrderApi__Description__c
+  - OrderApi__Enable_Access_Permissions__c
+  - OrderApi__Enable_Account_Search__c
+  - OrderApi__Enable_Enhanced_List_View__c
+  - OrderApi__Enable_Guest_Checkout__c
+  - OrderApi__Enable_Guest_Save_Payment__c
+  - OrderApi__Enable_Invoice_Payment_Option__c
+  - OrderApi__Enable_Item_Facebook_Sharing__c
+  - OrderApi__Enable_Item_Instagram_Sharing__c
+  - OrderApi__Enable_Item_Link_Sharing__c
+  - OrderApi__Enable_Item_Twitter_Sharing__c
+  - OrderApi__Enable_LIR_Payments__c
+  - OrderApi__Enable_Large_Tile_View__c
+  - OrderApi__Enable_Proforma_Invoice_Payment_Option__c
+  - OrderApi__Enable_Small_Tile_View__c
+  - OrderApi__Enable_Tax_Inclusive_Pricing__c
+  - OrderApi__Fonteva_Supported_Currencies_CSV__c
+  - OrderApi__Invoice_Payment_Option_Fieldset__c
+  - OrderApi__Is_Published__c
+  - OrderApi__New_Contact_Fieldset_CSV__c
+  - OrderApi__New_Contact_Parent_Account_Rule__c
+  - OrderApi__New_User_Profile_ID__c
+  - OrderApi__Payment_Confirmation_Message_HTML__c
+  - OrderApi__Proforma_Payment_Option_Fieldset__c
+  - OrderApi__Require_Contact_Match_Custom_Field__c
+  - OrderApi__eStore_Sort_Fields__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Guest_Checkout_Account__c:
+      table: Account
+    OrderApi__Theme__c:
+      table: PagesApi__Theme__c
+Insert OrderApi__Subscription_Plan__c:
+  sf_object: OrderApi__Subscription_Plan__c
+  fields:
+  - Name
+  - OrderApi__Advanced_Calendar_Days__c
+  - OrderApi__Advanced_Calendar_Free_Paid__c
+  - OrderApi__Auto_Renew_Option__c
+  - OrderApi__Auto_Send_Proforma_Invoice_Emails__c
+  - OrderApi__Bill_Cycle_Day__c
+  - OrderApi__Bill_Cycle__c
+  - OrderApi__Calendar_End_Day__c
+  - OrderApi__Calendar_End_Month__c
+  - OrderApi__Description__c
+  - OrderApi__Disable_Renew__c
+  - OrderApi__Enable_Automatic_Invoice_Payment__c
+  - OrderApi__Enable_Proration__c
+  - OrderApi__Enable_Schedule__c
+  - OrderApi__Grace_Period__c
+  - OrderApi__Initial_Term_Months__c
+  - OrderApi__Invoice_Days_Variable__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Item_Renewal_Instructions__c
+  - OrderApi__Number_Of_Installments__c
+  - OrderApi__Payment_Settings_Instructions__c
+  - OrderApi__PostTerm_Renewal_Window__c
+  - OrderApi__PreTerm_Renewal_Window__c
+  - OrderApi__Proforma_Invoice_Authentication_Required__c
+  - OrderApi__Proforma_Invoice_Email_Body__c
+  - OrderApi__Proforma_Invoice_Email_From_Address__c
+  - OrderApi__Proforma_Invoice_Email_From_Name__c
+  - OrderApi__Proforma_Invoice_Email_Subject__c
+  - OrderApi__Proforma_Invoice_Footer__c
+  - OrderApi__Proforma_Invoice_Header__c
+  - OrderApi__Proration_Rule__c
+  - OrderApi__Renewal_Term_Months__c
+  - OrderApi__Require_Payment_Method__c
+  - OrderApi__Schedule_Frequency__c
+  - OrderApi__Schedule_Type__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Payment_Terms__c:
+      table: OrderApi__Payment_Terms__c
+Insert PagesApi__Media_Asset_Collection__c:
+  sf_object: PagesApi__Media_Asset_Collection__c
+  fields:
+  - Name
+  lookups:
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+Insert OrderApi__Catalog__c:
+  sf_object: OrderApi__Catalog__c
+  fields:
+  - Name
+  - OrderApi__Catalog_Filters__c
+  - OrderApi__Description__c
+  - OrderApi__Display_Featured_Items__c
+  - OrderApi__Display_Order__c
+  - OrderApi__Enable_Access_Permissions__c
+  - OrderApi__Is_Published__c
+  - OrderApi__Placeholder_Image__c
+  lookups:
+    OrderApi__Catalog__c:
+      table: OrderApi__Catalog__c
+      after: Insert OrderApi__Catalog__c
+    OrderApi__Store__c:
+      table: OrderApi__Store__c
+Insert OrderApi__Custom_Payment_Type__c:
+  sf_object: OrderApi__Custom_Payment_Type__c
+  fields:
+  - Name
+  - OrderApi__Custom_Payment_Type_Template__c
+  - OrderApi__Display_On_Backend_Checkout__c
+  - OrderApi__Display_On_Frontend_Checkout__c
+  - OrderApi__Display_Order__c
+  - OrderApi__Instructions__c
+  - OrderApi__Is_Enabled__c
+  lookups:
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Store__c:
+      table: OrderApi__Store__c
+Insert OrderApi__Item__c:
+  sf_object: OrderApi__Item__c
+  fields:
+  - Name
+  - OrderApi__Add_to_Cart_Button_Label_Override__c
+  - OrderApi__Add_to_Cart_Button_Override__c
+  - OrderApi__Assign_to_Item__c
+  - OrderApi__Assignment_Badge_Types_CSV__c
+  - OrderApi__Assignment_Instructions__c
+  - OrderApi__Assignment_SObject__c
+  - OrderApi__Assignments_Display_Label__c
+  - OrderApi__Cost__c
+  - OrderApi__Defer_Revenue__c
+  - OrderApi__Deferred_Revenue_Term__c
+  - OrderApi__Description__c
+  - OrderApi__Disable_Price_Rules__c
+  - OrderApi__Disable_Scheduling__c
+  - OrderApi__Display_Name__c
+  - OrderApi__Download_File_Location__c
+  - OrderApi__Download_File_Name__c
+  - OrderApi__Download_File_Type__c
+  - OrderApi__EAN__c
+  - OrderApi__Enable_Access_Permissions__c
+  - OrderApi__Enable_Assignments__c
+  - OrderApi__Enable_Cancellation_Request__c
+  - OrderApi__Enable_MidTerm_Changes__c
+  - OrderApi__Enable_Shipping__c
+  - OrderApi__Features_List__c
+  - OrderApi__Flex_Day_of_the_Month__c
+  - OrderApi__ISBN__c
+  - OrderApi__Image_Path__c
+  - OrderApi__Interview_Form_Display_Label__c
+  - OrderApi__Inventory_Message__c
+  - OrderApi__Inventory__c
+  - OrderApi__Invoice_Payment_Priority__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Contribution__c
+  - OrderApi__Is_Default_Shipping_Rate__c
+  - OrderApi__Is_Default_Tax_Rate__c
+  - OrderApi__Is_Downloadable__c
+  - OrderApi__Is_Event__c
+  - OrderApi__Is_Inventoried__c
+  - OrderApi__Is_Publication__c
+  - OrderApi__Is_Service__c
+  - OrderApi__Is_Shipping_Rate__c
+  - OrderApi__Is_Subscription__c
+  - OrderApi__Is_Tax_Deductible__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Is_Taxable__c
+  - OrderApi__Item_Weight_UOM__c
+  - OrderApi__Item_Weight__c
+  - OrderApi__Line_Description__c
+  - OrderApi__Maximum_Number_of_Assignments__c
+  - OrderApi__Maximum_Number_of_Downloads__c
+  - OrderApi__Maximum_Value__c
+  - OrderApi__Maximum_Weight__c
+  - OrderApi__Minimum_Value__c
+  - OrderApi__Minimum_Weight__c
+  - OrderApi__Not_For_Individual_Sale__c
+  - OrderApi__Parent_Item__c
+  - OrderApi__Price__c
+  - OrderApi__Require_Assignments__c
+  - OrderApi__Require_PreAuthorized_Payment__c
+  - OrderApi__Require_Shipping__c
+  - OrderApi__Restrict_Number_of_Assignments__c
+  - OrderApi__Restrict_Number_of_Downloads__c
+  - OrderApi__Revenue_Recognition_Date__c
+  - OrderApi__Revenue_Recognition_Rule__c
+  - OrderApi__Revenue_Recognition_Term_Rule__c
+  - OrderApi__SKU__c
+  - OrderApi__Subscription_Plan_Display_Label__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__UPC__c
+  - OrderApi__eStore_Description__c
+  - OrderApi__eStore_Short_Description__c
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Sponsor_Package__c:
+      table: EventApi__Sponsor_Package__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    OrderApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Adjustment_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Deferred_Revenue_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Discount_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Form__c:
+      table: PagesApi__Form__c
+    OrderApi__Gain_Loss_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Income_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+      after: Insert OrderApi__Item__c
+    OrderApi__Refund_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Renewal_Form__c:
+      table: PagesApi__Form__c
+    OrderApi__Shipping_Method__c:
+      table: OrderApi__Shipping_Method__c
+    OrderApi__Shipping_Region__c:
+      table: OrderApi__Shipping_Region__c
+    OrderApi__Tax_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Tax_Locale__c:
+      table: OrderApi__Tax_Locale__c
+Insert OrderApi__Catalog_Item__c:
+  sf_object: OrderApi__Catalog_Item__c
+  fields:
+  - OrderApi__Is_Featured__c
+  - OrderApi__Is_Published__c
+  lookups:
+    OrderApi__Catalog__c:
+      table: OrderApi__Catalog__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+Insert OrderApi__Item_Subscription_Plan__c:
+  sf_object: OrderApi__Item_Subscription_Plan__c
+  fields:
+  - OrderApi__Is_Default__c
+  lookups:
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+Insert OrderApi__Package_Item__c:
+  sf_object: OrderApi__Package_Item__c
+  fields:
+  - OrderApi__Calculate_Pricing__c
+  - OrderApi__Display_Button_Label__c
+  - OrderApi__Display_Instructions__c
+  - OrderApi__Display_Item__c
+  - OrderApi__Display_Label__c
+  - OrderApi__Display_Order__c
+  - OrderApi__Foreign_Key_Id__c
+  - OrderApi__Group_Header__c
+  - OrderApi__Group_Instructions_Text__c
+  - OrderApi__Is_Group__c
+  - OrderApi__Is_Recommended__c
+  - OrderApi__Is_Required__c
+  - OrderApi__Maximum_Quantity_Per_Item__c
+  - OrderApi__Maximum_Quantity__c
+  - OrderApi__Minimum_Quantity__c
+  - OrderApi__Number_of_Free_Items__c
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Sponsor_Package__c:
+      table: EventApi__Sponsor_Package__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Package_Item__c:
+      table: OrderApi__Package_Item__c
+      after: Insert OrderApi__Package_Item__c
+    OrderApi__Package__c:
+      table: OrderApi__Item__c
+Insert OrderApi__Payment_Method__c:
+  sf_object: OrderApi__Payment_Method__c
+  fields:
+  - OrderApi__API_Response__c
+  - OrderApi__Bank_Account_Holder_Type__c
+  - OrderApi__Bank_Account_Type__c
+  - OrderApi__Bank_Name__c
+  - OrderApi__Bank_Routing_Number__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Card_Type__c
+  - OrderApi__Eligible_for_Card_Updater__c
+  - OrderApi__Email__c
+  - OrderApi__Entity__c
+  - OrderApi__First_Six_Digits__c
+  - OrderApi__Full_Name__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Declined__c
+  - OrderApi__Is_Expired__c
+  - OrderApi__Is_Restricted__c
+  - OrderApi__Is_Third_Party__c
+  - OrderApi__Is_Valid__c
+  - OrderApi__Last_Four_Digits__c
+  - OrderApi__Month__c
+  - OrderApi__Number__c
+  - OrderApi__Override_Edit__c
+  - OrderApi__Payment_Method_Token__c
+  - OrderApi__Payment_Method_Type__c
+  - OrderApi__Phone__c
+  - OrderApi__Year__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Custom_Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+      after: Insert OrderApi__Payment_Method__c
+    OrderApi__Custom_Payment_Type__c:
+      table: OrderApi__Custom_Payment_Type__c
+Insert OrderApi__Price_Rule__c:
+  sf_object: OrderApi__Price_Rule__c
+  fields:
+  - EventApi__Is_Early_Bird_Price__c
+  - EventApi__Is_On_Site_Price__c
+  - Name
+  - OrderApi__Additional_Currencies_JSON__c
+  - OrderApi__End_Date__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Default__c
+  - OrderApi__Is_Promotional_Price__c
+  - OrderApi__Limit_Per_Account__c
+  - OrderApi__Limit_Per_Contact__c
+  - OrderApi__Max_Assignments__c
+  - OrderApi__Max_Num_Available__c
+  - OrderApi__Max_Quantity__c
+  - OrderApi__Min_Assignments__c
+  - OrderApi__Min_Quantity__c
+  - OrderApi__Num_Times_Used__c
+  - OrderApi__Price__c
+  - OrderApi__Required_Badge_Types__c
+  - OrderApi__Required_Source_Codes__c
+  - OrderApi__Required_Subscription_Plans__c
+  - OrderApi__Start_Date__c
+  - OrderApi__Tax_Inclusive_Price__c
+  lookups:
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+Insert OrderApi__Renewal_Path__c:
+  sf_object: OrderApi__Renewal_Path__c
+  fields:
+  - OrderApi__Is_Default__c
+  - OrderApi__Rule_Type__c
+  - OrderApi__Sort_Order__c
+  - OrderApi__Term__c
+  lookups:
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Renew_Into_Item__c:
+      table: OrderApi__Item__c
+Insert PagesApi__Media_Asset__c:
+  sf_object: PagesApi__Media_Asset__c
+  fields:
+  - OrderApi__Display_Order__c
+  - OrderApi__Is_Default__c
+  - PagesApi__Extension__c
+  - PagesApi__Filename__c
+  - PagesApi__MIME_Type__c
+  - PagesApi__Path__c
+  - PagesApi__Short_Description__c
+  - PagesApi__Title__c
+  lookups:
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    PagesApi__Media_Asset_Collection__c:
+      table: PagesApi__Media_Asset_Collection__c
+Insert OrderApi__Price_Rule_Variable__c:
+  sf_object: OrderApi__Price_Rule_Variable__c
+  fields:
+  - OrderApi__Field__c
+  - OrderApi__Object__c
+  - OrderApi__Operator__c
+  - OrderApi__Value__c
+  lookups:
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+Insert OrderApi__Renewal_Path_Variable__c:
+  sf_object: OrderApi__Renewal_Path_Variable__c
+  fields:
+  - OrderApi__Field__c
+  - OrderApi__Object__c
+  - OrderApi__Operator__c
+  - OrderApi__Value__c
+  lookups:
+    OrderApi__Renewal_Path__c:
+      table: OrderApi__Renewal_Path__c
+Insert OrderApi__Campaign_Page__c:
+  sf_object: OrderApi__Campaign_Page__c
+  fields:
+  - OrderApi__Description__c
+  - OrderApi__Expenses__c
+  - OrderApi__Footer_Content__c
+  - OrderApi__Goal__c
+  - OrderApi__Header_Content__c
+  - OrderApi__Is_Published__c
+  - OrderApi__Name__c
+  - OrderApi__Sales__c
+  - OrderApi__Shopping_Cart_Enabled__c
+  - OrderApi__Title_Tag__c
+  - OrderApi__Total_Revenue__c
+  - OrderApi__Visits__c
+  lookups:
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Site__c:
+      table: PagesApi__Site__c
+      after: Insert PagesApi__Site__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+    OrderApi__Store__c:
+      table: OrderApi__Store__c
+    OrderApi__Theme__c:
+      table: PagesApi__Theme__c
+Insert OrderApi__Credit_Memo__c:
+  sf_object: OrderApi__Credit_Memo__c
+  fields:
+  - OrderApi__Amount__c
+  - OrderApi__Entity__c
+  - OrderApi__Is_Drafted__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Status__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Credit_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Debit_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+      after: Insert OrderApi__Invoice__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+Insert OrderApi__Credit_Memo_Line__c:
+  sf_object: OrderApi__Credit_Memo_Line__c
+  fields:
+  - OrderApi__Amount__c
+  - OrderApi__Is_Drafted__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Status__c
+  lookups:
+    OrderApi__Credit_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Credit_Memo__c:
+      table: OrderApi__Credit_Memo__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+      after: Insert OrderApi__Invoice_Line__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+      after: Insert OrderApi__Invoice__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+Insert OrderApi__Credit_Note__c:
+  sf_object: OrderApi__Credit_Note__c
+  fields:
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Date__c
+  - OrderApi__Encrypted_Id__c
+  - OrderApi__Entity__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Memo__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+      after: Insert OrderApi__Invoice__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+Insert OrderApi__EPayment__c:
+  sf_object: OrderApi__EPayment__c
+  fields:
+  - OrderApi__API_Response__c
+  - OrderApi__AVS_Code__c
+  - OrderApi__AVS_Message__c
+  - OrderApi__Bank_Account_Holder_Type__c
+  - OrderApi__Bank_Account_Number__c
+  - OrderApi__Bank_Account_Type__c
+  - OrderApi__Bank_Name__c
+  - OrderApi__Bank_Routing_Number__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__CVV_Code__c
+  - OrderApi__CVV_Message__c
+  - OrderApi__Cancelled__c
+  - OrderApi__Card_Number__c
+  - OrderApi__Card_Type__c
+  - OrderApi__Create_Payment_Schedule__c
+  - OrderApi__Currency_Code__c
+  - OrderApi__Date__c
+  - OrderApi__Description__c
+  - OrderApi__Eligible_for_Card_Updater__c
+  - OrderApi__Email__c
+  - OrderApi__Entity__c
+  - OrderApi__Error_Code__c
+  - OrderApi__Errors__c
+  - OrderApi__First_Name__c
+  - OrderApi__First_Six_Digits__c
+  - OrderApi__Full_Name__c
+  - OrderApi__Gateway_Token__c
+  - OrderApi__Gateway_Transaction_ID__c
+  - OrderApi__Has_Errors__c
+  - OrderApi__IP_Address__c
+  - OrderApi__Is_Scheduled__c
+  - OrderApi__Is_ThreeDS__c
+  - OrderApi__Is_Voided__c
+  - OrderApi__Last_4_Digits__c
+  - OrderApi__Last_Four_Digits__c
+  - OrderApi__Last_Name__c
+  - OrderApi__Merchant_Location_Descriptor__c
+  - OrderApi__Merchant_Name_Descriptor__c
+  - OrderApi__Message__c
+  - OrderApi__Month__c
+  - OrderApi__Number__c
+  - OrderApi__Number_of_Installments__c
+  - OrderApi__On_Test_Gateway__c
+  - OrderApi__Order_ID__c
+  - OrderApi__Path__c
+  - OrderApi__Payment_Method_Token__c
+  - OrderApi__Payment_Method_Type__c
+  - OrderApi__Pending__c
+  - OrderApi__Phone__c
+  - OrderApi__Process_Payment__c
+  - OrderApi__Process_Void__c
+  - OrderApi__Receipt_Created__c
+  - OrderApi__Reference_Token__c
+  - OrderApi__Retain_on_Success__c
+  - OrderApi__Schedule_Frequency__c
+  - OrderApi__Schedule_Type__c
+  - OrderApi__Start_Date__c
+  - OrderApi__State__c
+  - OrderApi__Storage_State__c
+  - OrderApi__Succeeded__c
+  - OrderApi__Total__c
+  - OrderApi__Transaction_Token__c
+  - OrderApi__Transaction_Type__c
+  - OrderApi__Verification_Value__c
+  - OrderApi__Year__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Batch__c:
+      table: OrderApi__Batch__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Deposit_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__EPayment__c:
+      table: OrderApi__EPayment__c
+      after: Insert OrderApi__EPayment__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Refund_Receipt__c:
+      table: OrderApi__Receipt__c
+      after: Insert OrderApi__Receipt__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+      after: Insert OrderApi__Sales_Order__c
+    OrderApi__Scheduled_Payment__c:
+      table: OrderApi__Scheduled_Payment__c
+      after: Insert OrderApi__Scheduled_Payment__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+Insert OrderApi__Sales_Order__c:
+  sf_object: OrderApi__Sales_Order__c
+  fields:
+  - OrderApi__Adjustment_Reason__c
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Auto_Send_Proforma_Invoice_Emails__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Contact__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Calculate_Billing_Details__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Cancelled_Date__c
+  - OrderApi__Closed_Date__c
+  - OrderApi__Closed_Status__c
+  - OrderApi__Created_by_Customer__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Credits_and_Adjustments__c
+  - OrderApi__Customer_Reference_Number__c
+  - OrderApi__Date__c
+  - OrderApi__Description__c
+  - OrderApi__Due_Date__c
+  - OrderApi__Encrypted_Id__c
+  - OrderApi__End_Date__c
+  - OrderApi__Entity__c
+  - OrderApi__Generate_Installments__c
+  - OrderApi__Has_Installments__c
+  - OrderApi__Invoice_Date__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Cancelled__c
+  - OrderApi__Is_Closed__c
+  - OrderApi__Is_Evergreen__c
+  - OrderApi__Is_Invoiced__c
+  - OrderApi__Is_Pending_Payment__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Is_Proforma__c
+  - OrderApi__Is_Recurring__c
+  - OrderApi__Is_Scheduled__c
+  - OrderApi__Is_Suspended__c
+  - OrderApi__Is_Voided__c
+  - OrderApi__JSON_Data__c
+  - OrderApi__Mass_Proforma_Email_Subject__c
+  - OrderApi__Memo__c
+  - OrderApi__Number_of_Installments__c
+  - OrderApi__Overall_Total__c
+  - OrderApi__Paid_Date__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Posting_Entity__c
+  - OrderApi__Posting_Status__c
+  - OrderApi__Preferred_Email__c
+  - OrderApi__Processing_Changes__c
+  - OrderApi__Proforma_Invoice_Email_Sent_Date__c
+  - OrderApi__Proforma_Invoice_Email_Sent__c
+  - OrderApi__Require_Payment_Method__c
+  - OrderApi__Schedule_Frequency__c
+  - OrderApi__Schedule_Status__c
+  - OrderApi__Schedule_Type__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Start_Date__c
+  - OrderApi__Status__c
+  - OrderApi__Suspended_Date__c
+  - OrderApi__Suspended_Reason__c
+  - OrderApi__System_Refresh__c
+  - OrderApi__Valid_Payment_Method__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Campaign_Page__c:
+      table: OrderApi__Campaign_Page__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__EPayment__c:
+      table: OrderApi__EPayment__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Payment_Terms__c:
+      table: OrderApi__Payment_Terms__c
+    OrderApi__Sales_Order_R__c:
+      table: OrderApi__Sales_Order_R__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+Insert OrderApi__Invoice_Installment__c:
+  sf_object: OrderApi__Invoice_Installment__c
+  fields:
+  - OrderApi__Balance_Due__c
+  - OrderApi__Due_Date__c
+  lookups:
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+Insert OrderApi__Receipt__c:
+  sf_object: OrderApi__Receipt__c
+  fields:
+  - OrderApi__Action_Information__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Contact__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Calculate_Billing_Details__c
+  - OrderApi__Calculate_Memo__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Date__c
+  - OrderApi__Encrypted_Id__c
+  - OrderApi__Entity__c
+  - OrderApi__Gateway_Transaction_Id__c
+  - OrderApi__Is_Payment__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Is_Refund__c
+  - OrderApi__Memo__c
+  - OrderApi__Payment_Type__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Process_Refund__c
+  - OrderApi__Reference_Number__c
+  - OrderApi__Refund__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Total__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Batch__c:
+      table: OrderApi__Batch__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Deposit_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__EPayment__c:
+      table: OrderApi__EPayment__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Receipt_R__c:
+      table: OrderApi__Receipt_R__c
+    OrderApi__Receipt__c:
+      table: OrderApi__Receipt__c
+      after: Insert OrderApi__Receipt__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+Insert OrderApi__EPayment_Line__c:
+  sf_object: OrderApi__EPayment_Line__c
+  fields:
+  - OrderApi__Activation_Date__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__End_Date__c
+  - OrderApi__Foreign_Key__c
+  - OrderApi__Is_Renewal__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Parent_Foreign_Key__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Tax_Override__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__EPayment_Line__c:
+      table: OrderApi__EPayment_Line__c
+      after: Insert OrderApi__EPayment_Line__c
+    OrderApi__EPayment__c:
+      table: OrderApi__EPayment__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+      after: Insert OrderApi__Invoice_Line__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+      after: Insert OrderApi__Invoice__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+Insert OrderApi__Invoice_Installment_Line__c:
+  sf_object: OrderApi__Invoice_Installment_Line__c
+  fields:
+  - OrderApi__Balance_Due__c
+  lookups:
+    OrderApi__Installment__c:
+      table: OrderApi__Invoice_Installment__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+Insert OrderApi__Invoice__c:
+  sf_object: OrderApi__Invoice__c
+  fields:
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Contact__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Calculate_Billing_Details__c
+  - OrderApi__Calculate_Due_Date__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Credits_and_Adjustments__c
+  - OrderApi__Customer_Reference_Number__c
+  - OrderApi__Description__c
+  - OrderApi__Due_Date__c
+  - OrderApi__Encrypted_Id__c
+  - OrderApi__Entity__c
+  - OrderApi__Invoice_Date__c
+  - OrderApi__Is_Cancelled__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Is_Voided__c
+  - OrderApi__Memo__c
+  - OrderApi__Paid_Date__c
+  - OrderApi__Payment_Count__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Refund_Count__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Status__c
+  - OrderApi__Voided_Date__c
+  lookups:
+    OrderApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Payment_Terms__c:
+      table: OrderApi__Payment_Terms__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Scheduled_Payment__c:
+      table: OrderApi__Scheduled_Payment__c
+      after: Insert OrderApi__Scheduled_Payment__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+      after: Insert OrderApi__Renewal__c
+Insert OrderApi__Invoice_Line__c:
+  sf_object: OrderApi__Invoice_Line__c
+  fields:
+  - OrderApi__Activation_Date__c
+  - OrderApi__Adjustment_Reason__c
+  - OrderApi__Adjustments__c
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__Balance_Due__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Deferred_Revenue_Adjustment__c
+  - OrderApi__End_Date__c
+  - OrderApi__Is_Adjustment__c
+  - OrderApi__Is_Child_Line__c
+  - OrderApi__Is_Posted__c
+  - OrderApi__Is_Renewal__c
+  - OrderApi__Is_Shipping_Rate__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Line_Description__c
+  - OrderApi__Payment_Priority__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Tax_Amount__c
+  - OrderApi__Tax_Override__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__Total__c
+  - OrderApi__Total_with_Tax__c
+  lookups:
+    OrderApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Credit_Memo__c:
+      table: OrderApi__Credit_Memo__c
+    OrderApi__Credit_Note__c:
+      table: OrderApi__Credit_Note__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+      after: Insert OrderApi__Invoice_Line__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Parent_Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+Insert OrderApi__Log__c:
+  sf_object: OrderApi__Log__c
+  fields:
+  - OrderApi__Date__c
+  - OrderApi__System_Message__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Assignment__c:
+      table: OrderApi__Assignment__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Receipt_Line__c:
+      table: OrderApi__Receipt_Line__c
+      after: Insert OrderApi__Receipt_Line__c
+    OrderApi__Receipt__c:
+      table: OrderApi__Receipt__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Scheduled_Payment__c:
+      table: OrderApi__Scheduled_Payment__c
+      after: Insert OrderApi__Scheduled_Payment__c
+    OrderApi__Subscription_Line__c:
+      table: OrderApi__Subscription_Line__c
+      after: Insert OrderApi__Subscription_Line__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription_Upgrade_Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+Insert OrderApi__Receipt_Line__c:
+  sf_object: OrderApi__Receipt_Line__c
+  fields:
+  - OrderApi__Activation_Date__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__End_Date__c
+  - OrderApi__Foreign_Key__c
+  - OrderApi__Is_Renewal__c
+  - OrderApi__Is_Shipping_Rate__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Item_Name__c
+  - OrderApi__Line_Description__c
+  - OrderApi__Parent_Foreign_Key__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Tax_Override__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__EPayment_Line__c:
+      table: OrderApi__EPayment_Line__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Receipt_Line_R__c:
+      table: OrderApi__Receipt_Line_R__c
+    OrderApi__Receipt_Line__c:
+      table: OrderApi__Receipt_Line__c
+      after: Insert OrderApi__Receipt_Line__c
+    OrderApi__Receipt__c:
+      table: OrderApi__Receipt__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+Insert OrderApi__Sales_Order_Line__c:
+  sf_object: OrderApi__Sales_Order_Line__c
+  fields:
+  - EventApi__Is_Required_Schedule_Item__c
+  - OrderApi__Activation_Date__c
+  - OrderApi__Active_Assignments__c
+  - OrderApi__Adjustment_Reason__c
+  - OrderApi__Adjustments__c
+  - OrderApi__Amount_Paid__c
+  - OrderApi__Amount_Refunded__c
+  - OrderApi__Auto_Assign_Account_Contacts__c
+  - OrderApi__Auto_Assign_Contact__c
+  - OrderApi__Auto_Assign_Rule__c
+  - OrderApi__Auto_Assign__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__Balance_Due__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Conversion_Rate__c
+  - OrderApi__Credits_Applied__c
+  - OrderApi__Deferred_Revenue_Adjustment__c
+  - OrderApi__Disable_Scheduling__c
+  - OrderApi__Display_Item__c
+  - OrderApi__Do_Not_Collect_Payment__c
+  - OrderApi__Enable_Auto_Renew__c
+  - OrderApi__End_Date__c
+  - OrderApi__Entity__c
+  - OrderApi__Foreign_Key__c
+  - OrderApi__Incomplete__c
+  - OrderApi__Is_Adjustment__c
+  - OrderApi__Is_Amendment__c
+  - OrderApi__Is_Installment_Calculated__c
+  - OrderApi__Is_Line_Posted__c
+  - OrderApi__Is_Renewal__c
+  - OrderApi__Is_Shipping_Rate__c
+  - OrderApi__Is_Subscription__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Is_Valid__c
+  - OrderApi__Item_Name__c
+  - OrderApi__Line_Description__c
+  - OrderApi__Overall_Total__c
+  - OrderApi__Parent_Foreign_Key__c
+  - OrderApi__Payment_Priority__c
+  - OrderApi__Posted_Date__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Shipping_Tracking_Number__c
+  - OrderApi__Subscription_Start_Date__c
+  - OrderApi__System_Override__c
+  - OrderApi__Tax_Amount__c
+  - OrderApi__Tax_Override__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__Total_Installment_Price__c
+  - OrderApi__Total__c
+  - OrderApi__Total_with_Tax__c
+  lookups:
+    EventApi__Attendee__c:
+      table: EventApi__Attendee__c
+    EventApi__Event__c:
+      table: EventApi__Event__c
+    EventApi__Schedule_Item__c:
+      table: EventApi__Schedule_Item__c
+    EventApi__Sponsor_Package__c:
+      table: EventApi__Sponsor_Package__c
+    EventApi__Ticket_Type__c:
+      table: EventApi__Ticket_Type__c
+    OrderApi__AR_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Credit_Memo__c:
+      table: OrderApi__Credit_Memo__c
+    OrderApi__Credit_Note__c:
+      table: OrderApi__Credit_Note__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Package_Item__c:
+      table: OrderApi__Package_Item__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Sales_Order_Line_R__c:
+      table: OrderApi__Sales_Order_Line_R__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+      after: Insert OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Shipping_Method__c:
+      table: OrderApi__Shipping_Method__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+      after: Insert OrderApi__Renewal__c
+Insert OrderApi__Subscription__c:
+  sf_object: OrderApi__Subscription__c
+  fields:
+  - OrderApi__Activated_Date__c
+  - OrderApi__Active_Assignments__c
+  - OrderApi__Assignments_Allowed__c
+  - OrderApi__Billing_City__c
+  - OrderApi__Billing_Contact__c
+  - OrderApi__Billing_Country__c
+  - OrderApi__Billing_Postal_Code__c
+  - OrderApi__Billing_State__c
+  - OrderApi__Billing_Street__c
+  - OrderApi__Calculate_Billing_Details__c
+  - OrderApi__Calculate_Shipping_Details__c
+  - OrderApi__Cancelled_Date__c
+  - OrderApi__Cancelled_Reason__c
+  - OrderApi__Current_Term_End_Date__c
+  - OrderApi__Current_Term_Start_Date__c
+  - OrderApi__Days_To_Lapse__c
+  - OrderApi__Description__c
+  - OrderApi__Enable_Auto_Renew__c
+  - OrderApi__Entity__c
+  - OrderApi__Expired_Date__c
+  - OrderApi__Grace_Period_End_Date__c
+  - OrderApi__Hide_In_Portal__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Cancelled__c
+  - OrderApi__Is_Expired__c
+  - OrderApi__Is_Pending__c
+  - OrderApi__Is_Suspended__c
+  - OrderApi__Is_Upgraded__c
+  - OrderApi__Last_Amendment_Date__c
+  - OrderApi__Last_Renewed_Date__c
+  - OrderApi__Last_System_Run__c
+  - OrderApi__Maximum_Number_of_Assignments__c
+  - OrderApi__Next_Scheduled_Renewal_Date__c
+  - OrderApi__Paid_Through_Date__c
+  - OrderApi__Renewal_Override__c
+  - OrderApi__Shipping_City__c
+  - OrderApi__Shipping_Contact__c
+  - OrderApi__Shipping_Country__c
+  - OrderApi__Shipping_Postal_Code__c
+  - OrderApi__Shipping_State__c
+  - OrderApi__Shipping_Street__c
+  - OrderApi__Status__c
+  - OrderApi__Subscription_Management_Page_Override__c
+  - OrderApi__Suspended_Date__c
+  - OrderApi__Suspended_Reason__c
+  - OrderApi__System_Refresh__c
+  - OrderApi__Upgraded_Date__c
+  - OrderApi__Valid_Payment_Method__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Upgraded_Subscription__c:
+      table: OrderApi__Subscription__c
+      after: Insert OrderApi__Subscription__c
+Insert PagesApi__Form_Response__c:
+  sf_object: PagesApi__Form_Response__c
+  fields:
+  - PagesApi__Date__c
+  - PagesApi__Entity__c
+  lookups:
+    EventApi__Attendee__c:
+      table: EventApi__Attendee__c
+    EventApi__Registration_Group__c:
+      table: EventApi__Registration_Group__c
+    EventApi__Registration_Item__c:
+      table: EventApi__Registration_Item__c
+    EventApi__Speaker__c:
+      table: EventApi__Speaker__c
+    EventApi__Sponsor__c:
+      table: EventApi__Sponsor__c
+    OrderApi__Assignment__c:
+      table: OrderApi__Assignment__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    PagesApi__Account__c:
+      table: Account
+    PagesApi__Contact__c:
+      table: Contact
+    PagesApi__Form__c:
+      table: PagesApi__Form__c
+Insert OrderApi__Renewal__c:
+  sf_object: OrderApi__Renewal__c
+  fields:
+  - OrderApi__Active_Assignments__c
+  - OrderApi__Assignments_Allowed__c
+  - OrderApi__Cancellation_Requested__c
+  - OrderApi__Days_To_Lapse__c
+  - OrderApi__Dues_Total__c
+  - OrderApi__Entity__c
+  - OrderApi__Grace_Period_End_Date__c
+  - OrderApi__Is_Active__c
+  - OrderApi__Is_Changed__c
+  - OrderApi__Last_Amendment_Date__c
+  - OrderApi__Next_Invoice_Due_Date__c
+  - OrderApi__Next_Scheduled_Payment_Date__c
+  - OrderApi__Next_Term_Renewed_Date__c
+  - OrderApi__Renewed_Date__c
+  - OrderApi__Term_End_Date__c
+  - OrderApi__Term_Start_Date__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Previous_Term__c:
+      table: OrderApi__Renewal__c
+      after: Insert OrderApi__Renewal__c
+    OrderApi__Renewal_Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+Insert OrderApi__Transaction__c:
+  sf_object: OrderApi__Transaction__c
+  fields:
+  - OrderApi__Date__c
+  - OrderApi__Entity__c
+  - OrderApi__Memo__c
+  - OrderApi__Receipt_Type__c
+  - OrderApi__Type__c
+  lookups:
+    OrderApi__Account__c:
+      table: Account
+    OrderApi__Batch__c:
+      table: OrderApi__Batch__c
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Contact__c:
+      table: Contact
+    OrderApi__Credit_Memo_Line__c:
+      table: OrderApi__Credit_Memo_Line__c
+    OrderApi__Credit_Memo__c:
+      table: OrderApi__Credit_Memo__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Receipt__c:
+      table: OrderApi__Receipt__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Source_Code__c:
+      table: OrderApi__Source_Code__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+Insert PagesApi__Field_Response__c:
+  sf_object: PagesApi__Field_Response__c
+  fields:
+  - PagesApi__Report_Response__c
+  - PagesApi__Response_Group__c
+  - PagesApi__Response__c
+  - PagesApi__System_Reference__c
+  lookups:
+    EventApi__Attendee__c:
+      table: EventApi__Attendee__c
+    EventApi__Speaker__c:
+      table: EventApi__Speaker__c
+    EventApi__Sponsor__c:
+      table: EventApi__Sponsor__c
+    OrderApi__Field_Group__c:
+      table: PagesApi__Field_Group__c
+    OrderApi__Field__c:
+      table: PagesApi__Field__c
+    OrderApi__Form_Response__c:
+      table: PagesApi__Form_Response__c
+    OrderApi__Form__c:
+      table: PagesApi__Form__c
+    PagesApi__Field_Group__c:
+      table: PagesApi__Field_Group__c
+    PagesApi__Field_Response__c:
+      table: PagesApi__Field_Response__c
+      after: Insert PagesApi__Field_Response__c
+    PagesApi__Field__c:
+      table: PagesApi__Field__c
+    PagesApi__Form_Response__c:
+      table: PagesApi__Form_Response__c
+Insert OrderApi__Scheduled_Payment__c:
+  sf_object: OrderApi__Scheduled_Payment__c
+  fields:
+  - OrderApi__API_Response__c
+  - OrderApi__Amount__c
+  - OrderApi__Balance_Due__c
+  - OrderApi__Custom_Scheduled_Payment__c
+  - OrderApi__EPayment_Created__c
+  - OrderApi__Has_Errors__c
+  - OrderApi__Is_Cancelled__c
+  - OrderApi__Is_Payment_Processed__c
+  - OrderApi__Is_Processed__c
+  - OrderApi__No_Auto_Payment__c
+  - OrderApi__Processed_Date__c
+  - OrderApi__Scheduled_Date__c
+  - OrderApi__Succeeded__c
+  - OrderApi__System_Message__c
+  lookups:
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Payment_Gateway__c:
+      table: OrderApi__Payment_Gateway__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Saved_Payment_Method__c:
+      table: OrderApi__Payment_Method__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+Insert OrderApi__Subscription_Line__c:
+  sf_object: OrderApi__Subscription_Line__c
+  fields:
+  - OrderApi__Activated_Date__c
+  - OrderApi__Active_Assignments__c
+  - OrderApi__Invoiced_Date__c
+  - OrderApi__Is_Amendment__c
+  - OrderApi__Is_Invoiced__c
+  - OrderApi__Is_Required_Package_Item__c
+  - OrderApi__Line_Description__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Receipt_Line__c:
+      table: OrderApi__Receipt_Line__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Subscription_Line__c:
+      table: OrderApi__Subscription_Line__c
+      after: Insert OrderApi__Subscription_Line__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+    OrderApi__Term__c:
+      table: OrderApi__Renewal__c
+Insert OrderApi__Scheduled_Payment_Line__c:
+  sf_object: OrderApi__Scheduled_Payment_Line__c
+  fields:
+  - OrderApi__Activation_Date__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__End_Date__c
+  - OrderApi__Is_Renewal__c
+  - OrderApi__Is_Shipping_Rate__c
+  - OrderApi__Is_Tax__c
+  - OrderApi__Price_Override__c
+  - OrderApi__Quantity__c
+  - OrderApi__Sale_Price__c
+  - OrderApi__Tax_Override__c
+  - OrderApi__Tax_Percent__c
+  - OrderApi__Total__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Price_Rule__c:
+      table: OrderApi__Price_Rule__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Scheduled_Payment_Line__c:
+      table: OrderApi__Scheduled_Payment_Line__c
+      after: Insert OrderApi__Scheduled_Payment_Line__c
+    OrderApi__Scheduled_Payment__c:
+      table: OrderApi__Scheduled_Payment__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+Insert OrderApi__Transaction_Line__c:
+  sf_object: OrderApi__Transaction_Line__c
+  fields:
+  - OrderApi__Activation_Date__c
+  - OrderApi__Auto_Calculate_Activation_Date__c
+  - OrderApi__Conversion_Rate__c
+  - OrderApi__Credit__c
+  - OrderApi__Debit__c
+  - OrderApi__End_Date__c
+  - OrderApi__Memo__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__EPayment_Line__c:
+      table: OrderApi__EPayment_Line__c
+    OrderApi__GL_Account__c:
+      table: OrderApi__GL_Account__c
+    OrderApi__Invoice_Line__c:
+      table: OrderApi__Invoice_Line__c
+    OrderApi__Invoice__c:
+      table: OrderApi__Invoice__c
+    OrderApi__Item_Class__c:
+      table: OrderApi__Item_Class__c
+    OrderApi__Item__c:
+      table: OrderApi__Item__c
+    OrderApi__Receipt_Line_R__c:
+      table: OrderApi__Receipt_Line_R__c
+    OrderApi__Receipt_Line__c:
+      table: OrderApi__Receipt_Line__c
+    OrderApi__Receipt_R__c:
+      table: OrderApi__Receipt_R__c
+    OrderApi__Receipt__c:
+      table: OrderApi__Receipt__c
+    OrderApi__Sales_Order_Line_R__c:
+      table: OrderApi__Sales_Order_Line_R__c
+    OrderApi__Sales_Order_Line__c:
+      table: OrderApi__Sales_Order_Line__c
+    OrderApi__Sales_Order_R__c:
+      table: OrderApi__Sales_Order_R__c
+    OrderApi__Sales_Order__c:
+      table: OrderApi__Sales_Order__c
+    OrderApi__Subscription_Line__c:
+      table: OrderApi__Subscription_Line__c
+    OrderApi__Subscription_Plan__c:
+      table: OrderApi__Subscription_Plan__c
+    OrderApi__Subscription__c:
+      table: OrderApi__Subscription__c
+    OrderApi__Transaction__c:
+      table: OrderApi__Transaction__c
+Insert PagesApi__Community_Group__c:
+  sf_object: PagesApi__Community_Group__c
+  fields:
+  - Name
+  - PagesApi__Banner__c
+  - PagesApi__Chatter_Group_Id__c
+  - PagesApi__Description__c
+  - PagesApi__Disable_Join__c
+  - PagesApi__Email__c
+  - PagesApi__Enable_Access_Permissions__c
+  - PagesApi__Enable_Community_Feed__c
+  - PagesApi__Enable_Events__c
+  - PagesApi__Enable_Members__c
+  - PagesApi__Facebook_Profile_URL__c
+  - PagesApi__Google_Profile_URL__c
+  - PagesApi__Group_Image_URL__c
+  - PagesApi__Group_Member_Edit_Field_Sets_CSV__c
+  - PagesApi__Group_Member_View_Field_Sets_CSV__c
+  - PagesApi__Group_Roster_Label__c
+  - PagesApi__Group_Roster_Link__c
+  - PagesApi__Is_Account_Member_Entity__c
+  - PagesApi__Is_Contact_Member_Entity__c
+  - PagesApi__Is_Group_Member_Entity__c
+  - PagesApi__Is_Private__c
+  - PagesApi__Is_Public__c
+  - PagesApi__Is_Published__c
+  - PagesApi__Is_Unlisted__c
+  - PagesApi__LinkedIn_Profile_URL__c
+  - PagesApi__Member_Entity_Type__c
+  - PagesApi__Member_Search_Display_Field_s_CSV__c
+  - PagesApi__Member_Search_Display_Fields_CSV__c
+  - PagesApi__Member_Search_Filter_Field_s_CSV__c
+  - PagesApi__Member_Search_Filter_Fields_CSV__c
+  - PagesApi__Privacy_Setting__c
+  - PagesApi__Private_Community_Feed__c
+  - PagesApi__Private_Events__c
+  - PagesApi__Private_Members__c
+  - PagesApi__Search_Results_Sort_Field__c
+  - PagesApi__Search_Results_Sort_Order__c
+  - PagesApi__Search_Results__c
+  - PagesApi__Show_Group_Roster__c
+  - PagesApi__Show_Search_Filters__c
+  - PagesApi__Twitter_Profile_URL__c
+  - PagesApi__Type__c
+  lookups:
+    PagesApi__Site__c:
+      table: PagesApi__Site__c
+      after: Insert PagesApi__Site__c
+Insert PagesApi__Community_Group_Member__c:
+  sf_object: PagesApi__Community_Group_Member__c
+  fields:
+  - PagesApi__Activated_Date__c
+  - PagesApi__Bio__c
+  - PagesApi__Chatter_Group_Member_Id__c
+  - PagesApi__Deactivated_Date__c
+  - PagesApi__Display_In_Directory__c
+  - PagesApi__Display_Name__c
+  - PagesApi__Email__c
+  - PagesApi__Facebook_Profile_URL__c
+  - PagesApi__Google_Profile_URL__c
+  - PagesApi__Image_URL__c
+  - PagesApi__Is_Active__c
+  - PagesApi__Is_Manager__c
+  - PagesApi__Join_Request_Date__c
+  - PagesApi__LinkedIn_Profile_URL__c
+  - PagesApi__Role__c
+  - PagesApi__Status__c
+  - PagesApi__Twitter_Profile_URL__c
+  lookups:
+    PagesApi__Account__c:
+      table: Account
+    PagesApi__Community_Group__c:
+      table: PagesApi__Community_Group__c
+    PagesApi__Contact__c:
+      table: Contact
+    PagesApi__Linked_Community_Group__c:
+      table: PagesApi__Community_Group__c
+Insert PagesApi__Menu__c:
+  sf_object: PagesApi__Menu__c
+  fields:
+  - Name
+  lookups:
+    PagesApi__Site__c:
+      table: PagesApi__Site__c
+      after: Insert PagesApi__Site__c
+Insert PagesApi__Site__c:
+  sf_object: PagesApi__Site__c
+  fields:
+  - Name
+  - OrderApi__Enable_Access_Permissions__c
+  - OrderApi__Enable_eStore__c
+  - PagesApi__Base_Title_Tag__c
+  - PagesApi__Community_Network_ID__c
+  - PagesApi__Community_Network_Name__c
+  - PagesApi__Cookie_Decline_Redirect_URL__c
+  - PagesApi__Create_Account_Override_URL__c
+  - PagesApi__Default_Community_New_User_Profile__c
+  - PagesApi__Description__c
+  - PagesApi__Enable_Cookie_Prompt__c
+  - PagesApi__Enable_SEF_URLs__c
+  - PagesApi__Google_Login_URL__c
+  - PagesApi__Group_Search_Default_Sort_Field__c
+  - PagesApi__Group_Search_Filters_CSV__c
+  - PagesApi__Group_Search_Page_Results__c
+  - PagesApi__Group_Search_Result_Display_Fields_CSV__c
+  - PagesApi__Group_Search_Results_Sort_Order__c
+  - PagesApi__Is_Default__c
+  - PagesApi__Is_Published__c
+  - PagesApi__LinkedIn_Login_URL__c
+  - PagesApi__Login_Override_URL__c
+  - PagesApi__Login_Redirect_URL__c
+  - PagesApi__No_Archive__c
+  - PagesApi__No_Follow__c
+  - PagesApi__No_Index__c
+  - PagesApi__Profile_Page_URL__c
+  - PagesApi__SEF_Slug__c
+  - PagesApi__Show_Group_Search_Filters__c
+  - PagesApi__Site_Template_Key__c
+  - PagesApi__Site_URL__c
+  - PagesApi__Title_Tag_Separator__c
+  - PagesApi__Twitter_Login_URL__c
+  - PagesApi__User_Login_URL__c
+  - PagesApi__User_Reset_Password_URL__c
+  - PagesApi__User_Self_Registration_URL__c
+  lookups:
+    OrderApi__Business_Group__c:
+      table: OrderApi__Business_Group__c
+    OrderApi__Store__c:
+      table: OrderApi__Store__c
+    PagesApi__Auth_Provider_Default_Account__c:
+      table: Account
+    PagesApi__Menu__c:
+      table: PagesApi__Menu__c
+    PagesApi__Theme__c:
+      table: PagesApi__Theme__c
+Insert EventApi__Site_Event_Category__c:
+  sf_object: EventApi__Site_Event_Category__c
+  fields:
+  - EventApi__Is_Active__c
+  - EventApi__Is_Default__c
+  lookups:
+    EventApi__Event_Category__c:
+      table: EventApi__Event_Category__c
+    EventApi__Site__c:
+      table: PagesApi__Site__c
+Insert PagesApi__Page__c:
+  sf_object: PagesApi__Page__c
+  fields:
+  - Name
+  - OrderApi__Enable_Access_Permissions__c
+  - PagesApi__Auth_Required__c
+  - PagesApi__Enable_SEF_URLs__c
+  - PagesApi__Is_Published__c
+  - PagesApi__Is_Standard__c
+  - PagesApi__No_Archive__c
+  - PagesApi__No_Follow__c
+  - PagesApi__No_Index__c
+  - PagesApi__Page_URL__c
+  - PagesApi__SEF_Slug__c
+  - PagesApi__Title_Tag__c
+  - PagesApi__Visualforce_Page__c
+  - PagesApi__Visualforce_Template__c
+  lookups:
+    PagesApi__Form__c:
+      table: PagesApi__Form__c
+    PagesApi__Menu__c:
+      table: PagesApi__Menu__c
+    PagesApi__Site__c:
+      table: PagesApi__Site__c
+    PagesApi__Theme__c:
+      table: PagesApi__Theme__c
+Insert PagesApi__Menu_Item__c:
+  sf_object: PagesApi__Menu_Item__c
+  fields:
+  - Name
+  - PagesApi__Custom_URL__c
+  - PagesApi__Display_Order__c
+  - PagesApi__Display_Text__c
+  - PagesApi__Icon__c
+  - PagesApi__Is_Standard__c
+  - PagesApi__Link_Target__c
+  - PagesApi__On_Click_Javascript__c
+  - PagesApi__Style_Class__c
+  - PagesApi__Type__c
+  - PagesApi__Value__c
+  lookups:
+    PagesApi__Menu_Item__c:
+      table: PagesApi__Menu_Item__c
+      after: Insert PagesApi__Menu_Item__c
+    PagesApi__Menu__c:
+      table: PagesApi__Menu__c
+    PagesApi__Page__c:
+      table: PagesApi__Page__c
+Insert PagesApi__Page_Element__c:
+  sf_object: PagesApi__Page_Element__c
+  fields:
+  - PagesApi__Component__c
+  - PagesApi__HTML__c
+  - PagesApi__Order__c
+  lookups:
+    OrderApi__Campaign_Page__c:
+      table: OrderApi__Campaign_Page__c
+    PagesApi__Page__c:
+      table: PagesApi__Page__c
+Insert PagesApi__Page_Element_Attribute__c:
+  sf_object: PagesApi__Page_Element_Attribute__c
+  fields:
+  - PagesApi__Key__c
+  - PagesApi__Type__c
+  - PagesApi__Value__c
+  lookups:
+    PagesApi__Page_Element__c:
+      table: PagesApi__Page_Element__c

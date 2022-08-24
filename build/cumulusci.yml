@@ -1,0 +1,11 @@
+minimum_cumulusci_version: '3.24.1'
+project:
+    name: build
+
+tasks:
+    install_all_prod_packages:
+        description: Update all the prod packages with the latest
+        class_path: tasks.install.UpdateDependencies
+    install_payments_package:
+        description: Update all the prod packages with the latest
+        class_path: tasks.payments.UpdateDependencies
