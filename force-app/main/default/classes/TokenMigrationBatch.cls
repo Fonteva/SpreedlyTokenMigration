@@ -20,7 +20,6 @@
 global with sharing class TokenMigrationBatch implements Database.Batchable<sObject>, Database.AllowsCallouts, Database.Stateful{
     private String query;
     private String stipeGatewayToken;
-    private Map<Id, Contact> contactsToUpdate;
     private Boolean isTestMode;
 
     global TokenMigrationBatch(Boolean isTestMode) {
@@ -49,8 +48,6 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
         SpreedlyHTTPService.path = 'TokenMigrationBatch/start';
         //initializing variable
         stipeGatewayToken = '';
-        contactsToUpdate = new Map<Id, Contact>();
-
         //fetching stripe access token
         FDService.EPayRequest req = SpreedlyEPayService.createEpayRequest('', '');
         SpreedlyEPayService.createStripeTokenBody(req, SpreedlyAPIService.getCredentials(isTestMode).secretKey);
@@ -68,14 +65,17 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
         List<Framework__System_Log__c> errorSystemLogs = new List<Framework__System_Log__c>();
         
         try{
-            List<OrderApi__Payment_Method__c> paymentMethodsToInsert = new List<OrderApi__Payment_Method__c>();
             List<OrderApi__Payment_Method__c> paymentMethodsToUpdate = new List<OrderApi__Payment_Method__c>();
 
             //checking saved payment method is linked with account
             Set<Id> accountIds = new Set<Id>();
+            
+            Set<Id> paymentMethodIds = new Set<Id>();
+            for(OrderApi__Payment_Method__c paymentMethod : paymentMethods) {
+                paymentMethodIds.add(paymentMethod.Id);
+            }
             for (OrderApi__Payment_Method__c paymentMethod : paymentMethods) {
-                String customerId = paymentMethod.OrderApi__Contact__c != null ? paymentMethod.OrderApi__Contact__c : paymentMethod.OrderApi__Customer_ID__c;
-                
+                String customerId = paymentMethod.OrderApi__Contact__c != null ? paymentMethod.OrderApi__Contact__c : paymentMethod.OrderApi__Customer_ID__c; 
                 if (((Id)customerId).getSObjectType().getDescribe().getName() == 'Account') {
                     accountIds.add(customerId);
                 }
@@ -90,10 +90,8 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
                     accountIdWithContactIdMap.put(acc.Id, acc.OrderApi__Primary_Contact__c);
                 }
             }
-
             for (OrderApi__Payment_Method__c paymentMethod : paymentMethods) {
                 String contactId = paymentMethod.OrderApi__Contact__c != null ? paymentMethod.OrderApi__Contact__c : paymentMethod.OrderApi__Customer_ID__c;
-                
                 String accountId;
                 if (((Id)contactId).getSObjectType().getDescribe().getName() == 'Account') {
                     if (accountIdWithContactIdMap.containsKey(contactId)) {
@@ -104,7 +102,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
                         continue;
                     }
                 }
-
+                
                 //exporting spreedly payment method token to stripe
                 FDService.EPayRequest req = SpreedlyEPayService.createEpayRequest(stipeGatewayToken, paymentMethod.OrderApi__Payment_Method_Token__c);
                 SpreedlyEPayService.createExportTokenBody(req);
@@ -112,36 +110,14 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
                 
                 if (!epayResponse.transactions.isEmpty()) {
                     FDService.EPayTransaction trans = epayResponse.transactions[0];
-
-                    if (!contactsToUpdate.containsKey(contactId)) {
-                        //updating payment customer id field on contact
-                        contactsToUpdate.put(contactId, new Contact(Id=contactId, Payments_Customer_Id__c=trans.token));
-                    }
-
-                    OrderApi__Payment_Method__c newPaymentMethod = createPaymentMethod(trans, paymentMethod, contactId, accountId);
-                    newPaymentMethod.Original_Saved_Payment_Method__c = paymentMethod.Id;
-                    paymentMethodsToInsert.add(newPaymentMethod);
-
-                    //updating existing payment method active field as false
-                    paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, OrderApi__Is_Active__c=false));
+                    paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, Token_Migration_Test__c = 'SUCCESS'));
                 } else if (!epayResponse.errors.isEmpty()) {
-                    errorSystemLogs.add(SpreedlyHTTPService.createSystemLog('Spreedly Error Occured while Callout', epayResponse.errors[0].getMessage()));
+                    paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, Token_Migration_Test__c = 'Error: ' + epayResponse.errors[0].getMessage()));
                 }
             }
-
-            //Updating contact records
-            if (!contactsToUpdate.isEmpty()) {
-                Framework.SObjectService.updateRecords(contactsToUpdate.values());
-            }
-
             if (!paymentMethodsToUpdate.isEmpty()) {
                 Framework.SObjectService.updateRecords(paymentMethodsToUpdate);
             }
-
-            if (!paymentMethodsToInsert.isEmpty()) {
-                Framework.SObjectService.insertRecords(paymentMethodsToInsert);
-            }
-
             SpreedlyHTTPService.insertSystemLogs();
         } catch(Exception e) {
             errorSystemLogs.add(SpreedlyHTTPService.createSystemLog('Spreedly Error Occured', e.getMessage() + ' ' + e.getStackTraceString()));
@@ -154,44 +130,5 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
     
     global void finish(Database.BatchableContext bc) {
         SpreedlyHTTPService.path = 'TokenMigrationBatch/finish';
-    }
-
-    private OrderApi__Payment_Method__c createPaymentMethod(FDService.EPayTransaction trans, OrderApi__Payment_Method__c paymentMethod, String contactId, String accountId) {
-        //creating payment method record
-        OrderApi__Payment_Method__c paymentMethodObj = new OrderApi__Payment_Method__c(
-            OrderApi__Payment_Method_Token__c = trans.token + SpreedlyAPIService.SEPRATOR + trans.payment_method_token,
-            OrderApi__Payment_Method_Type__c = 'credit_card',
-            OrderApi__Year__c = trans.payment_method.year,
-            OrderApi__Month__c = trans.payment_method.month,
-            OrderApi__Card_Type__c = trans.payment_method.card_type,
-            OrderApi__Full_Name__c = trans.payment_method.full_name,
-            OrderApi__Is_Active__c = true,
-            OrderApi__Is_Declined__c = false,
-            OrderApi__Is_Expired__c = false,
-            OrderApi__Is_Valid__c = true,
-            OrderApi__Email__c = trans.payment_method.email,
-            OrderApi__Phone__c = trans.payment_method.phone,
-            OrderApi__Billing_Street__c = trans.payment_method.address1,
-            OrderApi__Billing_City__c = trans.payment_method.city,
-            OrderApi__Billing_State__c = trans.payment_method.state,
-            OrderApi__Billing_Postal_Code__c = trans.payment_method.zip,
-            OrderApi__Billing_Country__c = trans.payment_method.country,
-            OrderApi__Number__c = 'xxxx-xxxx-xxxx-' + trans.payment_method.last_four_digits,
-            OrderApi__Last_Four_Digits__c = trans.payment_method.last_four_digits,
-            OrderApi__First_Six_Digits__c = 'xxxxxx');
-
-        if (accountId != null) {
-            paymentMethodObj.OrderApi__Account__c = accountId;
-            paymentMethodObj.OrderApi__Entity__c = 'Account';
-        }
-        else if (contactId != null) {
-            paymentMethodObj.OrderApi__Contact__c = contactId;
-            paymentMethodObj.OrderApi__Entity__c = 'Contact';
-        }
-        if(paymentMethod.Owner.IsActive != null && paymentMethod.Owner.IsActive){
-            paymentMethodObj.OwnerId = paymentMethod.OwnerId;
-        }
-        
-        return paymentMethodObj;
     }
 }
