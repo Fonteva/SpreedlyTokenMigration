@@ -57,7 +57,7 @@ public without sharing class Test_TokenMigrationBatch extends MockTestBase {
         
         Test.stopTest();
         
-        System.assertEquals(4, [SELECT count() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
+        System.assertEquals(2, [SELECT count() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
     }
     
     @isTest
@@ -75,6 +75,6 @@ public without sharing class Test_TokenMigrationBatch extends MockTestBase {
         
         Test.stopTest();
         
-        System.assertEquals(3, [SELECT count() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
+        System.assertEquals(2, [SELECT count() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
     }
 }
