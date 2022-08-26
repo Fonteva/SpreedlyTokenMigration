@@ -120,7 +120,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
             }
             SpreedlyHTTPService.insertSystemLogs();
         } catch(Exception e) {
-            errorSystemLogs.add(SpreedlyHTTPService.createSystemLog('Spreedly Error Occure', e.getMessage() + ' ' + e.getStackTraceString()));
+            errorSystemLogs.add(SpreedlyHTTPService.createSystemLog('Spreedly Error Occured', e.getMessage() + ' ' + e.getStackTraceString()));
         }
 
         if (!errorSystemLogs.isEmpty()) {
