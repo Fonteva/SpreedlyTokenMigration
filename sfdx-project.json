@@ -1,11 +1,17 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "Spreedly Token Migration",
+            "versionName": "1.0.0",
+            "versionNumber": "1.0.0.NEXT"
+        }
+    ],
+    "namespace": "STMApi",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "54.0",
+    "packageAliases": {
+        "Spreedly Token Migration": "0Ho4V000000wkDTSAY"
     }
-  ],
-  "namespace": "FontevaPay",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0"
 }
