@@ -185,17 +185,19 @@ public class OrgSetup_Helper {
 
         // fix attributes on the community site
         String fieldSet = 'LTE__Manage_Members_Add_Member';
-        LTE__Site__c ltSite = [SELECT Id,LTE__Site_URL__c, LTE__Store__c FROM LTE__Site__c WHERE Name = 'LTCommunitySite'];
+        List<LTE__Site__c> ltSite = [SELECT Id,LTE__Site_URL__c, LTE__Store__c FROM LTE__Site__c WHERE Name = 'LTCommunitySite'];
 
-        ltSite.LTE__Site_URL__c = [SELECT PagesApi__Site_URL__c FROM PagesApi__Site__c LIMIT 1].PagesApi__Site_URL__c;
-        ltSite.LTE__Assign_Members_Contact_Field_Set__c = fieldSet;
-        ltSite.LTE__Profile_Contact_Fieldset_CSV__c = fieldSet;
-        ltSite.LTE__Profile_Account_Fieldset_CSV__c = 'LTE__' + Account.SObjectType.getDescribe().fieldSets.getMap().values().get(0).name;
-        ltSite.LTE__Community_Name__c = 'Member Portal';
-        ltSite.LTE__Community_ID__c = [SELECT Id FROM network WHERE Name = 'Member Portal'].Id ;
-        if (ltSite.LTE__Store__c == null) {
-            OrderApi__Store__c store = [Select Id, OrderApi__Business_Group__c From OrderApi__Store__c Limit 1];
-            ltSite.LTE__Store__c = store.Id;
+        if(!ltSite.isEmpty()){
+            ltSite[0].LTE__Site_URL__c = [SELECT PagesApi__Site_URL__c FROM PagesApi__Site__c LIMIT 1].PagesApi__Site_URL__c;
+            ltSite[0].LTE__Assign_Members_Contact_Field_Set__c = fieldSet;
+            ltSite[0].LTE__Profile_Contact_Fieldset_CSV__c = fieldSet;
+            ltSite[0].LTE__Profile_Account_Fieldset_CSV__c = 'LTE__' + Account.SObjectType.getDescribe().fieldSets.getMap().values().get(0).name;
+            ltSite[0].LTE__Community_Name__c = 'Member Portal';
+            ltSite[0].LTE__Community_ID__c = [SELECT Id FROM network WHERE Name = 'Member Portal'].Id ;
+            if (ltSite[0].LTE__Store__c == null) {
+                OrderApi__Store__c store = [Select Id, OrderApi__Business_Group__c From OrderApi__Store__c Limit 1];
+                ltSite[0].LTE__Store__c = store.Id;
+            }
         }
         update ltSite;
 
@@ -203,7 +205,9 @@ public class OrgSetup_Helper {
          LTE__Menu_Item__c[] comSiteMenuItems = [SELECT Id, LTE__URL__c FROM LTE__Menu_Item__c];
          for (LTE__Menu_Item__c m : comSiteMenuItems) {
              System.debug('####' + m.LTE__URL__c);
-             m.LTE__Site__c = ltSite.Id;
+             if(!ltSite.isEmpty()){
+                 m.LTE__Site__c = ltSite[0].Id;
+             }
              if (m.LTE__URL__c != null)
                  m.LTE__URL__c = m.LTE__URL__c.replaceAll('^((http|https)://)+?([a-zA-Z0-9]|-)+?([.]force)+?([.]com)/lt', [SELECT PagesApi__Site_URL__c FROM PagesApi__Site__c LIMIT 1].PagesApi__Site_URL__c);
              System.debug('>>>>' + m.LTE__URL__c);
@@ -219,7 +223,9 @@ public class OrgSetup_Helper {
             }
             List<LTE__Site_Event__c> newLinks = new List<LTE__Site_Event__c>();
             for (EventApi__Event__c e : events) {
-                newLinks.add(new LTE__Site_Event__c(LTE__Event__c = e.Id, LTE__Site__c = ltSite.Id));
+                if(!ltSite.isEmpty()){
+                    newLinks.add(new LTE__Site_Event__c(LTE__Event__c = e.Id, LTE__Site__c = ltSite[0].Id));
+                }
             }
             insert newLinks;
         }

@@ -79,14 +79,14 @@ public class OrgSetup_Init {
         LTE.PackageScripts.install();
 
         //Handle Auto_MenuItem_Badge
-        LTE__Site__c site = [Select Id, (SELECT Id,Name from LTE__Community_Menu_Items__r where Name in ('Company Info','Company Orders','Company Memberships')) From LTE__Site__c Where Name = 'LTCommunitySite'][0];
-        if(site.LTE__Community_Menu_Items__r.size() == 3){
+        List<LTE__Site__c> lteSites = [Select Id, (SELECT Id,Name from LTE__Community_Menu_Items__r where Name in ('Company Info','Company Orders','Company Memberships')) From LTE__Site__c Where Name = 'LTCommunitySite'];
+        if(!lteSites.isEmpty() && lteSites[0].LTE__Community_Menu_Items__r.size() == 3){
             List<OrderApi__Access_Permission__c> permissions = [Select Id,OrderApi__Badge_Type__r.Name from OrderApi__Access_Permission__c Where OrderApi__Badge_Type__r.Name = 'Auto_MenuItem_Badge' limit 3];
 
             if(permissions.size() == 3){
-                permissions[0].LTE__Menu_Item__c = site.LTE__Community_Menu_Items__r[0].Id;
-                permissions[1].LTE__Menu_Item__c = site.LTE__Community_Menu_Items__r[1].Id;
-                permissions[2].LTE__Menu_Item__c = site.LTE__Community_Menu_Items__r[2].Id;
+                permissions[0].LTE__Menu_Item__c = lteSites[0].LTE__Community_Menu_Items__r[0].Id;
+                permissions[1].LTE__Menu_Item__c = lteSites[0].LTE__Community_Menu_Items__r[1].Id;
+                permissions[2].LTE__Menu_Item__c = lteSites[0].LTE__Community_Menu_Items__r[2].Id;
 
                 update permissions;
             }
@@ -101,7 +101,9 @@ public class OrgSetup_Init {
 
     @Future
     public static void setDefaultSite() {
-        LTE__Site__c site = [Select Id From LTE__Site__c Where Name = 'LTCommunitySite'][0];
-        Framework.Registry.upsertEntries(new List<Framework.Registry.Entry>{new Framework.Registry.Entry('SiteTemplate', 'DefaultSite', site.Id)});
+        List<LTE__Site__c> sites = [Select Id From LTE__Site__c Where Name = 'LTCommunitySite'];
+        if(!sites.isEmpty()){
+            Framework.Registry.upsertEntries(new List<Framework.Registry.Entry>{new Framework.Registry.Entry('SiteTemplate', 'DefaultSite', sites[0].Id)});
+        }
     }
 }
