@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Key__c</fullName>
+    <description>Value of the encryption key.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Value of the encryption key.</inlineHelpText>
+    <label>Key</label>
+    <length>8192</length>
+    <visibleLines>3</visibleLines>
+    <required>false</required>
+    <type>LongTextArea</type>
+    <unique>false</unique>
+</CustomField>
