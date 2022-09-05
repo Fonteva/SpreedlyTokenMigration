@@ -1,17 +1,30 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true,
-      "package": "Spreedly Token Migration",
-      "versionName": "1.0.0",
-      "versionNumber": "1.0.0.NEXT"
+    "packageDirectories": [{
+        "path": "force-app",
+        "default": true,
+        "package": "Spreedly Token Migration",
+        "versionName": "1.0.0",
+        "versionNumber": "1.0.0.NEXT",
+        "dependencies": [{
+            "package": "04t3j000001Ii82AAC"
+        }, {
+            "package": "04t1J000000Kep8QAC"
+        }, {
+            "package": "04t3k000001ywnJAAQ"
+        }, {
+            "package": "04t2I0000003JMNQA2"
+        }, {
+            "package": "04t1H0000004B4HQAU"
+        }, {
+            "package": "04t6g000008OUziAAG"
+        }, {
+            "package": "04t2M000002N4OvQAK"
+        }]
+    }],
+    "namespace": "STMApi",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "Spreedly Token Migration": "0Ho4V000000wkDTSAY"
     }
-  ],
-  "namespace": "STMApi",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0",
-  "packageAliases": {
-    "Spreedly Token Migration": "0Ho4V000000wkDTSAY"
-  }
 }
