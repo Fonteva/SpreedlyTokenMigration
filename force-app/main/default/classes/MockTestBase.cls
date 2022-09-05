@@ -54,14 +54,6 @@ public virtual inherited sharing class MockTestBase {
         return fflib_IDGenerator.generate(objType);
     }
 
-    public static IFontevaDML verify(IFontevaDML mock) {
-        return (IFontevaDML) mocks.verify(mock);
-    }
-    
-    public static IFontevaDML verify(IFontevaDML mock, Integer count) {
-        return (IFontevaDML) mocks.verify(mock, count);
-    }
-
     private static String namespace;
     public static String getOrgNamespace() {
         if (namespace == null) {
