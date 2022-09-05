@@ -33,7 +33,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
     }
 
     private void generateQuery(String whereClause){
-        this.query = 'SELECT Id, OrderApi__Contact__c, OrderApi__Contact__r.Name, OrderApi__Customer_ID__c, OrderApi__Payment_Method_Token__c, OrderApi__Is_Active__c, OwnerId, Owner.IsActive, Original_Saved_Payment_Method__c FROM OrderApi__Payment_Method__c ';
+        this.query = 'SELECT Id, OrderApi__Contact__c, OrderApi__Contact__r.Name, OrderApi__Customer_ID__c, OrderApi__Payment_Method_Token__c, OrderApi__Is_Active__c, OwnerId, Owner.IsActive FROM OrderApi__Payment_Method__c ';
         if (String.isNotBlank(whereClause)) {
             this.query += whereClause;
         }
