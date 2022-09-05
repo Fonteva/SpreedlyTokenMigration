@@ -53,17 +53,4 @@ public virtual inherited sharing class MockTestBase {
     public static Id genId(SObjectType objType) {
         return fflib_IDGenerator.generate(objType);
     }
-
-    private static String namespace;
-    public static String getOrgNamespace() {
-        if (namespace == null) {
-            Organization[] org = (List<Organization>) FontevaDynamicSelector.getInstance(
-                Framework.SchemaService.getSObjectType('Organization'))
-            .setLimit(1)
-            .run();
-            namespace = org[0].NamespacePrefix;
-        }
-
-        return namespace;
-    }
 }
