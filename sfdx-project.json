@@ -3,8 +3,9 @@
         "path": "force-app",
         "default": true,
         "package": "Spreedly Token Migration",
-        "versionName": "1.0.0",
-        "versionNumber": "1.0.0.NEXT",
+        "versionName": "1.1.0",
+        "versionNumber": "1.1.0.NEXT",
+        "ancestorId": "04t4V000001i63HQAQ",
         "dependencies": [{
             "package": "04t3j000001Ii82AAC"
         }, {
