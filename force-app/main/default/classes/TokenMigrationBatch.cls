@@ -40,7 +40,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
         else {
             this.query += 'WHERE OrderApi__Is_Active__c = true';
         }
-        this.query += ' AND OrderApi__Billing_Postal_Code__c != NULL AND (NOT OrderApi__Payment_Method_Token__c LIKE \'' + SpreedlyAPIService.CUSTOMER_PREFIX +'%\')'; //Ignoring stripe payment method token
+        this.query += ' AND OrderApi__Billing_Postal_Code__c != NULL AND Fonteva_Payment_Token__c = NULL AND (NOT OrderApi__Payment_Method_Token__c LIKE \'' + SpreedlyAPIService.CUSTOMER_PREFIX +'%\')'; //Ignoring stripe payment method token
         this.query += ' ORDER BY OrderApi__Contact__c';
     }
     
@@ -110,7 +110,8 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<sObj
                 
                 if (!epayResponse.transactions.isEmpty()) {
                     FDService.EPayTransaction trans = epayResponse.transactions[0];
-                    paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, Token_Migration_Test__c = 'SUCCESS'));
+                    String paymentToken = trans.token + '___' + trans.payment_method_token;
+                    paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, Token_Migration_Test__c = 'SUCCESS', Fonteva_Payment_Token__c=paymentToken));
                 } else if (!epayResponse.errors.isEmpty()) {
                     paymentMethodsToUpdate.add(new OrderApi__Payment_Method__c(Id=paymentMethod.Id, Token_Migration_Test__c = 'Error: ' + epayResponse.errors[0].getMessage()));
                 }
