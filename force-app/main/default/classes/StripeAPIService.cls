@@ -24,12 +24,11 @@ public with sharing class StripeAPIService {
         UPDATE_CUSTOMER
     }
 
-
     /**
      * @description Map of TransactionType to the resource portion of the endpoint uri for
      * the api request
      */
-    private static final Map<TransactionType, String> resources = new Map<TransactionType, String> {
+    private static final Map<TransactionType, String> RESOURCES = new Map<TransactionType, String> {
         TransactionType.UPDATE_PAYMENT_METHOD => '/v1/payment_methods/{0}',
         TransactionType.UPDATE_CUSTOMER => '/v1/customers/{0}'
     };
@@ -78,7 +77,7 @@ public with sharing class StripeAPIService {
      * @throws HandledException When a activity type requires a token and the token is null or empty
      */
     public static String getEndpoint(TransactionType type, List<String> tokens) {
-        return BASE_URL + String.format(resources.get(type), tokens);
+        return BASE_URL + String.format(RESOURCES.get(type), tokens);
     }
 
     /**
