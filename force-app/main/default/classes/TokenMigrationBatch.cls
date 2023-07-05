@@ -106,7 +106,6 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
             }
             for (OrderApi__Payment_Method__c paymentMethod : paymentMethods) {
                 String contactId = paymentMethod.OrderApi__Contact__c != null ? paymentMethod.OrderApi__Contact__c : paymentMethod.OrderApi__Customer_ID__c;
-                String customerName = paymentMethod.OrderApi__Contact__r != null ? paymentMethod.OrderApi__Contact__r.Name : paymentMethod.OrderApi__Account__r.Name;
                 String accountId;
                 if (((Id) contactId).getSobjectType().getDescribe().getName() == 'Account') {
                     if (accountIdWithContactIdMap.containsKey(contactId)) {
@@ -132,7 +131,6 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
                         && String.isNotBlank(paymentMethodId)) {
                         StripeHttpService stripeService = StripeHttpService.getInstance().updateStripeMode(isTestMode);
                         stripeService.updateCustomer(customerId, new Map<String, Object> {
-                            'name' => customerName,
                             'metadata[connectedAccountId]' => connectedAccountId
                         });
                         stripeService.updatePaymentMethod(paymentMethodId, new Map<String, Object> {
