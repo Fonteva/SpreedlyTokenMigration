@@ -13,10 +13,10 @@
 * -----------------------------------------------------------------------------
 */
 
-@isTest
+@IsTest
 public without sharing class Test_TokenMigrationBatch extends MockTestBase {
     
-    @testSetup
+    @TestSetup
     static void testSetup(){
         List<Contact> conLst = new List<Contact>{new Contact(LastName='Contact 1')};
         Framework.SObjectService.insertRecords(conLst);
@@ -49,6 +49,8 @@ public without sharing class Test_TokenMigrationBatch extends MockTestBase {
         MultiRequestMock multiCalloutMock = new MultiRequestMock();
         multiCalloutMock.addRequestMock('https://core.spreedly.com/v1/gateways.json', SpreedlyHTTPCalloutMock.generateStripeAccessTokenSuccess());
         multiCalloutMock.addRequestMock('https://core.spreedly.com/v1/gateways/O8hP76edNVpC1tZ5pnZlgB10Th0/store.json', SpreedlyHTTPCalloutMock.generateExportTokenSuccess());
+        multiCalloutMock.addRequestMock('https://api.stripe.com/v1/customers/', SpreedlyHTTPCalloutMock.getStripeUpdateCustomerMock());
+        multiCalloutMock.addRequestMock('https://api.stripe.com/v1/payment_methods/', SpreedlyHTTPCalloutMock.getStripeUpdatePaymentMethodMock());
         Test.setMock(HttpCalloutMock.class, multiCalloutMock);
         
         Test.startTest();
@@ -57,14 +59,16 @@ public without sharing class Test_TokenMigrationBatch extends MockTestBase {
         
         Test.stopTest();
         
-        System.assertEquals(2, [SELECT count() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
+        System.assertEquals(2, [SELECT COUNT() FROM OrderApi__Payment_Method__c], 'Payment Method record is not created from batch');
     }
     
-    @isTest
+    @IsTest
     static void testBatchWithArgument() {
         MultiRequestMock multiCalloutMock = new MultiRequestMock();
         multiCalloutMock.addRequestMock('https://core.spreedly.com/v1/gateways.json', SpreedlyHTTPCalloutMock.generateStripeAccessTokenSuccess());
         multiCalloutMock.addRequestMock('https://core.spreedly.com/v1/gateways/O8hP76edNVpC1tZ5pnZlgB10Th0/store.json', SpreedlyHTTPCalloutMock.generateExportTokenSuccess());
+        multiCalloutMock.addRequestMock('https://api.stripe.com/v1/customers/', SpreedlyHTTPCalloutMock.getStripeUpdateCustomerMock());
+        multiCalloutMock.addRequestMock('https://api.stripe.com/v1/payment_methods/', SpreedlyHTTPCalloutMock.getStripeUpdatePaymentMethodMock());
         Test.setMock(HttpCalloutMock.class, multiCalloutMock);
         
         List<Contact> contacts = [SELECT Id FROM Contact];
