@@ -11,19 +11,19 @@ project:
   source_format: sfdx
   dependencies:
     - namespace: Framework
-      version: 128.4.1
+      version: 128.4.64
     - namespace: PagesApi
-      version: 121.7.1
+      version: 121.7.29
     - namespace: OrderApi
-      version: 128.1.1
+      version: 128.1.364
     - namespace: EventApi
-      version: 122.9
+      version: 122.9.53
     - namespace: FDService
-      version: 128.6.1
+      version: 128.6.21
     - namespace: FDSSPR20
-      version: 7.8.1
+      version: 7.8.267
     - namespace: LTE
-      version: 136.5.1
+      version: 136.5.414
     - namespace: KEYSTORE
       version: 120.6
 
@@ -38,7 +38,7 @@ sources:
 
 orgs:
   scratch:
-    develop1:
+    token_dev:
       config_file: orgs/dev.json
       days: 30
       namespaced: True
