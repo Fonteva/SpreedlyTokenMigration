@@ -14,15 +14,13 @@
  */
 
 /**
- * @name SpreedlyEPayService
  * @description Service class to create/parse json
  */
 public inherited sharing class SpreedlyEPayService {
     /**
-     * Creates a Stripe token request body
+     * @description Creates a Stripe token request body
      * @param req FDService.EPayRequest
      * @param stripeKey String
-     * @return void
      */
     public static void createStripeTokenBody(FDService.EPayRequest req, String stripeKey) {
         req.type = SpreedlyAPIService.MigrationType.GET_STRIPE_TOKEN.name();
@@ -37,9 +35,8 @@ public inherited sharing class SpreedlyEPayService {
     }
 
     /**
-     * Creates an export token request body
+     * @description Creates an export token request body
      * @param req FDService.EPayRequest
-     * @return void
      */
     public static void createExportTokenBody(FDService.EPayRequest req) {
         req.type = SpreedlyAPIService.MigrationType.EXPORT_TOKEN.name();
@@ -48,24 +45,33 @@ public inherited sharing class SpreedlyEPayService {
         requestObject.name = 'transaction';
         requestObject.elements = new List<FDService.EPayRequest.Element>();
         requestObject.elements.add(new FDService.EPayRequest.Element('payment_method_token', req.paymentMethod.paymentMethodToken));
+        requestObject.elements.add(new FDService.EPayRequest.Element('obj__gateway_specific_fields', JSON.serialize(new Map<String, Object> {
+            'stripe' => new Map<String, Object> {
+                'validate' => false
+            }
+        })));
         req.objects.add(requestObject);
     }
 
     /**
-    * Converts an FDService.EPayRequest object into a request body string
-    * @param ePayRequestWrapper FDService.EPayRequest
-    * @return String
-    */
+     * @description Converts an FDService.EPayRequest object into a request body string
+     * @param ePayRequestWrapper FDService.EPayRequest
+     * @return String
+     */
     public static String createRequestBody(FDService.EPayRequest ePayRequestWrapper) {
         JSONGenerator generator = JSON.createGenerator(false);
         generator.writeStartObject();
-
+        String objKeyPrefix = 'obj__';
         for (FDService.EPayRequest.RequestObject requestObject : ePayRequestWrapper.objects) {
             generator.writeFieldName(requestObject.name);
             generator.writeStartObject();
 
-            for (FDService.EPayRequest.Element elem : requestObject.elements ) {
-                if (String.isNotBlank(elem.key )) {
+            for (FDService.EPayRequest.Element elem : requestObject.elements) {
+                if (String.isNotBlank(elem.key) && elem.key.startsWith(objKeyPrefix)) {
+                    Object obj = JSON.deserializeUntyped(elem.value);
+                    generator.writeFieldName(elem.key.removeStart(objKeyPrefix));
+                    generator.writeObject(obj);
+                } else if (String.isNotBlank(elem.key)) {
                     generator.writeFieldName(elem.key);
                     generator.writeObject(elem.value);
                 }
@@ -73,18 +79,18 @@ public inherited sharing class SpreedlyEPayService {
 
             generator.writeEndObject();
         }
-        
+
         generator.writeEndObject();
         return generator.getAsString();
     }
-    
+
     /**
-     * Creates EpayRequest according to gatewayToken and paymentMethodToken & then return it
-     * @param   gatewayToken String
-     * @param   paymentMethodToken String
-     * @return  FDService.EPayRequest
+     * @description Creates EpayRequest according to gatewayToken and paymentMethodToken & then return it
+     * @param gatewayToken String
+     * @param paymentMethodToken String
+     * @return FDService.EPayRequest
      */
-    public static FDService.EPayRequest createEpayRequest(String gatewayToken, String paymentMethodToken){
+    public static FDService.EPayRequest createEpayRequest(String gatewayToken, String paymentMethodToken) {
         FDService.EPayRequest ePayRequest = new FDService.EPayRequest();
         ePayRequest.paymentMethod = new FDService.PaymentMethod();
         ePayRequest.paymentMethod.paymentMethodToken = paymentMethodToken;
@@ -94,12 +100,12 @@ public inherited sharing class SpreedlyEPayService {
     }
 
     /**
-    * Parses an HTTP response into an FDService.EPayResponse
-    * @param ePayRequest FDService.EPayRequest
-    * @param response HttpResponse
-    * @return FDService.EPayResponse
-    */
-    public static FDService.EPayResponse parseResponse(FDService.EPayRequest ePayRequest, HttpResponse response ) {
+     * @description Parses an HTTP response into an FDService.EPayResponse
+     * @param ePayRequest FDService.EPayRequest
+     * @param response HttpResponse
+     * @return FDService.EPayResponse
+     */
+    public static FDService.EPayResponse parseResponse(FDService.EPayRequest ePayRequest, HttpResponse response) {
         FDService.EPayResponse ePayResponseWrapper = FDService.EPayResponse.getInstance();
         ePayResponseWrapper.http_status_code = response.getStatusCode();
         ePayResponseWrapper.http_status_message = response.getStatus();
@@ -108,22 +114,22 @@ public inherited sharing class SpreedlyEPayService {
     }
 
     /**
-    * Parse an HTTP response into an FDService.EPayResponse
-    * @param ePayRequest FDService.EPayRequest
-    * @param ePayResponseWrapper FDService.EPayResponse
-    * @param responseBody String
-    * @return FDService.EPayResponse
-    */
+     * @description Parse an HTTP response into an FDService.EPayResponse
+     * @param ePayRequest FDService.EPayRequest
+     * @param ePayResponseWrapper FDService.EPayResponse
+     * @param responseBody String
+     * @return FDService.EPayResponse
+     */
     public static FDService.EPayResponse parseResponse(FDService.EPayRequest ePayRequest, FDService.EPayResponse ePayResponseWrapper, String responseBody) {
         ePayResponseWrapper.transactions = new List<FDService.EPayTransaction>();
         ePayResponseWrapper.errors = new List<FDService.Error>();
 
         SpreedlyAPIResponse wrapperObj = SpreedlyAPIResponse.parse(responseBody);
         if (ePayResponseWrapper.http_status_code != 200 && ePayResponseWrapper.http_status_code != 201) {
-            ePayResponseWrapper.errors.add(new FDService.Error(''+ePayResponseWrapper.http_status_code, wrapperObj.transaction_z?.message));
+            ePayResponseWrapper.errors.add(new FDService.Error('' + ePayResponseWrapper.http_status_code, wrapperObj.transaction_z?.message));
             return ePayResponseWrapper;
         }
-        
+
         ePayResponseWrapper.transactions.add(wrapperObj.createEPayTransaction());
         return ePayResponseWrapper;
     }

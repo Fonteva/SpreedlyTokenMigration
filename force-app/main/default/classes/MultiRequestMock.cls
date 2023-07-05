@@ -15,36 +15,38 @@
 
 @IsTest
 public class MultiRequestMock implements HttpCalloutMock {
-    private static Integer count = 0;
+    private static Integer count = -1;
     Map<String, HttpCalloutMock> requests;
-    public MultiRequestMock(){}
+    public MultiRequestMock(){
+    }
 
     public MultiRequestMock(Map<String, HttpCalloutMock> requests) {
         this.requests = requests;
     }
 
-    public HTTPResponse respond(HTTPRequest req) {
+    public HttpResponse respond(HttpRequest req) {
+        count++;
         HttpCalloutMock mock = requests.get(req.getEndpoint());
         if (mock != null) {
             return mock.respond(req);
         } else {
             //This is the fallback for if we have a complex url
             mock = requests.values()[count];
-            if(mock != null){
-                count++;
+            if (mock != null) {
                 return mock.respond(req);
-            }else{
+            } else {
                 throw new MultiRequestMockException('Unable to find mock callout for this request');
             }
         }
     }
 
     public void addRequestMock(String url, HttpCalloutMock mock) {
-        if(requests == null){
+        if (requests == null) {
             requests = new Map<String, HttpCalloutMock>();
         }
         requests.put(url, mock);
     }
 
-    public class MultiRequestMockException extends Exception{}
+    public class MultiRequestMockException extends Exception {
+    }
 }
