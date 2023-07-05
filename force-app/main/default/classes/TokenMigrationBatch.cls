@@ -41,7 +41,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
     }
 
     private void generateQuery(String whereClause) {
-        this.query = 'SELECT Id,\n' +
+        this.query = 'SELECT Id, OrderApi__Full_Name__c,\n' +
             '    OrderApi__Account__c, OrderApi__Contact__c,\n' +
             '    OrderApi__Account__r.Name, OrderApi__Contact__r.Name,\n' +
             '    OrderApi__Customer_ID__c, OrderApi__Bank_Account_Holder_Type__c,\n' +
@@ -106,7 +106,6 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
             }
             for (OrderApi__Payment_Method__c paymentMethod : paymentMethods) {
                 String contactId = paymentMethod.OrderApi__Contact__c != null ? paymentMethod.OrderApi__Contact__c : paymentMethod.OrderApi__Customer_ID__c;
-                String customerName = paymentMethod.OrderApi__Contact__r != null ? paymentMethod.OrderApi__Contact__r.Name : paymentMethod.OrderApi__Account__r.Name;
                 String accountId;
                 if (((Id) contactId).getSobjectType().getDescribe().getName() == 'Account') {
                     if (accountIdWithContactIdMap.containsKey(contactId)) {
@@ -131,6 +130,11 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
                         && String.isNotBlank(customerId)
                         && String.isNotBlank(paymentMethodId)) {
                         StripeHttpService stripeService = StripeHttpService.getInstance().updateStripeMode(isTestMode);
+                        String customerName = trans.payment_method?.full_name;
+                        if (String.isBlank(customerName)) {
+                            customerName = paymentMethod.OrderApi__Full_Name__c;
+                        }
+
                         stripeService.updateCustomer(customerId, new Map<String, Object> {
                             'name' => customerName,
                             'metadata[connectedAccountId]' => connectedAccountId
