@@ -130,7 +130,7 @@ global with sharing class TokenMigrationBatch implements Database.Batchable<SObj
                     if (String.isNotBlank(connectedAccountId)
                         && String.isNotBlank(customerId)
                         && String.isNotBlank(paymentMethodId)) {
-                        StripeHttpService stripeService = new StripeHttpService().updateStripeMode(isTestMode);
+                        StripeHttpService stripeService = StripeHttpService.getInstance().updateStripeMode(isTestMode);
                         stripeService.updateCustomer(customerId, new Map<String, Object> {
                             'name' => customerName,
                             'metadata[connectedAccountId]' => connectedAccountId
