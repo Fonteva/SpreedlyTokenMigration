@@ -27,7 +27,7 @@ public without sharing class Test_SpreedlyEPayService extends MockTestBase{
         System.assertEquals('transaction', req.objects[0].name, 'Expected body is not generated');
         
         String body = SpreedlyEPayService.createRequestBody(req);
-        System.assertEquals('{"transaction":{"payment_method_token":"O8hP76edNVpC1tZ5pnZlgB10Th0"}}', body, 'Expected body is not created');
+        System.assertEquals('{"transaction":{"payment_method_token":"O8hP76edNVpC1tZ5pnZlgB10Th0","gateway_specific_fields":{"stripe":{"validate":false}}}}', body, 'Expected body is not created');
         
         Test.stopTest();
     }
