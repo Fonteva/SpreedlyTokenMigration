@@ -3,7 +3,7 @@
 ### Package creation commands:
 
 ##### to create the package version (beta)
-sfdx force:package:version:create --package "2GP Main App" -x --codecoverage
+sfdx package version create --package "Spreedly Token Migration" --installation-key-bypass --code-coverage  --wait=2
 
 ##### to set the beta package as released:
-sfdx force:package:version:promote --package 04txxxxxxxxxxxx
+sfdx package version promote --package 04txxxxxxxxxxxx
